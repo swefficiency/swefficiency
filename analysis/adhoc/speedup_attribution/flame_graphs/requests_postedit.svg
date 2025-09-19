@@ -1,0 +1,328 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" width="1200" height="864"
+     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<style type="text/css">
+    .func_g:hover { stroke:black; stroke-width:0.5; cursor:pointer; }
+</style>
+<svg class="func_g" x="0.0" y="336" width="1198.9996766671013" height="23"><g>
+    <title>~:0:&lt;built-in method builtins.exec&gt; 100.00% (1 494 0.004954094 1.759177149)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 215, 125)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">&lt;built-in method builtins.exec&gt;</text>
+</g></svg>
+<svg class="func_g" x="159.5456239422614" y="312" width="129.94259497635377" height="23"><g>
+    <title>/testbed/pandas/__init__.py:1:&lt;module&gt; 10.91% (0 0 4.317838038727814e-05 0.1919594024832948)</title>
+    <rect height="100%" width="100%" fill="rgb(71, 230, 126)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">&lt;module&gt;</text>
+</g></svg>
+<svg class="func_g" x="170.5250437666775" y="288" width="86.82798193774919" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap&gt;:986:_find_and_load 7.32% (4 4 1.7406915540228698e-05 0.12875418374844713)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 240, 141)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_find_and_load</text>
+</g></svg>
+<svg class="func_g" x="171.8734844070083" y="264" width="85.44709338764505" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap&gt;:956:_find_and_load_unlocked 7.20% (160 1 0.0005015344659935818 0.12672982688411372)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 90, 49)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_find_and_load_unlocked</text>
+</g></svg>
+<svg class="func_g" x="180.16919245946488" y="240" width="70.39609597991922" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap&gt;:650:_load_unlocked 5.95% (127 1 0.00045502292802181 0.1046653453478618)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 165, 95)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_load_unlocked</text>
+</g></svg>
+<svg class="func_g" x="672.2008603802577" y="312" width="523.4191090188401" height="23"><g>
+    <title>/tmp/workload.py:1:&lt;module&gt; 43.70% (0 0 2.15848200006888e-05 0.7687886347162841)</title>
+    <rect height="100%" width="100%" fill="rgb(44, 255, 210)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">&lt;module&gt;</text>
+</g></svg>
+<svg class="func_g" x="673.5510498590487" y="288" width="388.8075806899722" height="23"><g>
+    <title>/opt/miniconda3/envs/testbed/lib/python3.8/timeit.py:235:repeat 32.48% (0 0 4.348341985520713e-06 0.5714506443546383)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 165, 95)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">repeat</text>
+</g></svg>
+<svg class="func_g" x="673.6002619579193" y="264" width="388.75540242650607" height="23"><g>
+    <title>/opt/miniconda3/envs/testbed/lib/python3.8/timeit.py:183:repeat 32.48% (0 0 0.0004978283448337681 0.5713741519933911)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 215, 125)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">repeat</text>
+</g></svg>
+<svg class="func_g" x="673.6002619579193" y="240" width="388.3624243715051" height="23"><g>
+    <title>/opt/miniconda3/envs/testbed/lib/python3.8/timeit.py:163:timeit 32.45% (437 437 0.001530469977439457 0.570798053492818)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 165, 95)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">timeit</text>
+</g></svg>
+<svg class="func_g" x="673.6002619579193" y="216" width="387.1459358797595" height="23"><g>
+    <title>&lt;timeit-src&gt;:2:inner 32.35% (437 437 0.0006814428756780393 0.5690147040483882)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 115, 64)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">inner</text>
+</g></svg>
+<svg class="func_g" x="673.6002619579193" y="192" width="386.52164736638787" height="23"><g>
+    <title>/tmp/workload.py:9:workload 32.29% (437 437 0.0016405040065992922 0.5680995087292053)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 215, 125)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">workload</text>
+</g></svg>
+<svg class="func_g" x="673.6002619579193" y="168" width="385.4025990211946" height="23"><g>
+    <title>/testbed/pandas/core/frame.py:651:__init__ 32.20% (437 437 0.0034350586257535605 0.566459004722606)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 240, 141)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">__init__</text>
+</g></svg>
+<svg class="func_g" x="691.9363283336982" y="144" width="364.46718334070704" height="23"><g>
+    <title>/testbed/pandas/core/internals/construction.py:240:ndarray_to_mgr 30.46% (437 437 0.005220983424888926 0.5357680757281752)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 240, 141)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">ndarray_to_mgr</text>
+</g></svg>
+<svg class="func_g" x="691.9363283336982" y="120" width="349.09011804939905" height="23"><g>
+    <title>/testbed/pandas/core/construction.py:494:sanitize_array 29.17% (437 437 0.0025281758505813763 0.5132255847549426)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 115, 64)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">sanitize_array</text>
+</g></svg>
+<svg class="func_g" x="694.1566617226017" y="96" width="344.474302382348" height="23"><g>
+    <title>/testbed/pandas/core/construction.py:714:_try_cast 28.79% (437 437 0.0008998305948083303 0.5064588850604685)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 190, 110)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_try_cast</text>
+</g></svg>
+<svg class="func_g" x="694.1566617226017" y="72" width="342.1084987422549" height="23"><g>
+    <title>/testbed/pandas/core/dtypes/cast.py:1541:maybe_cast_to_integer_array 28.59% (437 437 0.004836299375537701 0.5029906610404153)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 90, 49)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">maybe_cast_to_integer_array</text>
+</g></svg>
+<svg class="func_g" x="703.2039681360612" y="48" width="244.56997956476528" height="23"><g>
+    <title>&lt;__array_function__ internals&gt;:177:array_equal 20.46% (437 437 0.0005646219368664314 0.360001010775752)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 90, 49)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">array_equal</text>
+</g></svg>
+<svg class="func_g" x="703.2604310913597" y="24" width="244.12836714224912" height="23"><g>
+    <title>~:0:&lt;built-in method numpy.core._multiarray_umath.implement_array_function&gt; 20.43% (437 437 0.0005360115946788853 0.3593536151993109)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 190, 110)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">&lt;built-in method numpy.core._multiarray_umath.implement_array_function&gt;</text>
+</g></svg>
+<svg class="func_g" x="703.2604310913597" y="0" width="243.76273384564217" height="23"><g>
+    <title>/opt/miniconda3/envs/testbed/lib/python3.8/site-packages/numpy/core/numeric.py:2407:array_equal 20.40% (437 437 0.3353298516957766 0.35881760360463205)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 165, 95)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">array_equal</text>
+</g></svg>
+<svg class="func_g" x="948.8277166632154" y="48" width="84.13842545649628" height="23"><g>
+    <title>~:0:&lt;method 'astype' of 'numpy.ndarray' objects&gt; 7.09% (437 437 0.12481134410043486 0.12481134410043486)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 215, 125)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">&lt;method 'astype' of 'numpy.ndarray' objects&gt;</text>
+</g></svg>
+<svg class="func_g" x="1063.358630549021" y="288" width="131.60660079396303" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap&gt;:986:_find_and_load 11.05% (1 1 9.863088469469042e-06 0.1943988039823615)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 240, 141)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_find_and_load</text>
+</g></svg>
+<svg class="func_g" x="1065.3947382905747" y="264" width="129.53269889451101" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap&gt;:956:_find_and_load_unlocked 10.88% (242 1 0.0007573030494061241 0.1913585024708505)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 90, 49)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_find_and_load_unlocked</text>
+</g></svg>
+<svg class="func_g" x="1077.9210259758338" y="240" width="106.80611277466434" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap&gt;:650:_load_unlocked 8.98% (192 1 0.0006870719248735135 0.15804175101316995)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 165, 95)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_load_unlocked</text>
+</g></svg>
+<svg class="func_g" x="1089.6982209023167" y="216" width="81.06050996767337" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap_external&gt;:837:exec_module 6.84% (120 1 0.0002717778306102143 0.12029917738924954)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 190, 110)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">exec_module</text>
+</g></svg>
+<svg class="func_g" x="1089.6982209023167" y="192" width="68.64875492015751" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap&gt;:211:_call_with_frames_removed 5.80% (102 1 4.28761829848725e-05 0.10210377593779354)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 240, 141)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_call_with_frames_removed</text>
+</g></svg>
+<svg class="func_g" x="30.80205483036663" y="384" width="522.4113774308736" height="23"><g>
+    <title>/opt/miniconda3/envs/testbed/lib/python3.8/site-packages/numpy/core/numeric.py:2407:array_equal 43.62% (1000 1000 0.767311319 0.821056662)</title>
+    <rect height="100%" width="100%" fill="rgb(255, 165, 95)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">array_equal</text>
+</g></svg>
+<svg class="func_g" x="30.80205483036663" y="408" width="522.4113774308736" height="23"><g>
+    <title>~:0:&lt;built-in method numpy.core._multiarray_umath.implement_array_function&gt; 43.62% (1000 1000 0.767311319 0.821056662)</title>
+    <rect height="100%" width="100%" fill="rgb(204, 204, 204)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">&lt;built-in method numpy.core._multiarray_umath.implement_array_function&gt;</text>
+</g></svg>
+<svg class="func_g" x="30.80205483036663" y="432" width="522.3955014760551" height="23"><g>
+    <title>&lt;__array_function__ internals&gt;:177:array_equal 0.07% (1000 1000 0.001226517 0.822283179)</title>
+    <rect height="100%" width="100%" fill="rgb(232, 232, 232)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">array_equal</text>
+</g></svg>
+<svg class="func_g" x="30.80205483036663" y="456" width="522.3955014760551" height="23"><g>
+    <title>/testbed/pandas/core/dtypes/cast.py:1541:maybe_cast_to_integer_array 0.07% (1000 1000 0.0012919840000000001 0.8237645680000001)</title>
+    <rect height="100%" width="100%" fill="rgb(232, 232, 232)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">maybe_cast_to_integer_array</text>
+</g></svg>
+<svg class="func_g" x="30.80205483036663" y="480" width="522.3955014760551" height="23"><g>
+    <title>/testbed/pandas/core/construction.py:714:_try_cast 0.63% (1000 1000 0.011066558 1.150957559)</title>
+    <rect height="100%" width="100%" fill="rgb(204, 204, 204)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_try_cast</text>
+</g></svg>
+<svg class="func_g" x="30.80205483036663" y="504" width="522.3955014760551" height="23"><g>
+    <title>/testbed/pandas/core/construction.py:494:sanitize_array 0.12% (1000 1000 0.002059018 1.158893648)</title>
+    <rect height="100%" width="100%" fill="rgb(225, 225, 225)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">sanitize_array</text>
+</g></svg>
+<svg class="func_g" x="30.80205483036663" y="528" width="522.3955014760551" height="23"><g>
+    <title>/testbed/pandas/core/internals/construction.py:240:ndarray_to_mgr 0.33% (1000 1000 0.0057850440000000005 1.174377403)</title>
+    <rect height="100%" width="100%" fill="rgb(190, 190, 190)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">ndarray_to_mgr</text>
+</g></svg>
+<svg class="func_g" x="30.80205483036663" y="552" width="522.3955014760551" height="23"><g>
+    <title>/testbed/pandas/core/frame.py:651:__init__ 0.68% (1000 1000 0.011946803 1.225959773)</title>
+    <rect height="100%" width="100%" fill="rgb(190, 190, 190)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">__init__</text>
+</g></svg>
+<svg class="func_g" x="30.80205483036663" y="576" width="522.3955014760551" height="23"><g>
+    <title>/tmp/workload.py:9:workload 0.45% (1000 1000 0.007860199 1.296187631)</title>
+    <rect height="100%" width="100%" fill="rgb(197, 197, 197)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">workload</text>
+</g></svg>
+<svg class="func_g" x="30.80205483036663" y="600" width="522.3955014760551" height="23"><g>
+    <title>&lt;timeit-src&gt;:2:inner 0.21% (1000 1000 0.003753848 1.2999414790000001)</title>
+    <rect height="100%" width="100%" fill="rgb(225, 225, 225)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">inner</text>
+</g></svg>
+<svg class="func_g" x="30.80205483036663" y="624" width="522.3955014760551" height="23"><g>
+    <title>/opt/miniconda3/envs/testbed/lib/python3.8/timeit.py:163:timeit 0.09% (1000 1000 0.001559297 1.302035655)</title>
+    <rect height="100%" width="100%" fill="rgb(211, 211, 211)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">timeit</text>
+</g></svg>
+<svg class="func_g" x="30.80205483036663" y="648" width="522.3955014760551" height="23"><g>
+    <title>/opt/miniconda3/envs/testbed/lib/python3.8/timeit.py:183:repeat 0.20% (1000 1000 0.0035020650000000004 1.3061163660000001)</title>
+    <rect height="100%" width="100%" fill="rgb(197, 197, 197)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">repeat</text>
+</g></svg>
+<svg class="func_g" x="30.80205483036663" y="672" width="522.3955014760551" height="23"><g>
+    <title>/opt/miniconda3/envs/testbed/lib/python3.8/timeit.py:235:repeat 0.06% (1 1 0.001139145 1.3074346110000001)</title>
+    <rect height="100%" width="100%" fill="rgb(211, 211, 211)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">repeat</text>
+</g></svg>
+<svg class="func_g" x="30.80205483036663" y="696" width="522.3955014760551" height="23"><g>
+    <title>/tmp/workload.py:1:&lt;module&gt; 0.00% (1 1 9.950000000000001e-06 1.3076096430000002)</title>
+    <rect height="100%" width="100%" fill="rgb(190, 190, 190)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">&lt;module&gt;</text>
+</g></svg>
+<svg class="func_g" x="30.80205483036663" y="720" width="522.3955014760551" height="23"><g>
+    <title>~:0:&lt;built-in method builtins.exec&gt; 0.00% (1 1 4.9391e-05 1.7591640540000002)</title>
+    <rect height="100%" width="100%" fill="rgb(197, 197, 197)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">&lt;built-in method builtins.exec&gt;</text>
+</g></svg>
+<svg class="func_g" x="35.63041207757343" y="744" width="517.5671442288482" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap&gt;:211:_call_with_frames_removed 0.05% (443 3 0.0008289160000000001 0.44390917700000004)</title>
+    <rect height="100%" width="100%" fill="rgb(190, 190, 190)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_call_with_frames_removed</text>
+</g></svg>
+<svg class="func_g" x="69.74187179723798" y="768" width="108.84341913095501" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap&gt;:1017:_handle_fromlist 0.00% (100 43 5.9045e-05 0.16665505800000002)</title>
+    <rect height="100%" width="100%" fill="rgb(218, 218, 218)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_handle_fromlist</text>
+</g></svg>
+<svg class="func_g" x="179.585290928193" y="768" width="291.5854784382453" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap_external&gt;:837:exec_module 0.01% (443 3 0.00018641100000000001 0.443912346)</title>
+    <rect height="100%" width="100%" fill="rgb(204, 204, 204)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">exec_module</text>
+</g></svg>
+<svg class="func_g" x="179.585290928193" y="792" width="291.5854784382453" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap&gt;:650:_load_unlocked 0.06% (443 3 0.001003786 0.44431376100000003)</title>
+    <rect height="100%" width="100%" fill="rgb(211, 211, 211)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_load_unlocked</text>
+</g></svg>
+<svg class="func_g" x="179.585290928193" y="816" width="291.5854784382453" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap&gt;:956:_find_and_load_unlocked 0.11% (540 3 0.001932059 0.444416336)</title>
+    <rect height="100%" width="100%" fill="rgb(232, 232, 232)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_find_and_load_unlocked</text>
+</g></svg>
+<svg class="func_g" x="179.585290928193" y="840" width="291.5854784382453" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap&gt;:986:_find_and_load 0.10% (563 3 0.0017601280000000001 0.44475650600000005)</title>
+    <rect height="100%" width="100%" fill="rgb(190, 190, 190)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_find_and_load</text>
+</g></svg>
+<svg class="func_g" x="921.7907817828117" y="384" width="193.81617041919367" height="23"><g>
+    <title>~:0:&lt;method 'astype' of 'numpy.ndarray' objects&gt; 16.23% (1000 1000 0.28559687300000003 0.28559687300000003)</title>
+    <rect height="100%" width="100%" fill="rgb(214, 214, 255)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">&lt;method 'astype' of 'numpy.ndarray' objects&gt;</text>
+</g></svg>
+<svg class="func_g" x="921.7907817828117" y="408" width="193.81617041919367" height="23"><g>
+    <title>/testbed/pandas/core/dtypes/cast.py:1541:maybe_cast_to_integer_array 16.23% (1000 1000 0.28559687300000003 0.28559687300000003)</title>
+    <rect height="100%" width="100%" fill="rgb(232, 232, 232)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">maybe_cast_to_integer_array</text>
+</g></svg>
+<svg class="func_g" x="921.7907817828117" y="432" width="193.81617041919367" height="23"><g>
+    <title>/testbed/pandas/core/construction.py:714:_try_cast 0.63% (1000 1000 0.011066558 1.150957559)</title>
+    <rect height="100%" width="100%" fill="rgb(204, 204, 204)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_try_cast</text>
+</g></svg>
+<svg class="func_g" x="921.7907817828117" y="456" width="193.81617041919367" height="23"><g>
+    <title>/testbed/pandas/core/construction.py:494:sanitize_array 0.12% (1000 1000 0.002059018 1.158893648)</title>
+    <rect height="100%" width="100%" fill="rgb(225, 225, 225)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">sanitize_array</text>
+</g></svg>
+<svg class="func_g" x="921.7907817828117" y="480" width="193.81617041919367" height="23"><g>
+    <title>/testbed/pandas/core/internals/construction.py:240:ndarray_to_mgr 0.33% (1000 1000 0.0057850440000000005 1.174377403)</title>
+    <rect height="100%" width="100%" fill="rgb(190, 190, 190)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">ndarray_to_mgr</text>
+</g></svg>
+<svg class="func_g" x="921.7907817828117" y="504" width="193.81617041919367" height="23"><g>
+    <title>/testbed/pandas/core/frame.py:651:__init__ 0.68% (1000 1000 0.011946803 1.225959773)</title>
+    <rect height="100%" width="100%" fill="rgb(190, 190, 190)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">__init__</text>
+</g></svg>
+<svg class="func_g" x="921.7907817828117" y="528" width="193.81617041919367" height="23"><g>
+    <title>/tmp/workload.py:9:workload 0.45% (1000 1000 0.007860199 1.296187631)</title>
+    <rect height="100%" width="100%" fill="rgb(197, 197, 197)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">workload</text>
+</g></svg>
+<svg class="func_g" x="921.7907817828117" y="552" width="193.81617041919367" height="23"><g>
+    <title>&lt;timeit-src&gt;:2:inner 0.21% (1000 1000 0.003753848 1.2999414790000001)</title>
+    <rect height="100%" width="100%" fill="rgb(225, 225, 225)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">inner</text>
+</g></svg>
+<svg class="func_g" x="921.7907817828117" y="576" width="193.81617041919367" height="23"><g>
+    <title>/opt/miniconda3/envs/testbed/lib/python3.8/timeit.py:163:timeit 0.09% (1000 1000 0.001559297 1.302035655)</title>
+    <rect height="100%" width="100%" fill="rgb(211, 211, 211)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">timeit</text>
+</g></svg>
+<svg class="func_g" x="921.7907817828117" y="600" width="193.81617041919367" height="23"><g>
+    <title>/opt/miniconda3/envs/testbed/lib/python3.8/timeit.py:183:repeat 0.20% (1000 1000 0.0035020650000000004 1.3061163660000001)</title>
+    <rect height="100%" width="100%" fill="rgb(197, 197, 197)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">repeat</text>
+</g></svg>
+<svg class="func_g" x="921.7907817828117" y="624" width="193.81617041919367" height="23"><g>
+    <title>/opt/miniconda3/envs/testbed/lib/python3.8/timeit.py:235:repeat 0.06% (1 1 0.001139145 1.3074346110000001)</title>
+    <rect height="100%" width="100%" fill="rgb(211, 211, 211)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">repeat</text>
+</g></svg>
+<svg class="func_g" x="921.7907817828117" y="648" width="193.81617041919367" height="23"><g>
+    <title>/tmp/workload.py:1:&lt;module&gt; 0.00% (1 1 9.950000000000001e-06 1.3076096430000002)</title>
+    <rect height="100%" width="100%" fill="rgb(190, 190, 190)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">&lt;module&gt;</text>
+</g></svg>
+<svg class="func_g" x="921.7907817828117" y="672" width="193.81617041919367" height="23"><g>
+    <title>~:0:&lt;built-in method builtins.exec&gt; 0.00% (1 1 4.9391e-05 1.7591640540000002)</title>
+    <rect height="100%" width="100%" fill="rgb(197, 197, 197)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">&lt;built-in method builtins.exec&gt;</text>
+</g></svg>
+<svg class="func_g" x="923.5879735157628" y="696" width="192.01897868624255" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap&gt;:211:_call_with_frames_removed 0.05% (443 3 0.0008289160000000001 0.44390917700000004)</title>
+    <rect height="100%" width="100%" fill="rgb(190, 190, 190)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_call_with_frames_removed</text>
+</g></svg>
+<svg class="func_g" x="977.1702800731293" y="720" width="107.90499109919125" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap_external&gt;:837:exec_module 0.01% (443 3 0.00018641100000000001 0.443912346)</title>
+    <rect height="100%" width="100%" fill="rgb(204, 204, 204)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">exec_module</text>
+</g></svg>
+<svg class="func_g" x="977.1702800731293" y="744" width="107.90499109919125" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap&gt;:650:_load_unlocked 0.06% (443 3 0.001003786 0.44431376100000003)</title>
+    <rect height="100%" width="100%" fill="rgb(211, 211, 211)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_load_unlocked</text>
+</g></svg>
+<svg class="func_g" x="977.1702800731293" y="768" width="107.90499109919125" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap&gt;:956:_find_and_load_unlocked 0.11% (540 3 0.001932059 0.444416336)</title>
+    <rect height="100%" width="100%" fill="rgb(232, 232, 232)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_find_and_load_unlocked</text>
+</g></svg>
+<svg class="func_g" x="977.1702800731293" y="792" width="107.90499109919125" height="23"><g>
+    <title>&lt;frozen importlib._bootstrap&gt;:986:_find_and_load 0.10% (563 3 0.0017601280000000001 0.44475650600000005)</title>
+    <rect height="100%" width="100%" fill="rgb(190, 190, 190)" rx="2" ry="2" />
+    <text alignment-baseline="central" x="4.0" y="12.0" font-size="12px" fill="rgb(0,0,0)">_find_and_load</text>
+</g></svg>
+</svg>
