@@ -4,15 +4,15 @@ import json
 import logging
 import os
 import re
-import requests
 import subprocess
+from multiprocessing import Manager, Pool
 
-from multiprocessing import Pool, Manager
+import requests
 
 from swefficiency.versioning.constants import (
-    SWE_BENCH_URL_RAW,
     MAP_REPO_TO_VERSION_PATHS,
     MAP_REPO_TO_VERSION_PATTERNS,
+    SWE_BENCH_URL_RAW,
 )
 from swefficiency.versioning.utils import get_instances, split_instances
 
@@ -48,7 +48,7 @@ def _find_version_in_text(text: str, instance: dict) -> str:
         if matches is not None:
             print(instance["repo"])
             result = str(matches.group(1))
-            
+
             if instance["repo"] == "pyvista/pyvista":
                 text = matches.group(0)
                 text = text.split("=")[-1].strip() if "=" in text else text.strip()
@@ -59,7 +59,7 @@ def _find_version_in_text(text: str, instance: dict) -> str:
                 if len(matches.groups()) > 1:
                     print(text)
                     result = f"{matches.group(1)}.{matches.group(2)}"
-                    
+
             return result.replace(" ", "")
 
 
@@ -283,12 +283,14 @@ def main(args):
             [
                 {
                     "data_tasks": data_task_list,
-                    "save_path": f"{repo_prefix}_versions_{i}.json"
-                    if args.retrieval_method == "github"
-                    else f"{repo_prefix}_versions_{i}_web.json",
-                    "not_found_list": shared_result_list
-                    if args.retrieval_method == "mix"
-                    else None,
+                    "save_path": (
+                        f"{repo_prefix}_versions_{i}.json"
+                        if args.retrieval_method == "github"
+                        else f"{repo_prefix}_versions_{i}_web.json"
+                    ),
+                    "not_found_list": (
+                        shared_result_list if args.retrieval_method == "mix" else None
+                    ),
                 }
                 for i, data_task_list in enumerate(data_task_lists)
             ],

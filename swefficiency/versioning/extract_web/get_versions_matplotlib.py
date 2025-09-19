@@ -1,12 +1,11 @@
 import json
 import os
 import re
-import requests
 import sys
-
+from datetime import datetime
 from pathlib import Path
 
-from datetime import datetime
+import requests
 
 sys.path.append("../../harness")
 from swefficiency.versioning.utils import get_instances
