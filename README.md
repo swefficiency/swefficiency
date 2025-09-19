@@ -3,8 +3,9 @@
   <img src="assets/logos/swefficiency_banner.png" alt="SWE-fficiency Logo" width="500"/>
 </div>
 
+
 <p align="center">
-  <a href="https://swefficiency.github.io/">
+  <a href="https://swefficiency.com/">
     <img src="https://img.shields.io/badge/project-Home-b31b1b.svg" alt="home">
   </a>
   <a href="https://huggingface.co/datasets/swefficiency/swefficiency">
