@@ -26,7 +26,7 @@ scripts/eval/run_eval.sh <run_id> <num_worker> <path_to_model_predictions>
 
 Example:
 ```
-scripts/eval/run_eval.sh gpt4_run 12
+scripts/eval/run_eval.sh gpt4_run 12 gpt4_predictions.jsonl
 ```
 
 ## Outputs
