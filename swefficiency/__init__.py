@@ -35,7 +35,6 @@ from swefficiency.harness.grading import (
     get_resolution_status,
 )
 from swefficiency.harness.log_parsers import MAP_REPO_TO_PARSER
-from swefficiency.harness.run_evaluation import main as run_evaluation
 from swefficiency.harness.utils import get_environment_yml, get_requirements
 from swefficiency.versioning.constants import (
     MAP_REPO_TO_VERSION_PATHS,

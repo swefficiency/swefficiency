@@ -58,5 +58,10 @@ setuptools.setup(
             "tenacity",
         ],
     },
+    entry_points={
+        "console_scripts": [
+            "swefficiency=swefficiency.cli:main",
+        ],
+    },
     include_package_data=True,
 )
