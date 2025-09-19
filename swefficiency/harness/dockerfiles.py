@@ -72,6 +72,7 @@ COPY ./perf.sh /perf.sh
 WORKDIR /testbed/
 """
 
+
 def get_dockerfile_base(platform, arch):
     if arch == "arm64":
         conda_arch = "aarch64"
@@ -89,5 +90,6 @@ def get_dockerfile_instance(platform, env_image_name):
 
 
 def get_dockerfile_annotate_instance(platform, instance_image_name):
-    return _DOCKERFILE_ANNOTATE_INSTANCE.format(platform=platform, instance_image_name=instance_image_name)
-
+    return _DOCKERFILE_ANNOTATE_INSTANCE.format(
+        platform=platform, instance_image_name=instance_image_name
+    )

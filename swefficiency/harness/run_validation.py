@@ -1,50 +1,37 @@
 from __future__ import annotations
-import random
-import shutil
-import threading
 
-import docker
+import importlib.resources as ir
 import json
-import resource
-import traceback
-from typing import Any
-
-import subprocess
-import time
-
-import shlex
-
 import os
-
-import swefficiency
-import swefficiency.harness
-from swefficiency.harness.constants import TestStatus, STACKFRAME_CHECK_EXCEPTONS
-
+import random
+import resource
+import shlex
+import shutil
+import subprocess
+import threading
+import time
 import traceback
-
 from argparse import ArgumentParser
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
+from typing import Any
+
+import docker
 import pandas as pd
 from tqdm import tqdm
-import importlib.resources as ir
 
+import swefficiency
+import swefficiency.harness
 from swefficiency.harness.constants import (
     APPLY_PATCH_FAIL,
     APPLY_PATCH_PASS,
     INSTANCE_IMAGE_BUILD_DIR,
     KEY_INSTANCE_ID,
     RUN_EVALUATION_LOG_DIR,
+    STACKFRAME_CHECK_EXCEPTONS,
+    TestStatus,
 )
-from swefficiency.harness.docker_utils import (
-    remove_image,
-    copy_to_container,
-    exec_run_with_timeout,
-    cleanup_container,
-    list_images,
-    should_remove,
-    clean_images,
-)
+from swefficiency.harness.cpu_assignment import allocate_whole_cores
 from swefficiency.harness.docker_build import (
     BuildImageError,
     build_container,
@@ -53,27 +40,35 @@ from swefficiency.harness.docker_build import (
     create_container_from_image,
     setup_logger,
 )
+from swefficiency.harness.docker_utils import (
+    clean_images,
+    cleanup_container,
+    copy_to_container,
+    exec_run_with_timeout,
+    list_images,
+    remove_image,
+    should_remove,
+)
+from swefficiency.harness.grading import get_logs_eval
 from swefficiency.harness.log_parsers import MAP_REPO_TO_PARSER
 from swefficiency.harness.test_spec import (
+    COARSE_COVERAGE_AST_SCRIPT_LOCATION,
+    COVERAGE_ANALYSIS_SCRIPT_LOCATION,
     DEFAULT_CORRECTNESS_TEST_OUTPUT_LOCATION,
-    DEFAULT_SINGLE_THREAD_COVERING_TESTS_LOCATION,
     DEFAULT_COVERAGE_DATA_DIR,
     DEFAULT_COVERING_TESTS_LOCATION,
+    DEFAULT_SINGLE_THREAD_COVERING_TESTS_LOCATION,
+    INTROSPECTION_GUARD_CMD_LOCATION,
     PERF_CPROFILE_OUTPUT_LOCATION,
     PERF_WORKLOAD_SCRIPT_LOCATION,
     RAW_COVERAGE_OUTPUT_DIR,
-    make_test_spec,
     TestSpec,
     check_ast_result,
-    COARSE_COVERAGE_AST_SCRIPT_LOCATION,
-    COVERAGE_ANALYSIS_SCRIPT_LOCATION,
+    make_test_spec,
     parse_coverage_report,
     parse_perf_output,
-    INTROSPECTION_GUARD_CMD_LOCATION,
 )
 from swefficiency.harness.utils import load_swefficiency_dataset, str2bool
-from swefficiency.harness.grading import get_logs_eval
-from swefficiency.harness.cpu_assignment import allocate_whole_cores
 
 
 class EvaluationError(Exception):
@@ -269,7 +264,6 @@ def run_instance(
 
     # cpu_groups = ",".join([str(e) for e in global_cpu_groups[thread_idx]])
     cpu_groups = global_cpu_groups[thread_idx] if global_cpu_groups else None
-
     dockerhub_image_key = f"ghcr.io/swefficiency/swefficiency:{test_spec.instance_id}"
 
     additional_exec_args = {}

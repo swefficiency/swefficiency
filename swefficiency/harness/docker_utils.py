@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import docker
-import docker.errors
 import os
 import signal
 import tarfile
@@ -10,6 +8,8 @@ import time
 import traceback
 from pathlib import Path
 
+import docker
+import docker.errors
 from docker.models.containers import Container
 
 HEREDOC_DELIMITER = "EOF_1399519320"  # different from dataset HEREDOC_DELIMITERs!
@@ -151,17 +151,17 @@ def cleanup_container(client, container, logger):
                     f"Forcefully killing container {container.name} with PID {pid}..."
                 )
                 os.kill(pid, signal.SIGTERM)
-                
+
                 # Force kill if the pid didn't kill.
                 time.sleep(10)
-                
+
                 # Check if the process is actually killed.
                 try:
                     os.kill(pid, 0)
                 except OSError:
                     # If process is not killed, then force kill.
                     os.kill(pid, signal.SIGKILL)
-                
+
             else:
                 log_error(f"PID for container {container.name}: {pid} - not killing.")
         except Exception as e2:
@@ -186,7 +186,9 @@ def cleanup_container(client, container, logger):
         )
 
 
-def exec_run_with_timeout(container, cmd, timeout: int|None=60, taskset_cpus: str|None=None):
+def exec_run_with_timeout(
+    container, cmd, timeout: int | None = 60, taskset_cpus: str | None = None
+):
     """
     Run a command in a container with a timeout.
 
@@ -194,13 +196,13 @@ def exec_run_with_timeout(container, cmd, timeout: int|None=60, taskset_cpus: st
         container (docker.Container): Container to run the command in.
         cmd (str): Command to run.
         timeout (int): Timeout in seconds.
-    """    
+    """
     # Local variables to store the result of executing the command
-    exec_result = b''
+    exec_result = b""
     exec_id = None
     exception = None
     timed_out = False
-    
+
     if taskset_cpus:
         # If taskset_cpus is provided, prepend the command with taskset
         cmd = f"taskset -c {taskset_cpus} {cmd}"
@@ -231,7 +233,7 @@ def exec_run_with_timeout(container, cmd, timeout: int|None=60, taskset_cpus: st
             exec_pid = container.client.api.exec_inspect(exec_id)["Pid"]
             container.exec_run(f"kill -TERM {exec_pid}", detach=True)
         timed_out = True
-        
+
         time.sleep(10)
         try:
             # `kill -0` checks if a process exists without sending a signal
@@ -241,7 +243,7 @@ def exec_run_with_timeout(container, cmd, timeout: int|None=60, taskset_cpus: st
                 container.exec_run(f"kill -KILL {exec_pid}", detach=True)
         except Exception:
             pass
-        
+
     end_time = time.time()
     return exec_result.decode(), timed_out, end_time - start_time
 
@@ -275,7 +277,7 @@ def find_dependent_images(client: docker.DockerClient, image_name: str):
         # Check if the base image is in this image's history
         history = image.history()
         for layer in history:
-            if layer['Id'] == base_image_id:
+            if layer["Id"] == base_image_id:
                 # If found, add this image to the dependent images list
                 tags = image.tags
                 dependent_images.append(tags[0] if tags else image.id)
@@ -293,11 +295,8 @@ def list_images(client: docker.DockerClient):
 
 
 def clean_images(
-        client: docker.DockerClient,
-        prior_images: set,
-        cache_level: str,
-        clean: bool
-    ):
+    client: docker.DockerClient, prior_images: set, cache_level: str, clean: bool
+):
     """
     Clean Docker images based on cache level and clean flag.
 
@@ -324,12 +323,7 @@ def clean_images(
     print(f"Removed {removed} images.")
 
 
-def should_remove(
-        image_name: str,
-        cache_level: str,
-        clean: bool,
-        prior_images: set
-    ):
+def should_remove(image_name: str, cache_level: str, clean: bool, prior_images: set):
     """
     Determine if an image should be removed based on cache level and clean flag.
     """

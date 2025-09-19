@@ -4,11 +4,12 @@ import logging
 import re
 import threading
 import traceback
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
+
 import docker
 import docker.errors
 from tqdm import tqdm
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from pathlib import Path
 
 USE_HOST_NETWORK = False
 
@@ -19,15 +20,15 @@ from swefficiency.harness.constants import (
     INSTANCE_IMAGE_BUILD_DIR,
     MAP_REPO_VERSION_TO_SPECS,
 )
-from swefficiency.harness.test_spec import (
-    get_test_specs_from_dataset,
-    make_test_spec,
-    TestSpec,
-)
 from swefficiency.harness.docker_utils import (
     cleanup_container,
-    remove_image,
     find_dependent_images,
+    remove_image,
+)
+from swefficiency.harness.test_spec import (
+    TestSpec,
+    get_test_specs_from_dataset,
+    make_test_spec,
 )
 
 ansi_escape = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")

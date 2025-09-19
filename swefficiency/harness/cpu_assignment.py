@@ -1,8 +1,9 @@
 import os
 from collections import defaultdict, deque
-from typing import List, Dict, Tuple
+from typing import Dict, List, Tuple
 
 SYS_CPU = "/sys/devices/system/cpu"
+
 
 def _parse_cpu_list(s: str) -> List[int]:
     out = []
@@ -17,6 +18,7 @@ def _parse_cpu_list(s: str) -> List[int]:
             out.append(int(part))
     return out
 
+
 def _cpu_to_node(cpu: int) -> int:
     d = f"{SYS_CPU}/cpu{cpu}"
     try:
@@ -24,6 +26,7 @@ def _cpu_to_node(cpu: int) -> int:
         return int(entries[0].replace("node", "")) if entries else 0
     except FileNotFoundError:
         return 0
+
 
 def discover_physical_cores() -> List[Tuple[List[int], int]]:
     """
@@ -51,6 +54,7 @@ def discover_physical_cores() -> List[Tuple[List[int], int]]:
     # stable ordering by (node, first-sib)
     cores.sort(key=lambda t: (t[1], t[0][0]))
     return cores
+
 
 def allocate_whole_cores(
     num_workers: int,
@@ -82,7 +86,9 @@ def allocate_whole_cores(
     total_cores = len(cores)
     need_cores = num_workers * cores_needed_per_worker
     if total_cores < need_cores:
-        raise RuntimeError(f"Not enough physical cores: need {need_cores}, have {total_cores}")
+        raise RuntimeError(
+            f"Not enough physical cores: need {need_cores}, have {total_cores}"
+        )
 
     # Bucket cores by NUMA node
     by_node: Dict[int, deque] = defaultdict(deque)
@@ -95,7 +101,11 @@ def allocate_whole_cores(
     w = 0
     for node in sorted(by_node.keys()):
         q = by_node[node]
-        while len(q) >= cores_needed_per_worker and w < num_workers and len(plans[w]["cores"]) == 0:
+        while (
+            len(q) >= cores_needed_per_worker
+            and w < num_workers
+            and len(plans[w]["cores"]) == 0
+        ):
             take = [q.popleft()[0] for _ in range(cores_needed_per_worker)]
             plans[w]["cores"].extend(take)
             plans[w]["nodes"].add(node)
@@ -107,7 +117,11 @@ def allocate_whole_cores(
     remaining = []
     for node in sorted(by_node.keys()):
         remaining.extend(list(by_node[node]))
-    pending = [i for i in range(num_workers) if len(plans[i]["cores"]) < cores_needed_per_worker]
+    pending = [
+        i
+        for i in range(num_workers)
+        if len(plans[i]["cores"]) < cores_needed_per_worker
+    ]
     p = 0
     for sibs, node in remaining:
         if not pending:
@@ -132,20 +146,24 @@ def allocate_whole_cores(
             cpus.extend(chosen)
         cpus = sorted(cpus)
         mems = ",".join(str(n) for n in sorted(r["nodes"])) or "0"
-        out.append({
-            "cpuset_cpus": ",".join(map(str, cpus)),
-            "cpuset_mems": mems,
-            "nano_cpus": int(1e9 * len(cpus)),  # optional: hard cap to vCPU count
-        })
+        out.append(
+            {
+                "cpuset_cpus": ",".join(map(str, cpus)),
+                "cpuset_mems": mems,
+                "nano_cpus": int(1e9 * len(cpus)),  # optional: hard cap to vCPU count
+            }
+        )
     return out
+
 
 def divide_cpus_among_workers(num_workers, cpus_per_worker=4):
     cpu_groups = []
-    
+
     for i in range(num_workers):
         cpu_groups.append(list(range(i * cpus_per_worker, (i + 1) * cpus_per_worker)))
 
     return cpu_groups
+
 
 if __name__ == "__main__":
     # Example usage
@@ -155,13 +173,10 @@ if __name__ == "__main__":
     reserve_cores = 4
 
     cpu_groups = allocate_whole_cores(
-        num_workers,
-        vcpus_per_worker,
-        threads_per_core,
-        reserve_cores
+        num_workers, vcpus_per_worker, threads_per_core, reserve_cores
     )
-    
+
     print(len(cpu_groups), "CPU groups allocated:")
-    
+
     for group in cpu_groups:
         print(group)

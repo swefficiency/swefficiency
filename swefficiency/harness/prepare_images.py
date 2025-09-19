@@ -1,7 +1,7 @@
-import docker
 import resource
-
 from argparse import ArgumentParser
+
+import docker
 
 from swefficiency.harness.constants import KEY_INSTANCE_ID
 from swefficiency.harness.docker_build import build_instance_images
@@ -11,11 +11,8 @@ from swefficiency.harness.utils import load_swefficiency_dataset, str2bool
 
 
 def filter_dataset_to_build(
-        dataset: list,
-        instance_ids: list,
-        client: docker.DockerClient,
-        force_rebuild: bool
-    ):
+    dataset: list, instance_ids: list, client: docker.DockerClient, force_rebuild: bool
+):
     """
     Filter the dataset to only include instances that need to be built.
 
@@ -30,7 +27,9 @@ def filter_dataset_to_build(
     data_to_build = []
 
     # Check if all instance IDs are in the dataset
-    not_in_dataset = set(instance_ids).difference(set([instance[KEY_INSTANCE_ID] for instance in dataset]))
+    not_in_dataset = set(instance_ids).difference(
+        set([instance[KEY_INSTANCE_ID] for instance in dataset])
+    )
     if not_in_dataset:
         raise ValueError(f"Instance IDs not found in dataset: {not_in_dataset}")
 
@@ -87,11 +86,27 @@ def main(
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--dataset_name", type=str, default="princeton-nlp/SWE-bench_Lite", help="Name of the dataset to use")
+    parser.add_argument(
+        "--dataset_name",
+        type=str,
+        default="princeton-nlp/SWE-bench_Lite",
+        help="Name of the dataset to use",
+    )
     parser.add_argument("--split", type=str, default="test", help="Split to use")
-    parser.add_argument("--instance_ids", nargs="+", type=str, help="Instance IDs to run (space separated)")
-    parser.add_argument("--max_workers", type=int, default=4, help="Max workers for parallel processing")
-    parser.add_argument("--force_rebuild", type=str2bool, default=False, help="Force rebuild images")
-    parser.add_argument("--open_file_limit", type=int, default=8192, help="Open file limit")
+    parser.add_argument(
+        "--instance_ids",
+        nargs="+",
+        type=str,
+        help="Instance IDs to run (space separated)",
+    )
+    parser.add_argument(
+        "--max_workers", type=int, default=4, help="Max workers for parallel processing"
+    )
+    parser.add_argument(
+        "--force_rebuild", type=str2bool, default=False, help="Force rebuild images"
+    )
+    parser.add_argument(
+        "--open_file_limit", type=int, default=8192, help="Open file limit"
+    )
     args = parser.parse_args()
     main(**vars(args))

@@ -16,7 +16,11 @@ MAP_REPO_TO_VERSION_PATHS = {
     "pallets/flask": ["src/flask/__init__.py", "flask/__init__.py"],
     "pandas-dev/pandas": ["pandas/__init__.py"],
     "Project-MONAI/MONAI": ["monai/__init__.py"],
-    "psf/requests": ["requests/__version__.py", "requests/__init__.py", "src/requests/__version__.py"],
+    "psf/requests": [
+        "requests/__version__.py",
+        "requests/__init__.py",
+        "src/requests/__version__.py",
+    ],
     "pyca/cryptography": [
         "src/cryptography/__about__.py",
         "src/cryptography/__init__.py",
@@ -69,7 +73,7 @@ MAP_REPO_TO_VERSION_PATTERNS = {
         "modin-project/modin",
         "facebookresearch/hydra",
         "explosion/spaCy",
-        "scikit-image/scikit-image",    
+        "scikit-image/scikit-image",
     ]
 }
 MAP_REPO_TO_VERSION_PATTERNS.update(
@@ -83,22 +87,40 @@ MAP_REPO_TO_VERSION_PATTERNS.update(
     }
 )
 MAP_REPO_TO_VERSION_PATTERNS.update({k: [r"(.*)"] for k in ["Qiskit/qiskit"]})
-MAP_REPO_TO_VERSION_PATTERNS.update({k: [r"version_info = [\d]+,[\d\s]+,"] for k in ["pyvista/pyvista"]})
+MAP_REPO_TO_VERSION_PATTERNS.update(
+    {k: [r"version_info = [\d]+,[\d\s]+,"] for k in ["pyvista/pyvista"]}
+)
 
 SWE_BENCH_URL_RAW = "https://raw.githubusercontent.com/"
 
 # python/mypy
 MAP_REPO_TO_VERSION_PATHS.update({"python/mypy": ["mypy/version.py"]})
-MAP_REPO_TO_VERSION_PATTERNS.update({"python/mypy": [r'__version__ = [\'"](.*)[\'"]', r"VERSION = \((.*)\)"]})
+MAP_REPO_TO_VERSION_PATTERNS.update(
+    {"python/mypy": [r'__version__ = [\'"](.*)[\'"]', r"VERSION = \((.*)\)"]}
+)
 
 # getmoto/moto
 MAP_REPO_TO_VERSION_PATHS.update({"getmoto/moto": ["moto/__init__.py"]})
-MAP_REPO_TO_VERSION_PATTERNS.update({"getmoto/moto": [r'__version__ = [\'"](.*)[\'"]', r"VERSION = \((.*)\)"]})
+MAP_REPO_TO_VERSION_PATTERNS.update(
+    {"getmoto/moto": [r'__version__ = [\'"](.*)[\'"]', r"VERSION = \((.*)\)"]}
+)
 
 # conan-io/conan
 MAP_REPO_TO_VERSION_PATHS.update({"conan-io/conan": ["conans/__init__.py"]})
-MAP_REPO_TO_VERSION_PATTERNS.update({"conan-io/conan": [r'__version__ = [\'"](.*)[\'"]', r"VERSION = \((.*)\)"]})
+MAP_REPO_TO_VERSION_PATTERNS.update(
+    {"conan-io/conan": [r'__version__ = [\'"](.*)[\'"]', r"VERSION = \((.*)\)"]}
+)
 
 # networkx/networkx
-MAP_REPO_TO_VERSION_PATHS.update({"networkx/networkx": ["networkx/release.py", "networkx/__init__.py"]})
-MAP_REPO_TO_VERSION_PATTERNS.update({"networkx/networkx": [r'__version__ = [\'"](.*)[\'"]', r"VERSION = \((.*)\)", r'major\s*=\s*["\'](\d+)["\']\s*[\r\n]+minor\s*=\s*["\'](\d+)["\']']})
+MAP_REPO_TO_VERSION_PATHS.update(
+    {"networkx/networkx": ["networkx/release.py", "networkx/__init__.py"]}
+)
+MAP_REPO_TO_VERSION_PATTERNS.update(
+    {
+        "networkx/networkx": [
+            r'__version__ = [\'"](.*)[\'"]',
+            r"VERSION = \((.*)\)",
+            r'major\s*=\s*["\'](\d+)["\']\s*[\r\n]+minor\s*=\s*["\'](\d+)["\']',
+        ]
+    }
+)
