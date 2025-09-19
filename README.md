@@ -114,7 +114,7 @@ See `scripts/eval/README.md` for detailed CLI usage and examples.
 
 ## 🛠️ Generation (Agents & Harness)
 
-We provide integration points for popular SWE agent harnesses lie OpenHands and SWE-agent via already containerized docker containers (`ghcr.io/swefficiency/swefficiency:<instance_id>`).
+We provide integration points for popular SWE agent harnesses lie OpenHands and SWE-agent via already containerized docker containers (`ghcr.io/swefficiency/swefficiency-images:<instance_id>`).
 
 We ship **prebuilt Docker images** for generation to match the evaluation environment and avoid dependency drift.
 

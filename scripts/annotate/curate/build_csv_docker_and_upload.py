@@ -1,37 +1,34 @@
 # %%
+import concurrent.futures
+import functools
 import multiprocessing
 import subprocess
 import time
+import traceback
+from pathlib import Path
 from typing import List, Optional
+
 import docker
 import pandas as pd
-from pathlib import Path
-
-import functools
-import concurrent.futures
-
 import requests
 from tqdm import tqdm
 
-from swefficiency.harness.log_parsers import MAP_REPO_TO_PARSER
+from swefficiency.harness.constants import KEY_INSTANCE_ID
 from swefficiency.harness.docker_build import build_annotate_instance_images
+from swefficiency.harness.log_parsers import MAP_REPO_TO_PARSER
+from swefficiency.harness.run_validation import (
+    get_dataset_from_preds,
+    get_gold_predictions,
+)
 from swefficiency.harness.test_spec import (
     PERF_WORKLOAD_SCRIPT_LOCATION,
     TestSpec,
     make_test_spec,
 )
-from swefficiency.harness.run_validation import (
-    get_dataset_from_preds,
-    get_gold_predictions,
-)
-from swefficiency.harness.constants import KEY_INSTANCE_ID
-import traceback
 
 # List all files in the directory.
 data_path = Path("data/")
-instance_path = Path(
-    "artifacts/2_versioning"
-)
+instance_path = Path("artifacts/2_versioning")
 
 MAX_BUILD_WORKERS = 16  # Set the max build workers as needed.
 
@@ -53,7 +50,7 @@ def get_instance_file(repo_name):
 observed_repos = set()
 observed_instance_ids = set()
 
-BASE_DOCKER_IMAGE_TEMPLATE = "ghcr.io/swefficiency/swefficiency:{instance_id}"
+BASE_DOCKER_IMAGE_TEMPLATE = "ghcr.io/swefficiency/swefficiency-images:{instance_id}"
 ANNOTATE_DOCKER_IMAGE_TEMPLATE = (
     "ghcr.io/swefficency/swefficiency_annotate:{instance_id}"
 )

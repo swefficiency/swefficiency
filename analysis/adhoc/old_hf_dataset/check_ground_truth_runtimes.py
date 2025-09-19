@@ -125,7 +125,7 @@ def worker(d):
     d_dict["PASS_TO_PASS"] = [
         test for test, status in non_flaky_tests.items() if status == "PASSED"
     ]
-    d_dict["image_name"] = f"ghcr.io/swefficiency/swefficiency:{instance_id}"
+    d_dict["image_name"] = f"ghcr.io/swefficiency/swefficiency-images:{instance_id}"
 
     d_dict["single_thread_tests"] = list(
         set(

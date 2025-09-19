@@ -264,7 +264,9 @@ def run_instance(
 
     # cpu_groups = ",".join([str(e) for e in global_cpu_groups[thread_idx]])
     cpu_groups = global_cpu_groups[thread_idx] if global_cpu_groups else None
-    dockerhub_image_key = f"ghcr.io/swefficiency/swefficiency:{test_spec.instance_id}"
+    dockerhub_image_key = (
+        f"ghcr.io/swefficiency/swefficiency-images:{test_spec.instance_id}"
+    )
 
     additional_exec_args = {}
     if use_podman:

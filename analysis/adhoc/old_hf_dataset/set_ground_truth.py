@@ -1,13 +1,12 @@
+import collections
 import json
 import multiprocessing
-import datasets
 from pathlib import Path
 
-import collections
+import datasets
 import tqdm
 
 from swefficiency.harness.log_parsers import MAP_REPO_TO_PARSER
-
 
 # Take old dataset and check: some errors:
 # dataset = datasets.load_dataset("swefficiency/swefficiency", split='test', revision="718e5821f73f86414fa72bf8b7f716651a3a835a")
@@ -309,7 +308,7 @@ def worker(d):
             "pandas/tests/io/json/test_json_table_schema.py::TestTableOrient::test_build_series",
             "dropna",
         ]
-        
+
         failed_tests = [
             # "numpy/_core/tests/test_umath_accuracy.py::TestAccuracy::test_validate_svml_fp16",
             # "numpy/_core/tests/test_scalarmath.py::test_array_scalar_ufunc_dtypes",
@@ -390,7 +389,7 @@ def worker(d):
         if "PASS" in status and not skip_condition(test)
     ]
 
-    d_dict["image_name"] = f"ghcr.io/swefficiency/swefficiency:{instance_id}"
+    d_dict["image_name"] = f"ghcr.io/swefficiency/swefficiency-images:{instance_id}"
 
     if "single_thread_tests" not in d_dict:
         d_dict["single_thread_tests"] = list(
@@ -407,9 +406,9 @@ def worker(d):
                 ]
             )
         )
-        
+
     # Remove any test
-            
+
     # Convert "created_at" and "updated_at" to ISO8601 if they are int timestamps.
     for time_field in ["created_at"]:
         if time_field in d_dict:
