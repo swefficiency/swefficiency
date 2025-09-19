@@ -1,7 +1,8 @@
 from pathlib import Path
-import tqdm
+
 import datasets
 import numpy as np
+import tqdm
 
 GOLD_RUN = Path("logs/run_evaluation/ground_truth5/gold")
 SONNET_RUN = Path(

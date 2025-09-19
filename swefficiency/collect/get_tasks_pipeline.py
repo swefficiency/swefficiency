@@ -2,14 +2,15 @@
 
 """Script to collect pull requests and convert them to candidate task instances"""
 
-import argparse, os
+import argparse
+import os
 import traceback
+from multiprocessing import Pool
 
 from dotenv import load_dotenv
-from multiprocessing import Pool
+
 from swefficiency.collect.build_dataset import main as build_dataset
 from swefficiency.collect.print_pulls import main as print_pulls
-
 
 load_dotenv()
 

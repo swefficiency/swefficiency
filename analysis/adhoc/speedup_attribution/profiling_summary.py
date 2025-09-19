@@ -20,17 +20,19 @@ Author: cleaned & minimized per user request.
 """
 
 from __future__ import annotations
-from dataclasses import dataclass
-from typing import Dict, Tuple, Set, Iterable, Optional, Any, List
-from collections import defaultdict
-from pathlib import Path
+
+import json
 import os
 import pstats
-import json
+from collections import defaultdict
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 
 FuncKey = Tuple[str, int, str]  # (file, line, funcname)
 
 from typing import Optional, Set
+
 
 def _parse_modified_files_from_patch(patch_text: Optional[str]) -> Set[str]:
     """
@@ -70,11 +72,13 @@ def _parse_modified_files_from_patch(patch_text: Optional[str]) -> Set[str]:
 # Loading & basic structures
 # ----------------------------
 
+
 @dataclass
 class FuncStat:
     ncalls: int
     tottime: float
     cumtime: float
+
 
 def _normalize_file(path: str) -> str:
     """Normalize to last two path components, forward slashes."""
@@ -85,6 +89,7 @@ def _normalize_file(path: str) -> str:
     tail = os.sep.join(parts[-2:]) if len(parts) >= 2 else parts[-1]
     return tail.replace("\\", "/")
 
+
 def _load_pstats(prof_path: str) -> Dict[FuncKey, FuncStat]:
     """Load a cProfile .prof file into a dict of FuncKey -> FuncStat,
     restricted to the subtree rooted at (file='tmp/workload.py', fname='workload')."""
@@ -94,14 +99,15 @@ def _load_pstats(prof_path: str) -> Dict[FuncKey, FuncStat]:
     caller_to_callees: Dict[Tuple[str, int, str], Set[Tuple[str, int, str]]] = {}
     for func, data in st.stats.items():
         cc, nc, tt, ct, callers = data
-        for caller in (callers or {}):
+        for caller in callers or {}:
             caller_to_callees.setdefault(caller, set()).add(func)
 
     # Identify root(s): match by normalized file and function name (line can vary)
     root_file_norm = _normalize_file("tmp/workload.py")
     root_fname = "workload"
     roots = {
-        func for func in st.stats.keys()
+        func
+        for func in st.stats.keys()
         if _normalize_file(func[0]) == root_file_norm and func[2] == root_fname
     }
     if not roots:
@@ -133,12 +139,15 @@ def _load_pstats(prof_path: str) -> Dict[FuncKey, FuncStat]:
         )
     return out
 
+
 # ----------------------------
 # Deltas & selection
 # ----------------------------
 
-def _delta_tottime(pre: Dict[FuncKey, FuncStat],
-                   post: Dict[FuncKey, FuncStat]) -> Dict[FuncKey, float]:
+
+def _delta_tottime(
+    pre: Dict[FuncKey, FuncStat], post: Dict[FuncKey, FuncStat]
+) -> Dict[FuncKey, float]:
     """Δtottime (pre - post) per function; positive means faster."""
     keys = set(pre.keys()) | set(post.keys())
     d: Dict[FuncKey, float] = {}
@@ -148,8 +157,10 @@ def _delta_tottime(pre: Dict[FuncKey, FuncStat],
         d[k] = pr - po
     return d
 
-def _delta_cumtime(pre: Dict[FuncKey, FuncStat],
-                   post: Dict[FuncKey, FuncStat]) -> Dict[FuncKey, float]:
+
+def _delta_cumtime(
+    pre: Dict[FuncKey, FuncStat], post: Dict[FuncKey, FuncStat]
+) -> Dict[FuncKey, float]:
     """Δcumtime (pre - post) per function; positive means faster."""
     keys = set(pre.keys()) | set(post.keys())
     d: Dict[FuncKey, float] = {}
@@ -159,9 +170,12 @@ def _delta_cumtime(pre: Dict[FuncKey, FuncStat],
         d[k] = pr - po
     return d
 
-def _get_workload_cumtime_delta(pre: Dict[FuncKey, FuncStat], post: Dict[FuncKey, FuncStat]) -> float:
+
+def _get_workload_cumtime_delta(
+    pre: Dict[FuncKey, FuncStat], post: Dict[FuncKey, FuncStat]
+) -> float:
     """Return Δcumtime of function named 'workload', or 0.0 if not found."""
-    
+
     for k, stat in pre.items():
         if k[0] == "tmp/workload.py" and k[2] == "workload":
             pre_cum = stat.cumtime
@@ -176,6 +190,7 @@ def _get_workload_pre_cumtime(pre: Dict[FuncKey, FuncStat]) -> float:
         if k[0] == "tmp/workload.py" and k[2] == "workload":
             return stat.cumtime
     return 0.0
+
 
 def _select_functions(
     pre: Dict[FuncKey, FuncStat],
@@ -216,7 +231,9 @@ def _select_functions(
     depths, found_wl = _compute_depths_from_named_roots(callers_map, {"workload"})
 
     # If we couldn't find 'workload' by name, fall back to using everything with depth 0
-    reachable_nodes: Set[FuncKey] = set(depths.keys()) if found_wl else set(callers_map.keys())
+    reachable_nodes: Set[FuncKey] = (
+        set(depths.keys()) if found_wl else set(callers_map.keys())
+    )
     if not reachable_nodes:
         reachable_nodes = set(delta_cum.keys())  # last-ditch fallback
 
@@ -226,7 +243,9 @@ def _select_functions(
         if k[0] == "tmp/workload.py" and k[2] == "workload":
             workload_key = k
             break
-    workload_pre_cum = pre.get(workload_key, FuncStat(0, 0.0, 0.0)).cumtime if workload_key else 0.0
+    workload_pre_cum = (
+        pre.get(workload_key, FuncStat(0, 0.0, 0.0)).cumtime if workload_key else 0.0
+    )
     denom = workload_pre_cum if workload_pre_cum > 0.0 else 1e-12
 
     # Allowed files filter set (if provided)
@@ -273,7 +292,9 @@ def _select_functions(
         return d / denom
 
     # Sort: deeper first, then higher share, then higher absolute Δcumtime
-    cands.sort(key=lambda kv: (depth_of(kv[0]), share_of(kv[0], kv[1]), kv[1]), reverse=True)
+    cands.sort(
+        key=lambda kv: (depth_of(kv[0]), share_of(kv[0], kv[1]), kv[1]), reverse=True
+    )
 
     selected: Set[FuncKey] = set()
     banned_ancestors: Set[FuncKey] = set()  # callers of any selected node
@@ -304,17 +325,21 @@ def _select_functions(
 # Metrics
 # ----------------------------
 
+
 def _build_file_set(funcs: Iterable[FuncKey]) -> Set[str]:
     return {k[0] for k in funcs}
 
-def _erc_and_losses(s_exp: Dict[FuncKey, float], E_llm: Set[FuncKey]) -> Tuple[Dict[str, float], Dict[str, float]]:
+
+def _erc_and_losses(
+    s_exp: Dict[FuncKey, float], E_llm: Set[FuncKey]
+) -> Tuple[Dict[str, float], Dict[str, float]]:
     """
     ERC_file/func computed over EXPERT mass defined as Δcumtime improvements.
     ERC_file: fraction of expert total Δcumtime gain within files chosen by LLM.
     ERC_func: fraction of expert total Δcumtime gain within functions chosen by LLM.
     Losses: WrongFileLoss = 1 - ERC_file
             InFileLoss   = max(0, ERC_file - ERC_func)
-    """ 
+    """
     S_exp = sum(s_exp.values()) or 1e-12
 
     # Expert mass by file
@@ -339,6 +364,7 @@ def _erc_and_losses(s_exp: Dict[FuncKey, float], E_llm: Set[FuncKey]) -> Tuple[D
         {"WrongFileLoss": WrongFileLoss, "InFileLoss": InFileLoss},
     )
 
+
 def _file_overlap_jaccard(E_exp: Set[FuncKey], E_llm: Set[FuncKey]) -> Optional[float]:
     """
     Jaccard over the set of edited files: |F_exp ∩ F_llm| / |F_exp ∪ F_llm|
@@ -351,10 +377,11 @@ def _file_overlap_jaccard(E_exp: Set[FuncKey], E_llm: Set[FuncKey]) -> Optional[
     inter = F_exp & F_llm
     return len(inter) / len(union)
 
+
 ### ADD YOUR CODE HERE ###
 
-from collections import deque, defaultdict
-from typing import Dict, Set, Optional, Tuple
+from collections import defaultdict, deque
+from typing import Dict, Optional, Set, Tuple
 
 
 def _load_callers_map(prof_path: str) -> Dict[FuncKey, Set[FuncKey]]:
@@ -463,7 +490,8 @@ def _weighted_avg_depth_and_share(
 # Driver
 # ----------------------------
 
-from typing import Optional, Dict, Any, Set
+from typing import Any, Dict, Optional, Set
+
 
 def analyze_localization(
     expert_pre_path: str,
@@ -493,8 +521,8 @@ def analyze_localization(
     llm_post = _load_pstats(llm_post_path)
 
     # Per-function Δtottime (for diagnostic/aux weighting) and Δcumtime (for selection + ERC)
-    d_exp_tt  = _delta_tottime(exp_pre, exp_post)
-    d_llm_tt  = _delta_tottime(llm_pre, llm_post)
+    d_exp_tt = _delta_tottime(exp_pre, exp_post)
+    d_llm_tt = _delta_tottime(llm_pre, llm_post)
     d_exp_cum = _delta_cumtime(exp_pre, exp_post)
     d_llm_cum = _delta_cumtime(llm_pre, llm_post)
 
@@ -503,10 +531,14 @@ def analyze_localization(
     workload_improvement = _get_workload_cumtime_delta(exp_pre, exp_post)
     workload_improvement_llm = _get_workload_cumtime_delta(llm_pre, llm_post)
     expert_wl_pre_cum = _get_workload_pre_cumtime(exp_pre)
-    llm_wl_pre_cum    = _get_workload_pre_cumtime(llm_pre)
+    llm_wl_pre_cum = _get_workload_pre_cumtime(llm_pre)
 
     # Absolute floor for both actors (seconds)
-    rel_part = (improvement_threshold_frac_of_expert * workload_improvement) if improvement_threshold_frac_of_expert > 0.0 else 0.0
+    rel_part = (
+        (improvement_threshold_frac_of_expert * workload_improvement)
+        if improvement_threshold_frac_of_expert > 0.0
+        else 0.0
+    )
     improvement_threshold_abs = max(improvement_threshold_seconds, rel_part)
 
     # Parse patch files (normalize to match FuncKey[0] normalization)
@@ -517,13 +549,13 @@ def analyze_localization(
         return files if files else None  # treat empty as no filter
 
     expert_allowed_files = _maybe_files(expert_patch_text)
-    llm_allowed_files    = _maybe_files(llm_patch_text)
+    llm_allowed_files = _maybe_files(llm_patch_text)
 
     # Select function sets, with per-side patch filters
     E_exp = _select_functions(
-        exp_pre,                 # use PRE/POST stats to compute Δcumtime internally
+        exp_pre,  # use PRE/POST stats to compute Δcumtime internally
         exp_post,
-        expert_pre_path,         # build call graph & depths from PRE profile
+        expert_pre_path,  # build call graph & depths from PRE profile
         improvement_threshold_abs,
         improvement_cumratio_cap,
         allowed_files=expert_allowed_files,
@@ -537,11 +569,12 @@ def analyze_localization(
         improvement_cumratio_cap,
         allowed_files=llm_allowed_files,
     )
-    
+
     expert_selected_files = _build_file_set(E_exp)
 
     s_exp: Dict[FuncKey, float] = {
-        k: d for k, d in d_exp_cum.items()
+        k: d
+        for k, d in d_exp_cum.items()
         if d >= improvement_threshold_abs and k[0] in expert_selected_files
     }
     erc_baseline_kind = "expert_selected"
@@ -554,21 +587,33 @@ def analyze_localization(
     llm_callers = _load_callers_map(llm_pre_path)
 
     # NEW: compute weighted average optimization depths from pre-edit call graphs
-    exp_depths_wl, exp_wl_found = _compute_depths_from_named_roots(exp_callers, {"workload"})
-    llm_depths_wl, llm_wl_found = _compute_depths_from_named_roots(llm_callers, {"workload"})
+    exp_depths_wl, exp_wl_found = _compute_depths_from_named_roots(
+        exp_callers, {"workload"}
+    )
+    llm_depths_wl, llm_wl_found = _compute_depths_from_named_roots(
+        llm_callers, {"workload"}
+    )
 
-    avg_depth_expert_wl, share_exp = _weighted_avg_depth_and_share(E_exp, d_exp_tt, exp_depths_wl)
+    avg_depth_expert_wl, share_exp = _weighted_avg_depth_and_share(
+        E_exp, d_exp_tt, exp_depths_wl
+    )
 
-    avg_depth_llm_wl,   share_llm = _weighted_avg_depth_and_share(E_llm, d_llm_tt, llm_depths_wl)
+    avg_depth_llm_wl, share_llm = _weighted_avg_depth_and_share(
+        E_llm, d_llm_tt, llm_depths_wl
+    )
 
     # Normalize depth weights by each actor's PRE workload runtime
     # to reduce run-to-run scaling variance (percent of pre-edit runtime).
     if expert_wl_pre_cum > 0:
         d_exp_tt_norm = {k: v / expert_wl_pre_cum for k, v in d_exp_tt.items()}
-        avg_depth_expert_wl, share_exp = _weighted_avg_depth_and_share(E_exp, d_exp_tt_norm, exp_depths_wl)
+        avg_depth_expert_wl, share_exp = _weighted_avg_depth_and_share(
+            E_exp, d_exp_tt_norm, exp_depths_wl
+        )
     if llm_wl_pre_cum > 0:
         d_llm_tt_norm = {k: v / llm_wl_pre_cum for k, v in d_llm_tt.items()}
-        avg_depth_llm_wl,   share_llm = _weighted_avg_depth_and_share(E_llm, d_llm_tt_norm, llm_depths_wl)
+        avg_depth_llm_wl, share_llm = _weighted_avg_depth_and_share(
+            E_llm, d_llm_tt_norm, llm_depths_wl
+        )
 
     return {
         "Improvement": {
@@ -581,16 +626,38 @@ def analyze_localization(
             # New: percent-of-PRE-runtime (each actor normalized by its own PRE workload time)
             "expert_workload_pre_cum": expert_wl_pre_cum,
             "llm_workload_pre_cum": llm_wl_pre_cum,
-            "expert_workload_speedup_ratio_of_pre": (workload_improvement / expert_wl_pre_cum) if expert_wl_pre_cum > 0 else None,
-            "llm_workload_speedup_ratio_of_pre":    (workload_improvement_llm / llm_wl_pre_cum) if llm_wl_pre_cum > 0 else None,
+            "expert_workload_speedup_ratio_of_pre": (
+                (workload_improvement / expert_wl_pre_cum)
+                if expert_wl_pre_cum > 0
+                else None
+            ),
+            "llm_workload_speedup_ratio_of_pre": (
+                (workload_improvement_llm / llm_wl_pre_cum)
+                if llm_wl_pre_cum > 0
+                else None
+            ),
             # Optional: whole-program tottime speedup as percent of PRE workload runtime (same denominator choice)
             "expert_total_speedup_ratio_of_pre": (
-                ((sum(st.tottime for st in exp_pre.values()) - sum(st.tottime for st in exp_post.values())) / expert_wl_pre_cum)
-                if expert_wl_pre_cum > 0 else None
+                (
+                    (
+                        sum(st.tottime for st in exp_pre.values())
+                        - sum(st.tottime for st in exp_post.values())
+                    )
+                    / expert_wl_pre_cum
+                )
+                if expert_wl_pre_cum > 0
+                else None
             ),
             "llm_total_speedup_ratio_of_pre": (
-                ((sum(st.tottime for st in llm_pre.values()) - sum(st.tottime for st in llm_post.values())) / llm_wl_pre_cum)
-                if llm_wl_pre_cum > 0 else None
+                (
+                    (
+                        sum(st.tottime for st in llm_pre.values())
+                        - sum(st.tottime for st in llm_post.values())
+                    )
+                    / llm_wl_pre_cum
+                )
+                if llm_wl_pre_cum > 0
+                else None
             ),
         },
         "file_overlap_jaccard": jaccard_files,
@@ -626,6 +693,7 @@ def analyze_localization(
 # Set these once in your driver script / notebook
 GOLD_RUN_DIR = Path("logs/run_evaluation/profile_runs/gold")
 
+
 def wrapper(
     instance: Dict[str, Any],
     improvement_threshold_seconds: float = 0.0,
@@ -633,7 +701,7 @@ def wrapper(
     improvement_cumratio_cap: float = 1.0,
 ) -> Optional[Dict[str, Any]]:
     instance_id = instance["instance_id"]
-    
+
     gold_pre_path = GOLD_RUN_DIR / instance_id / "workload_preedit_cprofile.prof"
     gold_post_path = GOLD_RUN_DIR / instance_id / "workload_postedit_cprofile.prof"
     pred_pre_path = PRED_RUN_DIR / instance_id / "workload_preedit_cprofile.prof"
@@ -641,7 +709,12 @@ def wrapper(
     expert_patch_text = GOLD_RUN_DIR / instance_id / "patch.diff"
     llm_patch_text = PRED_RUN_DIR / instance_id / "patch.diff"
 
-    if not (gold_pre_path.exists() and gold_post_path.exists() and pred_pre_path.exists() and pred_post_path.exists()):
+    if not (
+        gold_pre_path.exists()
+        and gold_post_path.exists()
+        and pred_pre_path.exists()
+        and pred_post_path.exists()
+    ):
         return None
 
     res = analyze_localization(
@@ -652,54 +725,74 @@ def wrapper(
         improvement_threshold_seconds=improvement_threshold_seconds,
         improvement_threshold_frac_of_expert=improvement_threshold_frac_of_expert,
         improvement_cumratio_cap=improvement_cumratio_cap,
-        expert_patch_text=expert_patch_text.read_text() if expert_patch_text.exists() else None,
+        expert_patch_text=(
+            expert_patch_text.read_text() if expert_patch_text.exists() else None
+        ),
         llm_patch_text=llm_patch_text.read_text() if llm_patch_text.exists() else None,
     )
     new_res = {
         "instance_id": instance_id,
         **res,
     }
-    
+
     return new_res
 
-model_name_to_run_results ={
+
+model_name_to_run_results = {
     "claude37sonnet_sweagent": (
-        Path("eval_reports2/eval_report_default_sweperf_claude__anthropic--claude-3-7-sonnet-20250219__t-0.00__p-1.00__c-1.00___swefficiency_full_test.csv"),
-        Path("logs/run_evaluation/profile_runs/default_sweperf_claude__anthropic--claude-3-7-sonnet-20250219__t-0.00__p-1.00__c-1.00___swefficiency_full_test")
+        Path(
+            "eval_reports2/eval_report_default_sweperf_claude__anthropic--claude-3-7-sonnet-20250219__t-0.00__p-1.00__c-1.00___swefficiency_full_test.csv"
+        ),
+        Path(
+            "logs/run_evaluation/profile_runs/default_sweperf_claude__anthropic--claude-3-7-sonnet-20250219__t-0.00__p-1.00__c-1.00___swefficiency_full_test"
+        ),
     ),
     "claude37sonnet_oh": (
-        Path("eval_reports2/eval_report_us.anthropic.claude-3-7-sonnet-20250219-v1_0_maxiter_100_N_v0.51.1-no-hint-run_1.csv"),
-        Path("logs/run_evaluation/profile_runs/us.anthropic.claude-3-7-sonnet-20250219-v1_0_maxiter_100_N_v0.51.1-no-hint-run_1")
+        Path(
+            "eval_reports2/eval_report_us.anthropic.claude-3-7-sonnet-20250219-v1_0_maxiter_100_N_v0.51.1-no-hint-run_1.csv"
+        ),
+        Path(
+            "logs/run_evaluation/profile_runs/us.anthropic.claude-3-7-sonnet-20250219-v1_0_maxiter_100_N_v0.51.1-no-hint-run_1"
+        ),
     ),
     "gpt5mini_oh": (
-        Path("eval_reports2/eval_report_gpt-5-mini_maxiter_100_N_v0.51.1-no-hint-run_1.csv"),
-        Path("logs/run_evaluation/profile_runs/gpt-5-mini_maxiter_100_N_v0.51.1-no-hint-run_1")
+        Path(
+            "eval_reports2/eval_report_gpt-5-mini_maxiter_100_N_v0.51.1-no-hint-run_1.csv"
+        ),
+        Path(
+            "logs/run_evaluation/profile_runs/gpt-5-mini_maxiter_100_N_v0.51.1-no-hint-run_1"
+        ),
     ),
     "gemini25flash_oh": (
-        Path("eval_reports2/eval_report_gemini-2.5-flash_maxiter_100_N_v0.51.1-no-hint-run_1.csv"),
-        Path("logs/run_evaluation/profile_runs/gemini-2.5-flash_maxiter_100_N_v0.51.1-no-hint-run_1")
+        Path(
+            "eval_reports2/eval_report_gemini-2.5-flash_maxiter_100_N_v0.51.1-no-hint-run_1.csv"
+        ),
+        Path(
+            "logs/run_evaluation/profile_runs/gemini-2.5-flash_maxiter_100_N_v0.51.1-no-hint-run_1"
+        ),
     ),
 }
 
+
 def main(model_name):
     import datasets
-    import tqdm
     import pandas as pd
+    import tqdm
 
     ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
-    
+
     # Filter out edits where we did not improve or correctness degraded.
     global PRED_RUN_DIR
     run_results_path, PRED_RUN_DIR = model_name_to_run_results[model_name]
-    
+
     run_results = pd.read_csv(run_results_path)
     selected_instance_ids = set(
         run_results[
-            (run_results["correctness"] == 1.0) &
-            (run_results["pred_speedup_ratio"] >= 1.0)
+            (run_results["correctness"] == 1.0)
+            & (run_results["pred_speedup_ratio"] >= 1.0)
         ]["instance_id"].tolist()
     )
-    
+
     print(f"Total test instances: {len(ds)}")
     ds = ds.filter(lambda x: x["instance_id"] in selected_instance_ids)
     print(f"Filtered to {len(ds)} instances with correctness=1.0 and speedup>=1.0")
@@ -710,14 +803,20 @@ def main(model_name):
             item,
             improvement_threshold_seconds=0.0,
             improvement_threshold_frac_of_expert=0.05,  # 2% per-function floor
-            improvement_cumratio_cap=1.0,               # keep all above threshold
+            improvement_cumratio_cap=1.0,  # keep all above threshold
         )
         if r is not None:
             results.append(r)
 
     # Sort final results by jaccard index (lowest to highest), then by AvgOptimizationDepthFromWorkload"]["expert_pre"]
     results.sort(
-        key=lambda x: (x.get("file_overlap_jaccard", float("inf")) or 0.0, x.get("AvgOptimizationDepthFromWorkload", {}).get("expert_pre", float("inf")) or float("inf"))
+        key=lambda x: (
+            x.get("file_overlap_jaccard", float("inf")) or 0.0,
+            x.get("AvgOptimizationDepthFromWorkload", {}).get(
+                "expert_pre", float("inf")
+            )
+            or float("inf"),
+        )
     )
 
     # Save results
@@ -732,14 +831,20 @@ def main(model_name):
     # (Optional) quick dataset means for the requested metrics
     if results:
         import statistics as stats
+
         instance_ids = [r["instance_id"] for r in results]
         erc_file = [r["ERC"]["file"] for r in results]
         erc_func = [r["ERC"]["func"] for r in results]
         wfl = [r["LossDecomposition"]["WrongFileLoss"] for r in results]
         ifl = [r["LossDecomposition"]["InFileLoss"] for r in results]
-        fj = [r["file_overlap_jaccard"] for r in results if r["file_overlap_jaccard"] is not None]
+        fj = [
+            r["file_overlap_jaccard"]
+            for r in results
+            if r["file_overlap_jaccard"] is not None
+        ]
 
-        def mean_or_nan(x): return float('nan') if not x else stats.fmean(x)
+        def mean_or_nan(x):
+            return float("nan") if not x else stats.fmean(x)
 
         print(f"Analyzed {len(instance_ids)} instances.")
         print(f"Average ERC (file): {mean_or_nan(erc_file):.4f}")
@@ -747,18 +852,28 @@ def main(model_name):
         print(f"Average WrongFileLoss: {mean_or_nan(wfl):.4f}")
         print(f"Average InFileLoss: {mean_or_nan(ifl):.4f}")
         print(f"Average file_overlap_jaccard (defined only): {mean_or_nan(fj):.4f}")
-        
-        import statistics as stats
-        
-        depth_wl_exp = [r["AvgOptimizationDepthFromWorkload"]["expert_pre"]
-                        for r in results
-                        if r.get("AvgOptimizationDepthFromWorkload", {}).get("expert_pre") is not None]
-        depth_wl_llm = [r["AvgOptimizationDepthFromWorkload"]["llm_pre"]
-                        for r in results
-                        if r.get("AvgOptimizationDepthFromWorkload", {}).get("llm_pre") is not None]
 
-        print(f"Weighted avg optimization depth from 'workload' (expert): {mean_or_nan(depth_wl_exp):.2f}")
-        print(f"Weighted avg optimization depth from 'workload' (LLM):    {mean_or_nan(depth_wl_llm):.2f}")
+        import statistics as stats
+
+        depth_wl_exp = [
+            r["AvgOptimizationDepthFromWorkload"]["expert_pre"]
+            for r in results
+            if r.get("AvgOptimizationDepthFromWorkload", {}).get("expert_pre")
+            is not None
+        ]
+        depth_wl_llm = [
+            r["AvgOptimizationDepthFromWorkload"]["llm_pre"]
+            for r in results
+            if r.get("AvgOptimizationDepthFromWorkload", {}).get("llm_pre") is not None
+        ]
+
+        print(
+            f"Weighted avg optimization depth from 'workload' (expert): {mean_or_nan(depth_wl_exp):.2f}"
+        )
+        print(
+            f"Weighted avg optimization depth from 'workload' (LLM):    {mean_or_nan(depth_wl_llm):.2f}"
+        )
+
 
 if __name__ == "__main__":
     for model_name in model_name_to_run_results.keys():

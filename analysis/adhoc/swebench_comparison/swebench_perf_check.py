@@ -1,12 +1,17 @@
-
-from swefficiency.perf_filter.attributes.constants import VERBATIM_KEYWORDS, BASE_PERF_KEYWORDS
 import re
 from collections import defaultdict
+
 from datasets import load_dataset
+
+from swefficiency.perf_filter.attributes.constants import (
+    BASE_PERF_KEYWORDS,
+    VERBATIM_KEYWORDS,
+)
 
 KEYWORDS = {k.lower() for k in (set(VERBATIM_KEYWORDS) | set(BASE_PERF_KEYWORDS))}
 
 SPLITS = ["test"]
+
 
 def find_keyword_hits(text: str):
     text_low = text.lower()
@@ -15,6 +20,7 @@ def find_keyword_hits(text: str):
         if kw in text_low:
             hits.append(kw)
     return hits
+
 
 def scan_split(split_name: str):
     ds = load_dataset("princeton-nlp/SWE-bench", split=split_name)
@@ -29,12 +35,11 @@ def scan_split(split_name: str):
             if hits:
                 row_hits[field_name] = hits
         if row_hits:
-            violations.append({
-                "idx": idx,
-                "instance_id": row.get("instance_id"),
-                "hits": row_hits
-            })
+            violations.append(
+                {"idx": idx, "instance_id": row.get("instance_id"), "hits": row_hits}
+            )
     return violations
+
 
 def main():
     overall = defaultdict(int)
@@ -50,12 +55,14 @@ def main():
             any_violations = True
             print(f"\nSplit: {split} -> {len(violations)} items with keyword hits")
             for v in violations:
-                print(f"- instance_id={v['instance_id']} idx={v['idx']} hits={v['hits']}")
+                print(
+                    f"- instance_id={v['instance_id']} idx={v['idx']} hits={v['hits']}"
+                )
                 for field, kws in v["hits"].items():
                     for kw in kws:
                         overall[kw] += 1
 
-                instance_ids.add(v['instance_id'])
+                instance_ids.add(v["instance_id"])
 
     if not any_violations:
         print("No keywords found in any split.")
@@ -63,11 +70,10 @@ def main():
         print("\nSummary keyword frequencies:")
         for kw, count in sorted(overall.items(), key=lambda x: -x[1]):
             print(f"{kw}: {count}")
-            
+
     # Print instance ids.
     print(" ".join(list(instance_ids)))
-    
-    
+
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,7 @@
 from enum import Enum
 from pathlib import Path
 from typing import TypedDict
+
 from typing_extensions import NotRequired
 
 # Constants - Evaluation Log Directories
@@ -9,6 +10,7 @@ ENV_IMAGE_BUILD_DIR = Path("logs/build_images/env")
 INSTANCE_IMAGE_BUILD_DIR = Path("logs/build_images/instances")
 ANNOTATE_IMAGE_BUILD_DIR = Path("logs/build_images/annotate")
 RUN_EVALUATION_LOG_DIR = Path("logs/run_evaluation")
+
 
 # Constants - Task Instance Class
 class SWEfficiencyInstance(TypedDict):
@@ -24,7 +26,7 @@ class SWEfficiencyInstance(TypedDict):
     FAIL_TO_PASS: str
     PASS_TO_PASS: str
     environment_setup_commit: str
-    
+
     # SWE-Perf Additions
     workload: NotRequired[str]
     speedup: NotRequired[float]
@@ -39,10 +41,12 @@ FAIL_TO_FAIL = "FAIL_TO_FAIL"
 PASS_TO_PASS = "PASS_TO_PASS"
 PASS_TO_FAIL = "PASS_TO_FAIL"
 
+
 class ResolvedStatus(Enum):
     NO = "RESOLVED_NO"
     PARTIAL = "RESOLVED_PARTIAL"
     FULL = "RESOLVED_FULL"
+
 
 class TestStatus(Enum):
     FAILED = "FAILED"
@@ -51,8 +55,13 @@ class TestStatus(Enum):
     ERROR = "ERROR"
     XFAIL = "XFAIL"
 
-TEST_PYTEST = "pytest --no-header -rA --tb=no -p no:cacheprovider --continue-on-collection-errors"
-TEST_PYTEST_VERBOSE = "pytest -v -rA --tb=long -p no:cacheprovider --continue-on-collection-errors"
+
+TEST_PYTEST = (
+    "pytest --no-header -rA --tb=no -p no:cacheprovider --continue-on-collection-errors"
+)
+TEST_PYTEST_VERBOSE = (
+    "pytest -v -rA --tb=long -p no:cacheprovider --continue-on-collection-errors"
+)
 TEST_PYTEST_DISTRIBUTED = "pytest --no-header -rA --tb=no -p no:cacheprovider --continue-on-collection-errors -n 4"
 
 TEST_ASTROPY_PYTEST = "pytest -rA -vv -o console_output_style=classic --tb=no"
@@ -138,53 +147,59 @@ SPECS_SKLEARN = {}
 # })
 
 
-SPECS_SKLEARN.update({
-    k: {
-        "python": "3.6",
-        "packages": "numpy scipy 'cython<0.28' 'pytest<7.0' pandas matplotlib pyamg matplotlib",
-        "install": "pip install --no-use-pep517 --no-build-isolation -e .",
-        "pip_packages": [
-            "'cython<0.28'",
-            "'numpy==1.17.3'",
-            "setuptools",
-            "scipy==1.5.2",
-        ],
-        "test_cmd": TEST_PYTEST,
+SPECS_SKLEARN.update(
+    {
+        k: {
+            "python": "3.6",
+            "packages": "numpy scipy 'cython<0.28' 'pytest<7.0' pandas matplotlib pyamg matplotlib",
+            "install": "pip install --no-use-pep517 --no-build-isolation -e .",
+            "pip_packages": [
+                "'cython<0.28'",
+                "'numpy==1.17.3'",
+                "setuptools",
+                "scipy==1.5.2",
+            ],
+            "test_cmd": TEST_PYTEST,
+        }
+        for k in ["0.2", "0.20"]
     }
-    for k in ['0.2', '0.20']
-})
+)
 
-SPECS_SKLEARN.update({
-    k: {
-        "python": "3.6",
-        "packages": "numpy scipy 'cython==0.28.5' 'pytest<7.0' pandas matplotlib pyamg matplotlib",
-        "install": "pip install --no-use-pep517 --no-build-isolation -e .",
-        "pip_packages": [
-            "'cython==0.28.5'",
-            "'numpy==1.17.3'",
-            "setuptools",
-            "scipy==1.5.2",
-        ],
-        "test_cmd": TEST_PYTEST,
+SPECS_SKLEARN.update(
+    {
+        k: {
+            "python": "3.6",
+            "packages": "numpy scipy 'cython==0.28.5' 'pytest<7.0' pandas matplotlib pyamg matplotlib",
+            "install": "pip install --no-use-pep517 --no-build-isolation -e .",
+            "pip_packages": [
+                "'cython==0.28.5'",
+                "'numpy==1.17.3'",
+                "setuptools",
+                "scipy==1.5.2",
+            ],
+            "test_cmd": TEST_PYTEST,
+        }
+        for k in ["0.201", "0.21"]
     }
-    for k in ['0.201', '0.21']
-})
+)
 
-SPECS_SKLEARN.update({
-    k: {
-        "python": "3.6",
-        "packages": "numpy scipy 'cython<3' 'pytest<7.0' pandas matplotlib pyamg matplotlib",
-        "install": "pip install --no-use-pep517 --no-build-isolation -e .",
-        "pip_packages": [
-            "'cython<3'",
-            "numpy==1.19.2",
-            "setuptools",
-            "scipy==1.5.2",
-        ],
-        "test_cmd": TEST_PYTEST,
+SPECS_SKLEARN.update(
+    {
+        k: {
+            "python": "3.6",
+            "packages": "numpy scipy 'cython<3' 'pytest<7.0' pandas matplotlib pyamg matplotlib",
+            "install": "pip install --no-use-pep517 --no-build-isolation -e .",
+            "pip_packages": [
+                "'cython<3'",
+                "numpy==1.19.2",
+                "setuptools",
+                "scipy==1.5.2",
+            ],
+            "test_cmd": TEST_PYTEST,
+        }
+        for k in ["0.22", "0.222", "0.23", "0.24"]
     }
-    for k in ['0.22', '0.222', '0.23', '0.24']
-})
+)
 
 SPECS_SKLEARN.update(
     {
@@ -241,9 +256,7 @@ SPECS_SKLEARN.update(
 
 for k in SPECS_SKLEARN:
     # HACK: This is needed because we use an AST pruning technique to identify tests.
-    SPECS_SKLEARN[k]["pip_packages"].extend(
-        ["intervaltree"]
-    )
+    SPECS_SKLEARN[k]["pip_packages"].extend(["intervaltree"])
 
 SPECS_FLASK = {
     "2.0": {
@@ -386,7 +399,7 @@ SPECS_DJANGO.update(
         for k in ["5.0", "5.1", "5.2", "6.0"]
     }
 )
-SPECS_DJANGO['1.9']['test_cmd'] = TEST_DJANGO_NO_PARALLEL
+SPECS_DJANGO["1.9"]["test_cmd"] = TEST_DJANGO_NO_PARALLEL
 
 SPECS_REQUESTS = {
     k: {
@@ -597,7 +610,7 @@ for k in ["8.0", "8.1", "8.2", "8.3", "8.4"]:
         "decorator",
         "attrs==23.1.0",
     ]
-    
+
 
 TEST_MATPLOTLIB = TEST_PYTEST
 TEST_MATPLOTLIB_DISTRIBUTED = TEST_PYTEST_DISTRIBUTED
@@ -646,48 +659,50 @@ SPECS_MATPLOTLIB = {
 }
 
 
-SPECS_MATPLOTLIB.update({
-    k: {
-        "python": "3.11",
-        "packages": "environment.yml",
-        "install": "pip install -e . --no-build-isolation",
-        "env_patches": [
-            "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng libfreetype6 libfreetype6-dev libpng-dev libfontconfig1-dev xclip libcairo2-dev pkg-config libgirepository1.0-dev",
-            # Install old GS.
-            "wget -q https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs927/ghostscript-9.27.tar.gz -O /tmp/ghostscript-9.27.tar.gz",
-            "tar -xzf /tmp/ghostscript-9.27.tar.gz -C /tmp",
-            "cd /tmp/ghostscript-9.27 && ./configure && make && make install",
-            "export GS_OPTIONS='-dNOSAFER'",
-            "cd -",
-        ],
-        "pip_packages": [
-            "contourpy==1.1.0",
-            "cycler==0.11.0",
-            "fonttools==4.42.1",
-            "ghostscript",
-            "kiwisolver==1.4.5",
-            "numpy==1.25.2",
-            "'packaging>=25'",
-            "pillow==10.0.0",
-            "pikepdf",
-            "pyparsing==2.4.7",
-            "python-dateutil==2.8.2",
-            "six==1.16.0",
-            "'setuptools>70'",
-            "setuptools-scm==7.1.0",
-            "typing-extensions==4.7.1",
-            "latex",
-            "pytest-xdist",
-            "cppy",
-            "'meson-python>=0.17'",
-            "pycairo",
-            "PyGObject",
-        ],
-        "test_cmd": TEST_MATPLOTLIB,
-        "distributed_test_cmd": TEST_MATPLOTLIB_DISTRIBUTED,
+SPECS_MATPLOTLIB.update(
+    {
+        k: {
+            "python": "3.11",
+            "packages": "environment.yml",
+            "install": "pip install -e . --no-build-isolation",
+            "env_patches": [
+                "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng libfreetype6 libfreetype6-dev libpng-dev libfontconfig1-dev xclip libcairo2-dev pkg-config libgirepository1.0-dev",
+                # Install old GS.
+                "wget -q https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs927/ghostscript-9.27.tar.gz -O /tmp/ghostscript-9.27.tar.gz",
+                "tar -xzf /tmp/ghostscript-9.27.tar.gz -C /tmp",
+                "cd /tmp/ghostscript-9.27 && ./configure && make && make install",
+                "export GS_OPTIONS='-dNOSAFER'",
+                "cd -",
+            ],
+            "pip_packages": [
+                "contourpy==1.1.0",
+                "cycler==0.11.0",
+                "fonttools==4.42.1",
+                "ghostscript",
+                "kiwisolver==1.4.5",
+                "numpy==1.25.2",
+                "'packaging>=25'",
+                "pillow==10.0.0",
+                "pikepdf",
+                "pyparsing==2.4.7",
+                "python-dateutil==2.8.2",
+                "six==1.16.0",
+                "'setuptools>70'",
+                "setuptools-scm==7.1.0",
+                "typing-extensions==4.7.1",
+                "latex",
+                "pytest-xdist",
+                "cppy",
+                "'meson-python>=0.17'",
+                "pycairo",
+                "PyGObject",
+            ],
+            "test_cmd": TEST_MATPLOTLIB,
+            "distributed_test_cmd": TEST_MATPLOTLIB_DISTRIBUTED,
+        }
+        for k in ["3.5", "3.6", "3.7", "3.8", "3.9"]
     }
-    for k in ["3.5", "3.6", "3.7", "3.8", "3.9"]
-})
+)
 SPECS_MATPLOTLIB.update(
     {
         k: {
@@ -705,7 +720,21 @@ SPECS_MATPLOTLIB.update(
                 "sed -i '/sphinx-gallery/d' $HOME/requirements.txt",
             ],
             # TODO: Pytest changed how it catches no exceptions, requires 7.0 or smaller, but won't fix for now bc idk what the oter extension versions should be.
-            "pip_packages": ["'pytest'", "ipython", "latex", "'setuptools<=59.5.0'", "'setuptools-scm<=7.1.0'", "'pandas<=1.1.5'", "'numpy<1.20'", "pytest-xdist", "cppy", "kiwisolver", "'cycler<=0.11'", "pycairo", "PyGObject"],
+            "pip_packages": [
+                "'pytest'",
+                "ipython",
+                "latex",
+                "'setuptools<=59.5.0'",
+                "'setuptools-scm<=7.1.0'",
+                "'pandas<=1.1.5'",
+                "'numpy<1.20'",
+                "pytest-xdist",
+                "cppy",
+                "kiwisolver",
+                "'cycler<=0.11'",
+                "pycairo",
+                "PyGObject",
+            ],
             "test_cmd": TEST_MATPLOTLIB,
             "distributed_test_cmd": TEST_MATPLOTLIB_DISTRIBUTED,
         }
@@ -727,7 +756,20 @@ SPECS_MATPLOTLIB.update(
                 "export GS_OPTIONS='-dNOSAFER'",
                 "cd -",
             ],
-            "pip_packages": ["pytest", "latex", "'setuptools<=59.5.0'", "'setuptools-scm<=7.1.0'", "'pandas<=1.1.5'", "'numpy<1.20'", "pytest-xdist", "cppy", "kiwisolver", "'cycler<=0.11'", "pycairo", "PyGObject"],
+            "pip_packages": [
+                "pytest",
+                "latex",
+                "'setuptools<=59.5.0'",
+                "'setuptools-scm<=7.1.0'",
+                "'pandas<=1.1.5'",
+                "'numpy<1.20'",
+                "pytest-xdist",
+                "cppy",
+                "kiwisolver",
+                "'cycler<=0.11'",
+                "pycairo",
+                "PyGObject",
+            ],
             "test_cmd": TEST_MATPLOTLIB,
             "distributed_test_cmd": TEST_MATPLOTLIB_DISTRIBUTED,
         }
@@ -748,7 +790,20 @@ SPECS_MATPLOTLIB.update(
                 "export GS_OPTIONS='-dNOSAFER'",
                 "cd -",
             ],
-            "pip_packages": ["pytest", "latex", "'setuptools<=59.5.0'", "'setuptools-scm<=7.1.0'", "pytest-xdist", "'pandas<=1.1.5'", "'numpy<1.20'", "cppy", "kiwisolver", "'cycler<=0.11'", "pycairo", "PyGObject"],
+            "pip_packages": [
+                "pytest",
+                "latex",
+                "'setuptools<=59.5.0'",
+                "'setuptools-scm<=7.1.0'",
+                "pytest-xdist",
+                "'pandas<=1.1.5'",
+                "'numpy<1.20'",
+                "cppy",
+                "kiwisolver",
+                "'cycler<=0.11'",
+                "pycairo",
+                "PyGObject",
+            ],
             "execute_test_as_nonroot": True,
             "test_cmd": TEST_MATPLOTLIB,
             "distributed_test_cmd": TEST_MATPLOTLIB_DISTRIBUTED,
@@ -771,43 +826,47 @@ SPECS_SPHINX = {
     + ["7.3", "7.4", "8.0"]
 }
 for k in ["3.0", "3.1", "3.2", "3.3", "3.4", "3.5", "4.0", "4.1", "4.2", "4.3", "4.4"]:
-    SPECS_SPHINX[k][
-        "pre_install"
-    ].extend([
-        "sed -i 's/Jinja2>=2.3/Jinja2<3.0/' setup.py",
-        "sed -i 's/sphinxcontrib-applehelp/sphinxcontrib-applehelp<=1.0.7/' setup.py",
-        "sed -i 's/sphinxcontrib-devhelp/sphinxcontrib-devhelp<=1.0.5/' setup.py",
-        "sed -i 's/sphinxcontrib-qthelp/sphinxcontrib-qthelp<=1.0.6/' setup.py",
-        "sed -i 's/alabaster>=0.7,<0.8/alabaster>=0.7,<0.7.12/' setup.py",
-        'sed -i "s/\'packaging\',/\'packaging\', \'markupsafe<=2.0.1\',/" setup.py',
-    ])
+    SPECS_SPHINX[k]["pre_install"].extend(
+        [
+            "sed -i 's/Jinja2>=2.3/Jinja2<3.0/' setup.py",
+            "sed -i 's/sphinxcontrib-applehelp/sphinxcontrib-applehelp<=1.0.7/' setup.py",
+            "sed -i 's/sphinxcontrib-devhelp/sphinxcontrib-devhelp<=1.0.5/' setup.py",
+            "sed -i 's/sphinxcontrib-qthelp/sphinxcontrib-qthelp<=1.0.6/' setup.py",
+            "sed -i 's/alabaster>=0.7,<0.8/alabaster>=0.7,<0.7.12/' setup.py",
+            "sed -i \"s/'packaging',/'packaging', 'markupsafe<=2.0.1',/\" setup.py",
+        ]
+    )
     if k in ["4.2", "4.3", "4.4"]:
-        SPECS_SPHINX[k]["pre_install"].extend([
-            "sed -i 's/sphinxcontrib-htmlhelp>=2.0.0/sphinxcontrib-htmlhelp>=2.0.0,<=2.0.4/' setup.py",
-            "sed -i 's/sphinxcontrib-serializinghtml>=1.1.5/sphinxcontrib-serializinghtml>=1.1.5,<=1.1.9/' setup.py",
-        ])
+        SPECS_SPHINX[k]["pre_install"].extend(
+            [
+                "sed -i 's/sphinxcontrib-htmlhelp>=2.0.0/sphinxcontrib-htmlhelp>=2.0.0,<=2.0.4/' setup.py",
+                "sed -i 's/sphinxcontrib-serializinghtml>=1.1.5/sphinxcontrib-serializinghtml>=1.1.5,<=1.1.9/' setup.py",
+            ]
+        )
     elif k == "4.1":
-        SPECS_SPHINX[k]["pre_install"].extend([
-            (
-                "grep -q 'sphinxcontrib-htmlhelp>=2.0.0' setup.py && "
-                "sed -i 's/sphinxcontrib-htmlhelp>=2.0.0/sphinxcontrib-htmlhelp>=2.0.0,<=2.0.4/' setup.py || "
-                "sed -i 's/sphinxcontrib-htmlhelp/sphinxcontrib-htmlhelp<=2.0.4/' setup.py"
-            ),
-            (
-                "grep -q 'sphinxcontrib-serializinghtml>=1.1.5' setup.py && "
-                "sed -i 's/sphinxcontrib-serializinghtml>=1.1.5/sphinxcontrib-serializinghtml>=1.1.5,<=1.1.9/' setup.py || "
-                "sed -i 's/sphinxcontrib-serializinghtml/sphinxcontrib-serializinghtml<=1.1.9/' setup.py"
-            )
-        ])
+        SPECS_SPHINX[k]["pre_install"].extend(
+            [
+                (
+                    "grep -q 'sphinxcontrib-htmlhelp>=2.0.0' setup.py && "
+                    "sed -i 's/sphinxcontrib-htmlhelp>=2.0.0/sphinxcontrib-htmlhelp>=2.0.0,<=2.0.4/' setup.py || "
+                    "sed -i 's/sphinxcontrib-htmlhelp/sphinxcontrib-htmlhelp<=2.0.4/' setup.py"
+                ),
+                (
+                    "grep -q 'sphinxcontrib-serializinghtml>=1.1.5' setup.py && "
+                    "sed -i 's/sphinxcontrib-serializinghtml>=1.1.5/sphinxcontrib-serializinghtml>=1.1.5,<=1.1.9/' setup.py || "
+                    "sed -i 's/sphinxcontrib-serializinghtml/sphinxcontrib-serializinghtml<=1.1.9/' setup.py"
+                ),
+            ]
+        )
     else:
-        SPECS_SPHINX[k]["pre_install"].extend([
-            "sed -i 's/sphinxcontrib-htmlhelp/sphinxcontrib-htmlhelp<=2.0.4/' setup.py",
-            "sed -i 's/sphinxcontrib-serializinghtml/sphinxcontrib-serializinghtml<=1.1.9/' setup.py",
-        ])
+        SPECS_SPHINX[k]["pre_install"].extend(
+            [
+                "sed -i 's/sphinxcontrib-htmlhelp/sphinxcontrib-htmlhelp<=2.0.4/' setup.py",
+                "sed -i 's/sphinxcontrib-serializinghtml/sphinxcontrib-serializinghtml<=1.1.9/' setup.py",
+            ]
+        )
 for k in ["7.2", "7.3", "7.4", "8.0"]:
-    SPECS_SPHINX[k]["pre_install"] += [
-        "apt-get update && apt-get install -y graphviz"
-    ]
+    SPECS_SPHINX[k]["pre_install"] += ["apt-get update && apt-get install -y graphviz"]
 
 SPECS_ASTROPY = {
     k: {
@@ -850,51 +909,52 @@ SPECS_ASTROPY = {
 }
 SPECS_ASTROPY["v5.3"]["python"] = "3.11"
 
-SPECS_ASTROPY.update({
-    k: {
-        "python": "3.7",
-        "pre_install": [
-            "[[ -f pyproject.toml ]] && sed -i 's/cython>=3\\.0\\.0,[[:space:]]*<4/cython>=3.0.0,<3.1/' pyproject.toml",
-        ],
-        "install": "pip install -e .[dev_all]",
-        "pip_packages": [
-            "attrs==23.1.0",
-            "exceptiongroup==1.1.3",
-            "execnet==2.0.2",
-            "hypothesis>=6.83",
-            "iniconfig==2.0.0",
-            "numpy==1.18",
-            "packaging==23.1",
-            "pluggy",
-            "psutil==5.9.5",
-            "'pyerfa<2'",
-            "pytest-arraydiff==0.5.0",
-            "pytest-astropy-header==0.2.2",
-            "pytest-astropy==0.10.0",
-            "pytest-cov==4.1.0",
-            "pytest-doctestplus==1.0.0",
-            "pytest-filter-subpackage==0.1.2",
-            "pytest-mock==3.11.1",
-            "pytest-openfiles==0.5.0",
-            "pytest-remotedata==0.4.0",
-            "pytest-xdist==3.3.1",
-            "pytest==7.4.0",
-            "PyYAML==6.0.1",
-            "sortedcontainers==2.4.0",
-            "tomli==2.0.1",
-            "'cython<3.1'",
-            "'setuptools<60'",
-        ],
-        "test_cmd": TEST_ASTROPY_PYTEST,
+SPECS_ASTROPY.update(
+    {
+        k: {
+            "python": "3.7",
+            "pre_install": [
+                "[[ -f pyproject.toml ]] && sed -i 's/cython>=3\\.0\\.0,[[:space:]]*<4/cython>=3.0.0,<3.1/' pyproject.toml",
+            ],
+            "install": "pip install -e .[dev_all]",
+            "pip_packages": [
+                "attrs==23.1.0",
+                "exceptiongroup==1.1.3",
+                "execnet==2.0.2",
+                "hypothesis>=6.83",
+                "iniconfig==2.0.0",
+                "numpy==1.18",
+                "packaging==23.1",
+                "pluggy",
+                "psutil==5.9.5",
+                "'pyerfa<2'",
+                "pytest-arraydiff==0.5.0",
+                "pytest-astropy-header==0.2.2",
+                "pytest-astropy==0.10.0",
+                "pytest-cov==4.1.0",
+                "pytest-doctestplus==1.0.0",
+                "pytest-filter-subpackage==0.1.2",
+                "pytest-mock==3.11.1",
+                "pytest-openfiles==0.5.0",
+                "pytest-remotedata==0.4.0",
+                "pytest-xdist==3.3.1",
+                "pytest==7.4.0",
+                "PyYAML==6.0.1",
+                "sortedcontainers==2.4.0",
+                "tomli==2.0.1",
+                "'cython<3.1'",
+                "'setuptools<60'",
+            ],
+            "test_cmd": TEST_ASTROPY_PYTEST,
+        }
+        for k in ["3.0", "3.1", "3.2"]
     }
-    for k in ["3.0", "3.1", "3.2"]
-})
-
+)
 
 
 SPECS_ASTROPY.update(
     {
-        k:  {
+        k: {
             "python": "3.6",
             "install": "pip install -e .[test]",
             "packages": "setuptools==38.2.4",
@@ -925,7 +985,7 @@ SPECS_ASTROPY.update(
                 "pytest==3.3.1",
                 "PyYAML==3.12",
                 "sortedcontainers==1.5.9",
-                "tomli==0.2.0"
+                "tomli==0.2.0",
             ],
             "test_cmd": TEST_ASTROPY_PYTEST,
         }
@@ -934,11 +994,13 @@ SPECS_ASTROPY.update(
 )
 
 set_setuptools_only = 'if [ -f pyproject.toml ]; then sed -i \'s/requires = \\["setuptools",/requires = \\["setuptools==68.0.0",/\' pyproject.toml; fi; '
-set_markupsafe_version_and_setuptools = 'if [ -f pyproject.toml ]; then sed -i \'/\"markupsafe[<>=]*[0-9.]*\"/d; /requires = \\[/a\\            "markupsafe==2.0.1",\' pyproject.toml; sed -i \'s/requires = \\["setuptools",/requires = \\["setuptools==68.0.0",/\' pyproject.toml; fi; '
+set_markupsafe_version_and_setuptools = 'if [ -f pyproject.toml ]; then sed -i \'/"markupsafe[<>=]*[0-9.]*"/d; /requires = \\[/a\\            "markupsafe==2.0.1",\' pyproject.toml; sed -i \'s/requires = \\["setuptools",/requires = \\["setuptools==68.0.0",/\' pyproject.toml; fi; '
 
 for k in ["3.2", "4.1", "4.2", "4.3"]:
     # Replace the MarkupSafe/jinja2 dependency?
-    SPECS_ASTROPY[k].setdefault("pre_install", []).append(set_markupsafe_version_and_setuptools)
+    SPECS_ASTROPY[k].setdefault("pre_install", []).append(
+        set_markupsafe_version_and_setuptools
+    )
 
 for k in ["5.0", "5.1", "5.2", "v5.3"]:
     SPECS_ASTROPY[k].setdefault("pre_install", []).append(set_setuptools_only)
@@ -946,29 +1008,43 @@ for k in ["5.0", "5.1", "5.2", "v5.3"]:
 
 SPECS_SYMPY = {}
 
-SPECS_SYMPY.update({
-    k: {
-        "python": "3.6",
-        "packages": "mpmath flake8",
-        "pip_packages": ["mpmath==1.3.0", "flake8-comprehensions", "gmpy2", "numpy"],
-        "install": "pip install -e .",
-        "test_cmd": TEST_SYMPY,
-        "distributed_test_cmd": TEST_SYMPY_DISTRIBUTED,
+SPECS_SYMPY.update(
+    {
+        k: {
+            "python": "3.6",
+            "packages": "mpmath flake8",
+            "pip_packages": [
+                "mpmath==1.3.0",
+                "flake8-comprehensions",
+                "gmpy2",
+                "numpy",
+            ],
+            "install": "pip install -e .",
+            "test_cmd": TEST_SYMPY,
+            "distributed_test_cmd": TEST_SYMPY_DISTRIBUTED,
+        }
+        for k in ["1.0", "1.1", "1.2", "1.4", "1.5", "1.6"]
     }
-    for k in ["1.0", "1.1", "1.2", "1.4", "1.5", "1.6"]
-})
+)
 
-SPECS_SYMPY.update({
-    k: {
-        "python": "3.8",
-        "packages": "mpmath flake8",
-        "pip_packages": ["mpmath==1.3.0", "flake8-comprehensions", "gmpy2", "numpy"],
-        "install": "pip install -e .",
-        "test_cmd": TEST_SYMPY,
-        "distributed_test_cmd": TEST_SYMPY_DISTRIBUTED,
+SPECS_SYMPY.update(
+    {
+        k: {
+            "python": "3.8",
+            "packages": "mpmath flake8",
+            "pip_packages": [
+                "mpmath==1.3.0",
+                "flake8-comprehensions",
+                "gmpy2",
+                "numpy",
+            ],
+            "install": "pip install -e .",
+            "test_cmd": TEST_SYMPY,
+            "distributed_test_cmd": TEST_SYMPY_DISTRIBUTED,
+        }
+        for k in ["1.6", "1.7", "1.8", "1.9", "1.10", "1.11", "1.12"]
     }
-    for k in ["1.6", "1.7", "1.8", "1.9", "1.10", "1.11", "1.12"]
-})
+)
 
 SPECS_SYMPY.update(
     {
@@ -1015,7 +1091,7 @@ SPECS_PYLINT = {
         "3.0",
         "3.1",
         "3.2",
-        "3.3"
+        "3.3",
     ]
 }
 SPECS_PYLINT["2.8"]["pip_packages"] = ["pyenchant==3.2"]
@@ -1056,24 +1132,26 @@ SPECS_XARRAY = {
         "test_cmd": TEST_PYTEST,
         "distributed_test_cmd": TEST_PYTEST_DISTRIBUTED,
     }
-    for k in ["0.12", "0.18", "0.19", "0.20", '0.21', "2022.03", "2022.06", "2022.09"]
+    for k in ["0.12", "0.18", "0.19", "0.20", "0.21", "2022.03", "2022.06", "2022.09"]
 }
 
-SPECS_XARRAY.update({
-    k: {
-        "python": "3.10",
-        "packages": "environment.yml",
-        "install": "pip install -e . --no-build-isolation",
-        "no_use_env": True,
-        "test_cmd": TEST_PYTEST,
-        "distributed_test_cmd": TEST_PYTEST_DISTRIBUTED,
-        "pip_packages": [
-            "gcsfs",
-            "xarray-datatree",
-        ],
+SPECS_XARRAY.update(
+    {
+        k: {
+            "python": "3.10",
+            "packages": "environment.yml",
+            "install": "pip install -e . --no-build-isolation",
+            "no_use_env": True,
+            "test_cmd": TEST_PYTEST,
+            "distributed_test_cmd": TEST_PYTEST_DISTRIBUTED,
+            "pip_packages": [
+                "gcsfs",
+                "xarray-datatree",
+            ],
+        }
+        for k in ["2024.05", "2023.07", "2023.03", "2023.04", "2023.05", "2023.06"]
     }
-    for k in ["2024.05", "2023.07", '2023.03', '2023.04', '2023.05', '2023.06']
-})
+)
 
 SPECS_SQLFLUFF = {
     k: {
@@ -1176,7 +1254,6 @@ SPECS_PYVISTA.update(
             "0.42",
             "0.43",
             "0.44",
-
         ]
     }
 )
@@ -1281,15 +1358,9 @@ SPECS_PYDICOM = {
         "3.0",
     ]
 }
-SPECS_PYDICOM.update(
-    {k: {**SPECS_PYDICOM[k], "python": "3.8"} for k in ["1.4", "2.0"]}
-)
-SPECS_PYDICOM.update(
-    {k: {**SPECS_PYDICOM[k], "python": "3.9"} for k in ["2.1", "2.2"]}
-)
-SPECS_PYDICOM.update(
-    {k: {**SPECS_PYDICOM[k], "python": "3.10"} for k in ["2.3"]}
-)
+SPECS_PYDICOM.update({k: {**SPECS_PYDICOM[k], "python": "3.8"} for k in ["1.4", "2.0"]})
+SPECS_PYDICOM.update({k: {**SPECS_PYDICOM[k], "python": "3.9"} for k in ["2.1", "2.2"]})
+SPECS_PYDICOM.update({k: {**SPECS_PYDICOM[k], "python": "3.10"} for k in ["2.3"]})
 SPECS_PYDICOM.update(
     {k: {**SPECS_PYDICOM[k], "python": "3.11"} for k in ["2.4", "3.0"]}
 )
@@ -1339,12 +1410,10 @@ MAP_REPO_TO_REQS_PATHS = {
     "sympy/sympy": ["requirements-dev.txt"],
     "Project-MONAI/MONAI": ["requirements-dev.txt"],
     "HypothesisWorks/hypothesis": ["requirements/tools.txt"],
-    "facebookresearch/hydra": ['requirements/dev.txt'],
-    "numpy/numpy": ['test_requirements.txt', 'requirements/test_requirements.txt'],
-    "explosion/spacy": ['requirements.txt'],
-    "modin-project/modin": [
-        "requirements-dev.txt"
-    ],
+    "facebookresearch/hydra": ["requirements/dev.txt"],
+    "numpy/numpy": ["test_requirements.txt", "requirements/test_requirements.txt"],
+    "explosion/spacy": ["requirements.txt"],
+    "modin-project/modin": ["requirements-dev.txt"],
 }
 
 
@@ -1355,13 +1424,11 @@ MAP_REPO_TO_ENV_YML_PATHS = {
     "bokeh/bokeh": [
         # for v3
         "conda/environment-test-3.10.yml",
-        #for v2
-        "environment.yml"
+        # for v2
+        "environment.yml",
         # for v1
-        ],
-    "modin-project/modin": [
-        "environment-dev.yml"
     ],
+    "modin-project/modin": ["environment-dev.yml"],
     "dask/dask": [
         "continuous_integration/environment-3.10.yaml",
         "continuous_integration/environment-3.9.yaml",
@@ -1375,9 +1442,7 @@ MAP_REPO_TO_ENV_YML_PATHS = {
     "pandas-dev/pandas": [
         "environment.yml",
     ],
-    "numpy/numpy": [
-        "environment.yml"
-    ]
+    "numpy/numpy": ["environment.yml"],
 }
 
 # Constants - Evaluation Keys
@@ -1933,12 +1998,12 @@ SPECS_MYPY = {
         "pre_install": [
             "git submodule update --init mypy/typeshed || true",
         ],
-        "python": "3.12", 
+        "python": "3.12",
         # see https://github.com/python/mypy/mypy/test/testcheck.py#L39
         "install": "pip install -r test-requirements.txt; pip install -e .; hash -r",
-        "test_cmd": "pytest -rA -k"
+        "test_cmd": "pytest -rA -k",
     }
-    for k in ["1.7","1.8","1.9", "1.10", "1.11"]
+    for k in ["1.7", "1.8", "1.9", "1.10", "1.11"]
 }
 
 SPECS_MYPY.update(
@@ -1948,9 +2013,9 @@ SPECS_MYPY.update(
             "pre_install": [
                 "git submodule update --init mypy/typeshed || true",
             ],
-            "python": "3.11", 
+            "python": "3.11",
             "install": "pip install -r test-requirements.txt; pip install -e .; hash -r",
-            "test_cmd": "pytest -n0 -rA -k"
+            "test_cmd": "pytest -n0 -rA -k",
         }
         for k in ["1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6"]
     }
@@ -1963,11 +2028,11 @@ SPECS_MYPY.update(
             "pre_install": [
                 "git submodule update --init mypy/typeshed || true",
             ],
-            "python": "3.10", 
+            "python": "3.10",
             "install": "pip install -r test-requirements.txt; pip install -e .; pip install pytest pytest-xdist; hash -r",
-            "test_cmd": "pytest -n0 -rA -k"
+            "test_cmd": "pytest -n0 -rA -k",
         }
-        for k in ["0.990", "0.980", "0.970", "0.960","0.950", "0.940"]
+        for k in ["0.990", "0.980", "0.970", "0.960", "0.950", "0.940"]
     }
 )
 SPECS_MYPY.update(
@@ -1976,12 +2041,12 @@ SPECS_MYPY.update(
         k: {
             "pre_install": [
                 "git submodule update --init mypy/typeshed || true",
-                "sed -i '1i types-typing-extensions==3.7.3' test-requirements.txt"
+                "sed -i '1i types-typing-extensions==3.7.3' test-requirements.txt",
             ],
-            "python": "3.9", 
+            "python": "3.9",
             # types-typing-extensions is yanked, we need to set a specific version manually
             "install": "pip install -r test-requirements.txt; pip install -e .; pip install pytest pytest-xdist; hash -r;",
-            "test_cmd": "pytest -n0 -rA -k"
+            "test_cmd": "pytest -n0 -rA -k",
         }
         for k in ["0.920", "0.910", "0.820", "0.810", "0.800"]
     }
@@ -1995,7 +2060,7 @@ SPECS_MYPY.update(
 #                 "apt-get -y update && apt-get -y upgrade && apt-get install -y gcc",
 #                 "apt-get install libxml2-dev libxslt1-dev"
 #             ],
-#             "python": "3.8", 
+#             "python": "3.8",
 #                 "apt-get update && apt-get install -y libenchant-2-dev hunspell-en-us"
 #             "install": "pip install -r test-requirements.txt; pip install -e .; pip install pytest; hash -r;",
 #             "test_cmd": "pytest -rA -k"
@@ -2003,7 +2068,7 @@ SPECS_MYPY.update(
 #         for k in []
 #     }
 # )
-# mypy 0.2, with 14 instances, is too old and requires deprecated python 3.4. 
+# mypy 0.2, with 14 instances, is too old and requires deprecated python 3.4.
 # not worth it for now
 
 
@@ -2013,16 +2078,26 @@ MAP_REPO_VERSION_TO_SPECS.update({"python/mypy": SPECS_MYPY})
 TEST_MOTO = "pytest -n0 -rA"
 SPECS_MOTO = {
     k: {
-        "python": "3.12", 
+        "python": "3.12",
         # see https://github.com/getmoto/moto/blob/master/CONTRIBUTING.md
         "install": "make init",
         "test_cmd": TEST_MOTO,
     }
     for k in [
-        '0.4', '1.0', '1.2', '1.3',
-        '2.0', '2.1', '2.2', '2.3',
-        '3.0', '3.1',
-        '4.0', '4.1', '4.2', '5.0',
+        "0.4",
+        "1.0",
+        "1.2",
+        "1.3",
+        "2.0",
+        "2.1",
+        "2.2",
+        "2.3",
+        "3.0",
+        "3.1",
+        "4.0",
+        "4.1",
+        "4.2",
+        "5.0",
     ]
 }
 MAP_REPO_VERSION_TO_SPECS.update({"getmoto/moto": SPECS_MOTO})
@@ -2033,72 +2108,249 @@ TEST_CONAN = "pytest -n0 -rA"
 # extra args before cython3.0 https://github.com/conan-io/conan/issues/14319
 SPECS_CONAN = {
     k: {
-        "python": "3.10", 
-            "pre_install": [
-                "apt-get -y update && apt-get -y upgrade && apt-get install -y build-essential cmake",
-            ],
-
+        "python": "3.10",
+        "pre_install": [
+            "apt-get -y update && apt-get -y upgrade && apt-get install -y build-essential cmake",
+        ],
         "install": "echo 'cython<3' > /tmp/constraint.txt; export PIP_CONSTRAINT=/tmp/constraint.txt; pip install -r conans/requirements.txt; pip install -r conans/requirements_server.txt; pip install -r conans/requirements_dev.txt ",
         "eval_commands": [
             "export PYTHONPATH=${PYTHONPATH:-}:$(pwd)",
         ],
         "test_cmd": TEST_CONAN,
     }
-    for k in ['1.33', '1.34', '1.36', '2.0', '1.35', '1.37', '1.46', '1.38', '1.39', '1.40', '1.41', '1.42', '1.45', '1.43', '1.44', '1.47', '1.48', '1.49', '1.50', '1.51', '1.52', '1.53', '1.55', '1.54', '1.57', '1.58', '1.59']
+    for k in [
+        "1.33",
+        "1.34",
+        "1.36",
+        "2.0",
+        "1.35",
+        "1.37",
+        "1.46",
+        "1.38",
+        "1.39",
+        "1.40",
+        "1.41",
+        "1.42",
+        "1.45",
+        "1.43",
+        "1.44",
+        "1.47",
+        "1.48",
+        "1.49",
+        "1.50",
+        "1.51",
+        "1.52",
+        "1.53",
+        "1.55",
+        "1.54",
+        "1.57",
+        "1.58",
+        "1.59",
+    ]
 }
- 
-SPECS_CONAN.update({
-    k: {
-        "python": "3.10", 
-        "pre_install": [
-            "apt-get -y update && apt-get -y upgrade && apt-get install -y build-essential cmake",
-        ],
-        "install": "pip install -r conans/requirements.txt; pip install -r conans/requirements_server.txt; pip install -r conans/requirements_dev.txt ",
-        "eval_commands": [
-            "export PYTHONPATH=${PYTHONPATH:-}:$(pwd)",
-        ],
-        "test_cmd": TEST_CONAN,
+
+SPECS_CONAN.update(
+    {
+        k: {
+            "python": "3.10",
+            "pre_install": [
+                "apt-get -y update && apt-get -y upgrade && apt-get install -y build-essential cmake",
+            ],
+            "install": "pip install -r conans/requirements.txt; pip install -r conans/requirements_server.txt; pip install -r conans/requirements_dev.txt ",
+            "eval_commands": [
+                "export PYTHONPATH=${PYTHONPATH:-}:$(pwd)",
+            ],
+            "test_cmd": TEST_CONAN,
+        }
+        for k in ["2.1", "1.60", "1.61", "1.62", "2.2", "2.3", "2.4"]
     }
-    for k in ['2.1', '1.60', '1.61', '1.62', '2.2', '2.3', '2.4']
-})
+)
 MAP_REPO_VERSION_TO_SPECS.update({"conan-io/conan": SPECS_CONAN})
 
 
-
-TEST_DASK = "pytest -n0 -rA -W \"ignore::DeprecationWarning\"  --continue-on-collection-errors --color=no"
+TEST_DASK = 'pytest -n0 -rA -W "ignore::DeprecationWarning"  --continue-on-collection-errors --color=no'
 # pandas 2.0 is a breaking change, need to separate from there
 SPECS_DASK = dict()
 
 
-SPECS_DASK.update({
-    k: {
-        # "python": "3.10", 
-        "env_patches": [
-            # dask installs latest dask from github in environment.yml
-            # remove these lines and delay dask installation later
-            "sed -i '/^[[:space:]]*- pip:/,$d' environment.yml",
-            "sed -i '/^\s*-\s*pip\s*$/d' environment.yml",
-            "sed -i 's/@master/@main/g' environment.yml",
-            r"sed -E -i'' 's/^([[:space:]]*-[[:space:]]*)sqlalchemy[[:alnum:][:punct:]]*/\1sqlalchemy<=1.4.26/' environment.yml",
-            "conda config --set channel_priority strict",
-        ],
-        "packages": "environment.yml",
-        "install": 'pip install --no-deps -e .',
-        "test_cmd": TEST_DASK,
+SPECS_DASK.update(
+    {
+        k: {
+            # "python": "3.10",
+            "env_patches": [
+                # dask installs latest dask from github in environment.yml
+                # remove these lines and delay dask installation later
+                "sed -i '/^[[:space:]]*- pip:/,$d' environment.yml",
+                "sed -i '/^\s*-\s*pip\s*$/d' environment.yml",
+                "sed -i 's/@master/@main/g' environment.yml",
+                r"sed -E -i'' 's/^([[:space:]]*-[[:space:]]*)sqlalchemy[[:alnum:][:punct:]]*/\1sqlalchemy<=1.4.26/' environment.yml",
+                "conda config --set channel_priority strict",
+            ],
+            "packages": "environment.yml",
+            "install": "pip install --no-deps -e .",
+            "test_cmd": TEST_DASK,
+        }
+        for k in [
+            "2.1",
+            "2.2",
+            "2.4",
+            "2.6",
+            "2.7",
+            "2.9",
+            "2.10",
+            "2.11",
+            "2.12",
+            "2.13",
+            "2.14",
+            "2.15",
+            "2.16",
+            "2.17",
+            "2.18",
+            "2.19",
+            "2.20",
+            "2.21",
+            "2.22",
+            "2.23",
+            "2.25",
+            "2.26",
+            "2.27",
+            "2.28",
+            "2.29",
+            "2.30",
+            "2020.12",
+            "2021.01",
+            "2021.02",
+            "2021.03",
+            "2021.04",
+            "2021.05",
+            "2021.06",
+            "2021.07",
+            "2021.08",
+            "2021.09",
+            "2021.10",
+            "2021.11",
+            "2021.12",
+            "2022.01",
+            "2022.02",
+            "2022.03",
+            "2022.04",
+            "2022.05",
+            "2022.6",
+            "2022.7",
+            "2022.8",
+            "2022.9",
+            "2022.10",
+            "2022.11",
+            "2022.12",
+            "2023.1",
+            "2023.2",
+            "2023.3",
+            "2023.4",
+            "2023.5",
+            "2023.6",
+            "2023.7",
+            "2023.8",
+            "2023.9",
+            "2023.10",
+            "2023.11",
+            "2023.12",
+            "2024.1",
+            "2024.2",
+            "2024.3",
+            "2024.4",
+            "2024.5",
+            "2024.6",
+            "2024.7",
+            "2024.8",
+            "2024.9",
+            "2024.10",
+            "2024.11",
+            "2024.12",
+            "2025.1",
+            "2025.2",
+            "2025.3",
+        ]
     }
-    for k in ["2.1", '2.2', '2.4', '2.6', '2.7', '2.9', '2.10', '2.11', '2.12', '2.13', '2.14', '2.15', '2.16', '2.17', '2.18', '2.19', '2.20', '2.21', '2.22', '2.23', '2.25', '2.26', '2.27', '2.28', '2.29', '2.30', '2020.12', '2021.01', '2021.02', '2021.03', '2021.04', '2021.05', '2021.06', '2021.07', '2021.08', '2021.09', '2021.10', '2021.11', '2021.12', '2022.01', '2022.02', '2022.03', '2022.04', '2022.05', '2022.6', '2022.7', '2022.8', '2022.9', '2022.10', '2022.11', '2022.12', '2023.1', '2023.2', '2023.3', '2023.4', '2023.5', '2023.6', '2023.7', '2023.8', '2023.9', '2023.10', '2023.11', '2023.12', '2024.1', '2024.2', '2024.3', '2024.4', '2024.5', '2024.6', '2024.7', '2024.8', "2024.9", "2024.10", "2024.11", "2024.12", "2025.1", "2025.2", "2025.3"]
-})
-for k in ["2.1", '2.2', '2.4', '2.6', '2.7', '2.9', '2.10', '2.11', '2.12', '2.13', '2.14', '2.15', '2.16', '2.17', '2.18', '2.19', '2.20', '2.21', '2.22', '2.23', '2.25', '2.26', '2.27', '2.28', '2.29', '2.30', '2020.12', '2021.01', '2021.02', '2021.03', '2021.04', '2021.05', '2021.06', '2021.07', '2021.08', '2021.09', '2021.10', '2021.11', '2021.12', '2022.01', '2022.02', '2022.03', '2022.04', '2022.05', '2022.6', '2022.7', '2022.8', '2022.9', '2022.10', '2022.11', '2022.12']:
+)
+for k in [
+    "2.1",
+    "2.2",
+    "2.4",
+    "2.6",
+    "2.7",
+    "2.9",
+    "2.10",
+    "2.11",
+    "2.12",
+    "2.13",
+    "2.14",
+    "2.15",
+    "2.16",
+    "2.17",
+    "2.18",
+    "2.19",
+    "2.20",
+    "2.21",
+    "2.22",
+    "2.23",
+    "2.25",
+    "2.26",
+    "2.27",
+    "2.28",
+    "2.29",
+    "2.30",
+    "2020.12",
+    "2021.01",
+    "2021.02",
+    "2021.03",
+    "2021.04",
+    "2021.05",
+    "2021.06",
+    "2021.07",
+    "2021.08",
+    "2021.09",
+    "2021.10",
+    "2021.11",
+    "2021.12",
+    "2022.01",
+    "2022.02",
+    "2022.03",
+    "2022.04",
+    "2022.05",
+    "2022.6",
+    "2022.7",
+    "2022.8",
+    "2022.9",
+    "2022.10",
+    "2022.11",
+    "2022.12",
+]:
     SPECS_DASK[k]["pip_packages"] = ["'pytest<8'", "'numpy<2'", "'pandas<2'"]
 
-for k in ['2024.1', '2024.2', '2024.3', '2024.4', '2024.5', '2024.6', '2024.7', '2024.8', "2024.9", "2024.10", "2024.11", "2024.12", "2025.1", "2025.2", "2025.3"]:
+for k in [
+    "2024.1",
+    "2024.2",
+    "2024.3",
+    "2024.4",
+    "2024.5",
+    "2024.6",
+    "2024.7",
+    "2024.8",
+    "2024.9",
+    "2024.10",
+    "2024.11",
+    "2024.12",
+    "2025.1",
+    "2025.2",
+    "2025.3",
+]:
     SPECS_DASK[k]["pip_packages"] = ["dask-expr"]
 
 # #"'numba==0.56.4'", "'pyarrow<8'", "'numpy<1.20'"
 
 # for k in ['2020.12', '2021.01', '2021.02', '2021.03', '2021.04', '2021.05', '2021.06', '2021.07', '2021.08', '2021.09', '2021.10', '2021.11', '2021.12', '2022.01', '2022.02', '2022.03', '2022.04', '2022.05', '2022.6', '2022.7', '2022.8', '2022.9', '2022.10', '2022.11', '2022.12', '2023.1', '2023.2', '2023.3', '2023.4', '2023.5', '2023.6', '2023.7', '2023.8', '2023.9', '2023.10', '2023.11', '2023.12', '2024.1', '2024.2', '2024.3', '2024.4', '2024.5', '2024.6', '2024.7', '2024.8', "2024.9", "2024.10", "2024.11", "2024.12", "2025.1", "2025.2", "2025.3"]:
 #     SPECS_DASK[k]["pip_packages"] = ["'pytest<9'", "xarray", "fastavro", "gmpy2"]
-    
+
 # for k in ['2.1', '2.2', '2.4', '2.6', '2.7', '2.9', '2.10', '2.11', '2.12', '2.13', '2.14', '2.15', ]:
 #     SPECS_DASK[k]["pip_packages"] = ["'pytest<9'", "xarray", "fastavro", ]
 
@@ -2107,19 +2359,35 @@ MAP_REPO_VERSION_TO_SPECS.update({"dask/dask": SPECS_DASK})
 TEST_MONAI = "pytest -rA "
 SPECS_MONAI = {
     k: {
-        "python": "3.8", 
+        "python": "3.8",
         # monai's requirements.txt calls each other, hard to standardize in swefficiency constant format
         # "packages": "requirements.txt",
         # "install": "pip install -U pip; pip install scikit-build; pip install types-pkg-resources==0.1.3 pytest; pip install -U -r requirements-dev.txt; python setup.py develop;",
         # "env_patches": [
-        #     # monai installs itself from git 
+        #     # monai installs itself from git
         #     # remove these lines and delay dask installation later
         #     "sed -i '/^git+https:\/\/github.com\/Project-MONAI\//d' ~/requirements.txt"
         # ],
         "install": "sed -i '/^git+https:\/\/github.com\/Project-MONAI\//d' requirements-dev.txt; pip install types-pkg-resources==0.1.3 pytest; pip install -r requirements-dev.txt;python setup.py develop;",
         "test_cmd": TEST_MONAI,
     }
-    for k in ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.11', '0.105', '1.0', '1.1', '1.2', '1.3']
+    for k in [
+        "0.1",
+        "0.2",
+        "0.3",
+        "0.4",
+        "0.5",
+        "0.6",
+        "0.7",
+        "0.8",
+        "0.9",
+        "0.11",
+        "0.105",
+        "1.0",
+        "1.1",
+        "1.2",
+        "1.3",
+    ]
 }
 MAP_REPO_VERSION_TO_SPECS.update({"Project-MONAI/MONAI": SPECS_MONAI})
 
@@ -2127,7 +2395,7 @@ MAP_REPO_VERSION_TO_SPECS.update({"Project-MONAI/MONAI": SPECS_MONAI})
 TEST_DVC = "pytest -rA"
 SPECS_DVC = {
     k: {
-        "python": "3.10", 
+        "python": "3.10",
         "pre_install": [
             "apt-get -y update && apt-get -y upgrade && apt-get install -y cmake",
             # fix moto dev version missing issue
@@ -2135,36 +2403,308 @@ SPECS_DVC = {
             # fix pyarrow version issue
             "[ -f setup.py ] && sed -i 's/pyarrow==0.15.1/pyarrow==0.16/' setup.py"
             # fix boto version conflict
-            "[ -f setup.py ] && sed -i 's/boto3==1.9.115/boto3==1.9.201/' setup.py"
+            "[ -f setup.py ] && sed -i 's/boto3==1.9.115/boto3==1.9.201/' setup.py",
         ],
         "install": 'pip install --upgrade pip wheel GitPython; pip install "cython<3.0.0" && pip install --no-build-isolation pyyaml==5.4.1; pip install git+https://github.com/iterative/mock-ssh-server.git || true; pip install -r tests/requirements.txt || true; pip install -r test-requirements.txt || true; pip install -e ".[tests,dev,all_remotes,all,testing]";',
         "test_cmd": TEST_DVC,
     }
-    for k in ['0.1', '0.8', '0.9', '0.12', '0.13', '0.14', '0.15', '0.16', '0.17', '0.18', '0.19', '0.20', '0.21', '0.22', '0.23', '0.24', '0.27', '0.28', '0.29', '0.30', '0.31', '0.32', '0.33', '0.34', '0.35', '0.40', '0.41', '0.50', '0.51', '0.52', '0.53', '0.54', '0.55', '0.56', '0.57', '0.58', '0.59', '0.60', '0.61', '0.62', '0.63', '0.65', '0.66', '0.68', '0.69', '0.70', '0.71', '0.74', '0.75', '0.76', '0.77', '0.78', '0.80', '0.81', '0.82', '0.83', '0.84', '0.85', '0.86', '0.87', '0.88', '0.89', '0.90', '0.91', '0.92', '0.93', '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '1.10', '1.11', '2.0', '2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7', '2.8', '2.9', '2.10', '2.11', '2.12', '2.13', '2.15', '2.17', '2.19', '2.20', '2.21', '2.22', '2.23', '2.24', '2.27', '2.28', '2.30', '2.33', '2.34', '2.35', '2.38', '2.41', '2.43', '2.44', '2.45', '2.46', '2.48', '2.50', '2.51', '2.52', '2.54', '2.55', '2.56', '2.57', '2.58', '3.0', '3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '3.10', '3.11', '3.12', '3.13', '3.14', '3.15', '3.17', '3.19', '3.23', '3.24', '3.28', '3.29', '3.36', '3.37', '3.38', '3.43', '3.47', '3.48', '3.49']
+    for k in [
+        "0.1",
+        "0.8",
+        "0.9",
+        "0.12",
+        "0.13",
+        "0.14",
+        "0.15",
+        "0.16",
+        "0.17",
+        "0.18",
+        "0.19",
+        "0.20",
+        "0.21",
+        "0.22",
+        "0.23",
+        "0.24",
+        "0.27",
+        "0.28",
+        "0.29",
+        "0.30",
+        "0.31",
+        "0.32",
+        "0.33",
+        "0.34",
+        "0.35",
+        "0.40",
+        "0.41",
+        "0.50",
+        "0.51",
+        "0.52",
+        "0.53",
+        "0.54",
+        "0.55",
+        "0.56",
+        "0.57",
+        "0.58",
+        "0.59",
+        "0.60",
+        "0.61",
+        "0.62",
+        "0.63",
+        "0.65",
+        "0.66",
+        "0.68",
+        "0.69",
+        "0.70",
+        "0.71",
+        "0.74",
+        "0.75",
+        "0.76",
+        "0.77",
+        "0.78",
+        "0.80",
+        "0.81",
+        "0.82",
+        "0.83",
+        "0.84",
+        "0.85",
+        "0.86",
+        "0.87",
+        "0.88",
+        "0.89",
+        "0.90",
+        "0.91",
+        "0.92",
+        "0.93",
+        "1.0",
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6",
+        "1.7",
+        "1.8",
+        "1.9",
+        "1.10",
+        "1.11",
+        "2.0",
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+        "2.5",
+        "2.6",
+        "2.7",
+        "2.8",
+        "2.9",
+        "2.10",
+        "2.11",
+        "2.12",
+        "2.13",
+        "2.15",
+        "2.17",
+        "2.19",
+        "2.20",
+        "2.21",
+        "2.22",
+        "2.23",
+        "2.24",
+        "2.27",
+        "2.28",
+        "2.30",
+        "2.33",
+        "2.34",
+        "2.35",
+        "2.38",
+        "2.41",
+        "2.43",
+        "2.44",
+        "2.45",
+        "2.46",
+        "2.48",
+        "2.50",
+        "2.51",
+        "2.52",
+        "2.54",
+        "2.55",
+        "2.56",
+        "2.57",
+        "2.58",
+        "3.0",
+        "3.1",
+        "3.2",
+        "3.3",
+        "3.4",
+        "3.5",
+        "3.6",
+        "3.10",
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+        "3.15",
+        "3.17",
+        "3.19",
+        "3.23",
+        "3.24",
+        "3.28",
+        "3.29",
+        "3.36",
+        "3.37",
+        "3.38",
+        "3.43",
+        "3.47",
+        "3.48",
+        "3.49",
+    ]
 }
 for k in [
-    '0.1', '0.8', '0.9', '0.12', '0.13', '0.14', '0.15', '0.16', '0.17', '0.18', '0.19', '0.20', '0.21', '0.22', '0.23', '0.24', '0.27', '0.28', '0.29', '0.30', '0.31', '0.32', '0.33', '0.34', '0.35', '0.40', '0.41', '0.50', '0.51', '0.52', '0.53', '0.54', '0.55', '0.56', '0.57', '0.58', '0.59', '0.60', '0.61', '0.62', '0.63', '0.65', '0.66', '0.68', '0.69', '0.70', '0.71', '0.74', '0.75', '0.76', '0.77', '0.78', '0.80', '0.81', '0.82', '0.83', '0.84', '0.85', '0.86', '0.87', '0.88', '0.89', '0.90', '0.91', '0.92', '0.93', ]:
-    SPECS_DVC[k]['python'] = '3.8'
-    SPECS_DVC[k]['install'] += ' pip install "numpy<=1.20";'
+    "0.1",
+    "0.8",
+    "0.9",
+    "0.12",
+    "0.13",
+    "0.14",
+    "0.15",
+    "0.16",
+    "0.17",
+    "0.18",
+    "0.19",
+    "0.20",
+    "0.21",
+    "0.22",
+    "0.23",
+    "0.24",
+    "0.27",
+    "0.28",
+    "0.29",
+    "0.30",
+    "0.31",
+    "0.32",
+    "0.33",
+    "0.34",
+    "0.35",
+    "0.40",
+    "0.41",
+    "0.50",
+    "0.51",
+    "0.52",
+    "0.53",
+    "0.54",
+    "0.55",
+    "0.56",
+    "0.57",
+    "0.58",
+    "0.59",
+    "0.60",
+    "0.61",
+    "0.62",
+    "0.63",
+    "0.65",
+    "0.66",
+    "0.68",
+    "0.69",
+    "0.70",
+    "0.71",
+    "0.74",
+    "0.75",
+    "0.76",
+    "0.77",
+    "0.78",
+    "0.80",
+    "0.81",
+    "0.82",
+    "0.83",
+    "0.84",
+    "0.85",
+    "0.86",
+    "0.87",
+    "0.88",
+    "0.89",
+    "0.90",
+    "0.91",
+    "0.92",
+    "0.93",
+]:
+    SPECS_DVC[k]["python"] = "3.8"
+    SPECS_DVC[k]["install"] += ' pip install "numpy<=1.20";'
     # pytest 8 breaks pytest-lazy-fixture
-    SPECS_DVC[k]['install'] += ' pip install "pytest<8";'
+    SPECS_DVC[k]["install"] += ' pip install "pytest<8";'
 
 for k in [
-    '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '1.10', '1.11', '2.0', '2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7', '2.8', '2.9', '2.10', '2.11', '2.12', '2.13', '2.15', '2.17', '2.19', '2.20', '2.21', '2.22', '2.23', '2.24', '2.27', '2.28', '2.30', '2.33', '2.34', '2.35', '2.38', '2.41', '2.43', '2.44', '2.45', '2.46', '2.48', '2.50', '2.51', '2.52', '2.54', '2.55', '2.56', '2.57', '2.58', '3.0', '3.1', '3.2', '3.3', 
+    "1.0",
+    "1.1",
+    "1.2",
+    "1.3",
+    "1.4",
+    "1.5",
+    "1.6",
+    "1.7",
+    "1.8",
+    "1.9",
+    "1.10",
+    "1.11",
+    "2.0",
+    "2.1",
+    "2.2",
+    "2.3",
+    "2.4",
+    "2.5",
+    "2.6",
+    "2.7",
+    "2.8",
+    "2.9",
+    "2.10",
+    "2.11",
+    "2.12",
+    "2.13",
+    "2.15",
+    "2.17",
+    "2.19",
+    "2.20",
+    "2.21",
+    "2.22",
+    "2.23",
+    "2.24",
+    "2.27",
+    "2.28",
+    "2.30",
+    "2.33",
+    "2.34",
+    "2.35",
+    "2.38",
+    "2.41",
+    "2.43",
+    "2.44",
+    "2.45",
+    "2.46",
+    "2.48",
+    "2.50",
+    "2.51",
+    "2.52",
+    "2.54",
+    "2.55",
+    "2.56",
+    "2.57",
+    "2.58",
+    "3.0",
+    "3.1",
+    "3.2",
+    "3.3",
 ]:
-    SPECS_DVC[k]['python'] = '3.9'
-    SPECS_DVC[k]['install'] += ' pip install "numpy<=1.20";'
+    SPECS_DVC[k]["python"] = "3.9"
+    SPECS_DVC[k]["install"] += ' pip install "numpy<=1.20";'
     # pytest 8 breaks pytest-lazy-fixture
-    SPECS_DVC[k]['install'] += ' pip install "pytest<8";'
+    SPECS_DVC[k]["install"] += ' pip install "pytest<8";'
 MAP_REPO_VERSION_TO_SPECS.update({"iterative/dvc": SPECS_DVC})
 
 # bokeh
 # https://docs.bokeh.org/en/latest/docs/dev_guide/setup.html
 TEST_BOKEH = "pytest -rA -n0"
-    # for k in ['0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.10', '0.11', '0.12', '0.13', '0.1181316818', '1.0', '1.1', '1.2', '1.3', '1.4', '2.0', '2.1', '2.3', '2.4', '3.0', '3.3', '3.4', '3.5']
+# for k in ['0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.10', '0.11', '0.12', '0.13', '0.1181316818', '1.0', '1.1', '1.2', '1.3', '1.4', '2.0', '2.1', '2.3', '2.4', '3.0', '3.3', '3.4', '3.5']
 SPECS_BOKEH = {
     k: {
-        "python": "3.10", 
+        "python": "3.10",
         "packages": "environment.yml",
         "pre_install": [
             "cd bokehjs && npm install --location=global npm && npm ci && cd ../"
@@ -2172,42 +2712,63 @@ SPECS_BOKEH = {
         "install": "pip install -e .; pip install bokeh_sampledata;",
         "test_cmd": TEST_BOKEH,
     }
-    for k in ['3.0', '3.3', '3.4', '3.5']
+    for k in ["3.0", "3.3", "3.4", "3.5"]
 }
 
-SPECS_BOKEH.update({
-    k: {
-        "python": "3.8", 
-        "packages": "environment.yml",
-        "env_patches": [
-            ": \"${CONDA_MKL_INTERFACE_LAYER_BACKUP:=''}\"",
-            # "sed -i 's/  - setuptools/  - setuptools<66/' environment.yml"
-        ],
-        "pre_install": [
-            "cd bokehjs && npm install --location=global npm && npm ci && cd ../",
-        ],
-        "install": 'pip install "setuptools<66" "jinja2<3.1"; printf "1\n" | python setup.py develop; bokeh sampledata;',
-        "test_cmd": TEST_BOKEH,
+SPECS_BOKEH.update(
+    {
+        k: {
+            "python": "3.8",
+            "packages": "environment.yml",
+            "env_patches": [
+                ": \"${CONDA_MKL_INTERFACE_LAYER_BACKUP:=''}\"",
+                # "sed -i 's/  - setuptools/  - setuptools<66/' environment.yml"
+            ],
+            "pre_install": [
+                "cd bokehjs && npm install --location=global npm && npm ci && cd ../",
+            ],
+            "install": 'pip install "setuptools<66" "jinja2<3.1"; printf "1\n" | python setup.py develop; bokeh sampledata;',
+            "test_cmd": TEST_BOKEH,
+        }
+        for k in ["2.0", "2.1", "2.3", "2.4"]
     }
-    for k in ['2.0', '2.1', '2.3', '2.4']
-})
+)
 
-SPECS_BOKEH.update({
-    k: {
-        "python": "3.8", 
-        "packages": "environment.yml",
-        "env_patches": [
-            ": \"${CONDA_MKL_INTERFACE_LAYER_BACKUP:=''}\"",
-            # "sed -i 's/  - setuptools/  - setuptools<66/' environment.yml"
-        ],
-        "pre_install": [
-            "cd bokehjs && npm install --location=global npm && npm ci && cd ../",
-        ],
-        "install": 'pip install "setuptools<66" "jinja2<3.1"; printf "1\n" | python setup.py develop; bokeh sampledata;',
-        "test_cmd": TEST_BOKEH,
+SPECS_BOKEH.update(
+    {
+        k: {
+            "python": "3.8",
+            "packages": "environment.yml",
+            "env_patches": [
+                ": \"${CONDA_MKL_INTERFACE_LAYER_BACKUP:=''}\"",
+                # "sed -i 's/  - setuptools/  - setuptools<66/' environment.yml"
+            ],
+            "pre_install": [
+                "cd bokehjs && npm install --location=global npm && npm ci && cd ../",
+            ],
+            "install": 'pip install "setuptools<66" "jinja2<3.1"; printf "1\n" | python setup.py develop; bokeh sampledata;',
+            "test_cmd": TEST_BOKEH,
+        }
+        for k in [
+            "0.4",
+            "0.5",
+            "0.6",
+            "0.7",
+            "0.8",
+            "0.9",
+            "0.10",
+            "0.11",
+            "0.12",
+            "0.13",
+            "0.1181316818",
+            "1.0",
+            "1.1",
+            "1.2",
+            "1.3",
+            "1.4",
+        ]
     }
-    for k in ['0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.10', '0.11', '0.12', '0.13', '0.1181316818', '1.0', '1.1', '1.2', '1.3', '1.4']
-})
+)
 MAP_REPO_VERSION_TO_SPECS.update({"bokeh/bokeh": SPECS_BOKEH})
 
 
@@ -2218,7 +2779,7 @@ MAP_REPO_VERSION_TO_SPECS.update({"bokeh/bokeh": SPECS_BOKEH})
 TEST_MODIN = "pytest -n0 -rA"
 SPECS_MODIN = {
     k: {
-        "python": "3.6", 
+        "python": "3.6",
         # "pre_install": [
         #     "apt-get -y update && apt-get -y upgrade && apt-get install -y libpq-dev",
         #     'export PATH="$HOME/.local/bin:$PATH"',
@@ -2230,16 +2791,55 @@ SPECS_MODIN = {
         # "install": "pip install 'numpy<2.0'; pip install --upgrade Cython; pip install -r requirements-dev.txt; pip install -e .",
         "test_cmd": TEST_MODIN,
     }
-    for k in ['0.7', '0.8', '0.9', '0.10', '0.11', '0.12', '0.13', '0.14', '0.15', '0.16', '0.17', '0.18', '0.19', '0.20', '0.21', '0.22', '0.23', '0.24', '0.25', '0.26', '0.27', '0.28', '0.29', '0.30', '0.31', '0.32']
+    for k in [
+        "0.7",
+        "0.8",
+        "0.9",
+        "0.10",
+        "0.11",
+        "0.12",
+        "0.13",
+        "0.14",
+        "0.15",
+        "0.16",
+        "0.17",
+        "0.18",
+        "0.19",
+        "0.20",
+        "0.21",
+        "0.22",
+        "0.23",
+        "0.24",
+        "0.25",
+        "0.26",
+        "0.27",
+        "0.28",
+        "0.29",
+        "0.30",
+        "0.31",
+        "0.32",
+    ]
 }
-for k in ['0.7', '0.8', '0.9', '0.10', '0.11', '0.12', '0.13', '0.14', '0.15']:
-    SPECS_MODIN[k]['python'] = '3.6'
-    
-for k in ['0.16', '0.17', '0.18', '0.19', '0.20', '0.21']:
-    SPECS_MODIN[k]['python'] = '3.8'
-    
-for k in ['0.22', '0.23', '0.24', '0.25', '0.26', '0.27', '0.28', '0.29', '0.30', '0.31', '0.32']:
-    SPECS_MODIN[k]['python'] = '3.10'
+for k in ["0.7", "0.8", "0.9", "0.10", "0.11", "0.12", "0.13", "0.14", "0.15"]:
+    SPECS_MODIN[k]["python"] = "3.6"
+
+for k in ["0.16", "0.17", "0.18", "0.19", "0.20", "0.21"]:
+    SPECS_MODIN[k]["python"] = "3.8"
+
+for k in [
+    "0.22",
+    "0.23",
+    "0.24",
+    "0.25",
+    "0.26",
+    "0.27",
+    "0.28",
+    "0.29",
+    "0.30",
+    "0.31",
+    "0.32",
+]:
+    SPECS_MODIN[k]["python"] = "3.10"
 
 MAP_REPO_VERSION_TO_SPECS.update({"modin-project/modin": SPECS_MODIN})
 
@@ -2248,11 +2848,11 @@ MAP_REPO_VERSION_TO_SPECS.update({"modin-project/modin": SPECS_MODIN})
 TEST_SPYDER = "pytest -n0 -rA"
 SPECS_SPYDER = {
     k: {
-        "python": "3.9", 
+        "python": "3.9",
         "packages": "environment.yml",
         "pre_install": [
             "conda env update --file requirements/linux.yml",
-            "conda env update --file requirements/tests.yml"
+            "conda env update --file requirements/tests.yml",
         ],
         "install": "pip install -e .;",
         # "install": "pip install 'numpy<2.0'; pip install --upgrade Cython; pip install -r requirements-dev.txt; pip install -e .",
@@ -2268,22 +2868,189 @@ MAP_REPO_VERSION_TO_SPECS.update({"spyder-ide/spyder": SPECS_SPYDER})
 TEST_HYPOTHESIS = "pytest -n0 -rA --tb=no --no-header"
 SPECS_HYPOTHESIS = {
     k: {
-        "python": "3.10", 
-        "packages": "requirements.txt", # this installs tools.txt
+        "python": "3.10",
+        "packages": "requirements.txt",  # this installs tools.txt
         "install": "pip install -r requirements/test.txt; pip install -e hypothesis-python/;",
         "test_cmd": TEST_HYPOTHESIS,
     }
-    for k in ['3.55', '3.61', '3.60', '3.59', '3.63', '3.66', '3.67', '3.68', '3.69', '3.70', '5.1', '5.5', '5.24', '5.6', '5.9', '5.8', '5.10', '5.12', '5.15', '5.20', '5.23', '5.36', '5.32', '5.33', '5.38', '5.41', '5.42', '5.43', '5.47', '6.1', '6.4', '6.6', '6.8', '6.14', '6.13', '6.18', '6.21', '6.24', '6.28', '6.29', '3.73', '3.71', '3.75', '3.79', '3.82', '3.85', '3.88', '4.0', '3.86', '4.2', '4.4', '4.15', '4.12', '4.14', '4.18', '4.23', '4.24', '4.26', '4.32', '4.38', '4.40', '4.42', '4.46', '4.44', '4.50', '4.54', '4.55', '5.2', '5.4', '6.30', '6.31', '6.36', '6.40', '6.43', '6.53', '6.45', '6.46', '6.47', '6.50', '6.54', '6.59', '6.62', '6.66', '6.71', '6.74', '6.77', '6.81', '6.87', '6.88', '6.93', '6.98', '6.99', '6.100', '6.102']
+    for k in [
+        "3.55",
+        "3.61",
+        "3.60",
+        "3.59",
+        "3.63",
+        "3.66",
+        "3.67",
+        "3.68",
+        "3.69",
+        "3.70",
+        "5.1",
+        "5.5",
+        "5.24",
+        "5.6",
+        "5.9",
+        "5.8",
+        "5.10",
+        "5.12",
+        "5.15",
+        "5.20",
+        "5.23",
+        "5.36",
+        "5.32",
+        "5.33",
+        "5.38",
+        "5.41",
+        "5.42",
+        "5.43",
+        "5.47",
+        "6.1",
+        "6.4",
+        "6.6",
+        "6.8",
+        "6.14",
+        "6.13",
+        "6.18",
+        "6.21",
+        "6.24",
+        "6.28",
+        "6.29",
+        "3.73",
+        "3.71",
+        "3.75",
+        "3.79",
+        "3.82",
+        "3.85",
+        "3.88",
+        "4.0",
+        "3.86",
+        "4.2",
+        "4.4",
+        "4.15",
+        "4.12",
+        "4.14",
+        "4.18",
+        "4.23",
+        "4.24",
+        "4.26",
+        "4.32",
+        "4.38",
+        "4.40",
+        "4.42",
+        "4.46",
+        "4.44",
+        "4.50",
+        "4.54",
+        "4.55",
+        "5.2",
+        "5.4",
+        "6.30",
+        "6.31",
+        "6.36",
+        "6.40",
+        "6.43",
+        "6.53",
+        "6.45",
+        "6.46",
+        "6.47",
+        "6.50",
+        "6.54",
+        "6.59",
+        "6.62",
+        "6.66",
+        "6.71",
+        "6.74",
+        "6.77",
+        "6.81",
+        "6.87",
+        "6.88",
+        "6.93",
+        "6.98",
+        "6.99",
+        "6.100",
+        "6.102",
+    ]
 }
-for k in ['3.55', '3.61', '3.60', '3.59', '3.63', '3.66', '3.67', '3.68', '3.69', '3.70', '5.1', '5.5', '5.24', '5.6', '5.9', '5.8', '5.10', '5.12', '5.15', '5.20', '5.23', '5.36', '5.32', '5.33', '5.38', '5.41', '5.42', '5.43', '5.47', '6.1', '6.4', '6.6', '6.8', '6.14', '6.13', '6.18', '6.21', '6.24', '6.28', '6.29', '3.73', '3.71', '3.75', '3.79', '3.82', '3.85', '3.88', '4.0', '3.86', '4.2', '4.4', '4.15', '4.12', '4.14', '4.18', '4.23', '4.24', '4.26', '4.32', '4.38', '4.40', '4.42', '4.46', '4.44', '4.50', '4.54', '4.55', '5.2', '5.4', '6.30', '6.31']:
-    SPECS_HYPOTHESIS[k]['python'] = '3.9'
+for k in [
+    "3.55",
+    "3.61",
+    "3.60",
+    "3.59",
+    "3.63",
+    "3.66",
+    "3.67",
+    "3.68",
+    "3.69",
+    "3.70",
+    "5.1",
+    "5.5",
+    "5.24",
+    "5.6",
+    "5.9",
+    "5.8",
+    "5.10",
+    "5.12",
+    "5.15",
+    "5.20",
+    "5.23",
+    "5.36",
+    "5.32",
+    "5.33",
+    "5.38",
+    "5.41",
+    "5.42",
+    "5.43",
+    "5.47",
+    "6.1",
+    "6.4",
+    "6.6",
+    "6.8",
+    "6.14",
+    "6.13",
+    "6.18",
+    "6.21",
+    "6.24",
+    "6.28",
+    "6.29",
+    "3.73",
+    "3.71",
+    "3.75",
+    "3.79",
+    "3.82",
+    "3.85",
+    "3.88",
+    "4.0",
+    "3.86",
+    "4.2",
+    "4.4",
+    "4.15",
+    "4.12",
+    "4.14",
+    "4.18",
+    "4.23",
+    "4.24",
+    "4.26",
+    "4.32",
+    "4.38",
+    "4.40",
+    "4.42",
+    "4.46",
+    "4.44",
+    "4.50",
+    "4.54",
+    "4.55",
+    "5.2",
+    "5.4",
+    "6.30",
+    "6.31",
+]:
+    SPECS_HYPOTHESIS[k]["python"] = "3.9"
 
 MAP_REPO_VERSION_TO_SPECS.update({"HypothesisWorks/hypothesis": SPECS_HYPOTHESIS})
 
 # pydantic
 # https://docs.pydantic.dev/latest/contributing/
 # TEST_PYDANTIC = 'export PATH="$HOME/.local/bin:$PATH"; pdm run coverage run -m pytest -rA --tb=short --no-header'
-TEST_PYDANTIC = 'pytest -rA --tb=short -vv -o console_output_style=classic --no-header'
+TEST_PYDANTIC = "pytest -rA --tb=short -vv -o console_output_style=classic --no-header"
 SPECS_PYDANTIC = {
     k: {
         "python": "3.8",
@@ -2300,29 +3067,107 @@ SPECS_PYDANTIC = {
         "install": 'export PATH="$HOME/.local/bin:$PATH"; pdm add pre-commit; make install;',
         "test_cmd": TEST_PYDANTIC,
     }
-    for k in ['0.2', '0.41', '0.4', '0.6', '0.9', '0.10', '0.11', '0.13', '0.14', '0.151', '0.15', '0.17', '0.18', '0.201', '0.20', '0.24', '0.27', '0.29', '1.01', '0.32', '1.4', '1.31', '1.41', '1.51', '1.5', '1.71', '1.6', '1.7', '1.8', '1.9', '1.10', '2.0', '2.01', '2.02', '2.03', '2.04', '2.6', '2.5', '2.4', '2.7']
+    for k in [
+        "0.2",
+        "0.41",
+        "0.4",
+        "0.6",
+        "0.9",
+        "0.10",
+        "0.11",
+        "0.13",
+        "0.14",
+        "0.151",
+        "0.15",
+        "0.17",
+        "0.18",
+        "0.201",
+        "0.20",
+        "0.24",
+        "0.27",
+        "0.29",
+        "1.01",
+        "0.32",
+        "1.4",
+        "1.31",
+        "1.41",
+        "1.51",
+        "1.5",
+        "1.71",
+        "1.6",
+        "1.7",
+        "1.8",
+        "1.9",
+        "1.10",
+        "2.0",
+        "2.01",
+        "2.02",
+        "2.03",
+        "2.04",
+        "2.6",
+        "2.5",
+        "2.4",
+        "2.7",
+    ]
 }
 
-for k in ['0.2', '0.41', '0.4', '0.6', '0.9', '0.10', '0.11', '0.13', '0.14', '0.151', '0.15', '0.17', '0.18', '0.201', '0.20', '0.24', '0.27', '0.29', '1.01', '0.32', '1.4', '1.31', '1.41', '1.51', '1.5', '1.71', '1.6', '1.7', '1.8', '1.9', '1.10']:
+for k in [
+    "0.2",
+    "0.41",
+    "0.4",
+    "0.6",
+    "0.9",
+    "0.10",
+    "0.11",
+    "0.13",
+    "0.14",
+    "0.151",
+    "0.15",
+    "0.17",
+    "0.18",
+    "0.201",
+    "0.20",
+    "0.24",
+    "0.27",
+    "0.29",
+    "1.01",
+    "0.32",
+    "1.4",
+    "1.31",
+    "1.41",
+    "1.51",
+    "1.5",
+    "1.71",
+    "1.6",
+    "1.7",
+    "1.8",
+    "1.9",
+    "1.10",
+]:
     # not working yet
     SPECS_PYDANTIC[k]["pre_install"] = [
-            "apt-get update && apt-get install -y locales",
-            "apt-get install -y pipx",
-            "pipx ensurepath",
-            # well, this in fact uses python 3.10 as default by pipx
-            "pipx install pdm  --python python3.7",
-            'export PATH="$HOME/.local/bin:$PATH"',
-            "which python",
-            "python --version",
-        ]
+        "apt-get update && apt-get install -y locales",
+        "apt-get install -y pipx",
+        "pipx ensurepath",
+        # well, this in fact uses python 3.10 as default by pipx
+        "pipx install pdm  --python python3.7",
+        'export PATH="$HOME/.local/bin:$PATH"',
+        "which python",
+        "python --version",
+    ]
     SPECS_PYDANTIC[k]["python"] = "3.7"
 
 MAP_REPO_VERSION_TO_SPECS.update({"pydantic/pydantic": SPECS_PYDANTIC})
 
 # pandas
 # https://pandas.pydata.org/pandas-docs/dev/development/contributing_environment.html
-TEST_PANDAS = TEST_PYTEST_VERBOSE +  ' -m "not slow and not network and not db and not single_cpu"'
-TEST_PANDAS_DISTRIBUTED = TEST_PYTEST_DISTRIBUTED + ' -m "not slow and not network and not db and not single_cpu" ' # Pandas tests are just slow, generaly pytest-xdist is available in all.
+TEST_PANDAS = (
+    TEST_PYTEST_VERBOSE + ' -m "not slow and not network and not db and not single_cpu"'
+)
+TEST_PANDAS_DISTRIBUTED = (
+    TEST_PYTEST_DISTRIBUTED
+    + ' -m "not slow and not network and not db and not single_cpu" '
+)  # Pandas tests are just slow, generaly pytest-xdist is available in all.
 
 SPECS_PANDAS = {
     k: {
@@ -2338,7 +3183,7 @@ SPECS_PANDAS = {
             "sed -i '/^\s*-\s*hypothesis[<=>\s]*.*$/d' environment.yml",
             # "grep -qE '^\\s*-\\s*(defaults|nodefaults)\\s*$' environment.yml || sed -Ei '/^channels:/ { n; :a; /^\\s*-/ { s/$/\\n  - nodefaults/; b }; n; ba }' environment.yml",
             "awk '/^  # code checks$/ { skip=1; next } /^  # document/ { skip=1; next } /^  # web/ { skip=1; next } skip && /^[[:space:]]*-/ { next } skip { skip=0 } { print }' environment.yml > environment.yml.new && mv environment.yml.new environment.yml",
-            "sed -i -E 's/^([[:space:]]*-[[:space:]]*c-blosc2)[^#]*/\\1/' environment.yml", # Remove this hard dependency and rely on numpy to do it.
+            "sed -i -E 's/^([[:space:]]*-[[:space:]]*c-blosc2)[^#]*/\\1/' environment.yml",  # Remove this hard dependency and rely on numpy to do it.
             # Remove pycodestyle lines.
             "sed -i '/pycodestyle/d' environment.yml",
             "sed -i '/sphinx/d' environment.yml",
@@ -2349,54 +3194,76 @@ SPECS_PANDAS = {
         "pre_install": [
             "git remote add upstream https://github.com/pandas-dev/pandas.git",
             "git fetch upstream --tags",
-            'export CFLAGS="$CFLAGS -fwrapv -fno-strict-overflow -fno-strict-aliasing -Wno-error -Wno-array-bounds -Wno-deprecated-declarations -Wno-sign-compare -Wno-strict-prototypes -Wno-cpp -Wno-unused-function -Wno-missing-prototypes -Wno-implicit-function-declaration -Wno-return-type"',            
+            'export CFLAGS="$CFLAGS -fwrapv -fno-strict-overflow -fno-strict-aliasing -Wno-error -Wno-array-bounds -Wno-deprecated-declarations -Wno-sign-compare -Wno-strict-prototypes -Wno-cpp -Wno-unused-function -Wno-missing-prototypes -Wno-implicit-function-declaration -Wno-return-type"',
         ],
-        # "install": "pip install -ve . --no-build-isolation -Ceditable-verbose=true; pip uninstall pytest-qt -y; pip install hypothesis;", pip uninstall -y pandas; 
+        # "install": "pip install -ve . --no-build-isolation -Ceditable-verbose=true; pip uninstall pytest-qt -y; pip install hypothesis;", pip uninstall -y pandas;
         "install": "pip install -e . --no-build-isolation; pip uninstall pytest-qt -y;",
         "test_cmd": TEST_PANDAS,
         "distributed_test_cmd": TEST_PANDAS_DISTRIBUTED,
         "pip_packages": [
             "hypothesis",
             "pytest",
-        ]
+        ],
     }
-    for k in ['0.23', '0.24', '0.25', '0.26', '0.6', '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '2.0', '2.1', '2.2', '3.0']
+    for k in [
+        "0.23",
+        "0.24",
+        "0.25",
+        "0.26",
+        "0.6",
+        "1.0",
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "2.0",
+        "2.1",
+        "2.2",
+        "3.0",
+    ]
 }
 # We ignore ['0.10', '0.11', '0.12', '0.13', '0.14', '0.15', '0.16', '0.17', '0.18', '0.19', '0.20', '0.21', '0.22']
 
-for k in ['1.1', '1.2', '1.3', '1.4', '1.5', '2.0', '2.1']:
+for k in ["1.1", "1.2", "1.3", "1.4", "1.5", "2.0", "2.1"]:
     # numpy 2 is supported in pandas 2.2
-    SPECS_PANDAS[k]['pre_install'].extend(["pip install 'numpy<2'; "])
-    # SPECS_PANDAS[k]['install'] = "pip install 'numpy<2'; " + SPECS_PANDAS[k]['install'] 
+    SPECS_PANDAS[k]["pre_install"].extend(["pip install 'numpy<2'; "])
+    # SPECS_PANDAS[k]['install'] = "pip install 'numpy<2'; " + SPECS_PANDAS[k]['install']
     # SPECS_PANDAS[k]['env_patches'].append("sed -i 's/python=3[[:space:]]*$/python=3.8/g' environment.yml")
 
-for k in ['1.0']:
+for k in ["1.0"]:
     # numpy 2 is supported in pandas 2.2
-    SPECS_PANDAS[k]['pre_install'].extend(["pip install 'numpy<1.20.0'; "])
-    # SPECS_PANDAS[k]['install'] = SPECS_PANDAS[k]['install'] 
+    SPECS_PANDAS[k]["pre_install"].extend(["pip install 'numpy<1.20.0'; "])
+    # SPECS_PANDAS[k]['install'] = SPECS_PANDAS[k]['install']
     # SPECS_PANDAS[k]['env_patches'].append("sed -i 's/python=3[[:space:]]*$/python=3.8/g' environment.yml")
 
-for k in ['0.23', '0.24', '0.25', '0.26']:
+for k in ["0.23", "0.24", "0.25", "0.26"]:
     # Replace occurrences of "  - python=3" with "  - python=3.7"
-    SPECS_PANDAS[k]['pre_install'].extend(["pip install 'numpy<=1.17.4' 'hypothesis<4'; "])
-    SPECS_PANDAS[k]['install'] = "pip install -e . --no-build-isolation --no-use-pep517; pip uninstall pytest-qt -y;"
+    SPECS_PANDAS[k]["pre_install"].extend(
+        ["pip install 'numpy<=1.17.4' 'hypothesis<4'; "]
+    )
+    SPECS_PANDAS[k][
+        "install"
+    ] = "pip install -e . --no-build-isolation --no-use-pep517; pip uninstall pytest-qt -y;"
 
-for k in ['0.23', '0.24', '0.25', '0.26', '1.0']: # Removed 1.0, 1.1, 1.2
-    SPECS_PANDAS[k]['pre_install'].append(
-        "pip install 'matplotlib<3.3'; "
+for k in ["0.23", "0.24", "0.25", "0.26", "1.0"]:  # Removed 1.0, 1.1, 1.2
+    SPECS_PANDAS[k]["pre_install"].append("pip install 'matplotlib<3.3'; ")
+
+for k in ["0.23", "0.24", "0.25", "0.26", "1.0"]:  # Removed 1.0, 1.1, 1.2
+    SPECS_PANDAS[k]["env_patches"].extend(
+        [
+            "sed -i 's/python=3$/python<3.8/' environment.yml",
+            "cat environment.yml",
+        ]
     )
 
-for k in ['0.23', '0.24', '0.25', '0.26', '1.0']: # Removed 1.0, 1.1, 1.2
-    SPECS_PANDAS[k]['env_patches'].extend([
-        "sed -i 's/python=3$/python<3.8/' environment.yml",
-        "cat environment.yml",
-    ])
-    
-for k in ['1.1', '1.2', '1.3', '1.4', '1.5']:
-    SPECS_PANDAS[k]['env_patches'].extend([
-        "sed -i 's/python=3$/python<=3.10/' environment.yml",
-        "cat environment.yml",
-    ])
+for k in ["1.1", "1.2", "1.3", "1.4", "1.5"]:
+    SPECS_PANDAS[k]["env_patches"].extend(
+        [
+            "sed -i 's/python=3$/python<=3.10/' environment.yml",
+            "cat environment.yml",
+        ]
+    )
 
 MAP_REPO_VERSION_TO_SPECS.update({"pandas-dev/pandas": SPECS_PANDAS})
 
@@ -2411,13 +3278,20 @@ SPECS_HYDRA = {
         "install": "pip install -r requirements/dev.txt; pip install -e .;",
         "test_cmd": TEST_HYDRA,
     }
-    for k in ['0.1', '0.9', '0.10', '0.11', '0.12', '1.0', '1.1', '1.2', '1.3', '1.4']
+    for k in ["0.1", "0.9", "0.10", "0.11", "0.12", "1.0", "1.1", "1.2", "1.3", "1.4"]
 }
-for k in ['0.1', '0.9', '0.10', '0.11', '0.12', '1.0', '1.1', '1.2']:
+for k in ["0.1", "0.9", "0.10", "0.11", "0.12", "1.0", "1.1", "1.2"]:
     # fix omegaconf pip version issue
-    SPECS_HYDRA[k]['install'] = '{ tail -n1 requirements/requirements.txt | grep -q "." && echo ""; } >> requirements/requirements.txt; echo "pip==24.0" >> requirements/requirements.txt;' + 'pip install "pip==24.0"; ' + SPECS_HYDRA[k]['install']
+    SPECS_HYDRA[k]["install"] = (
+        '{ tail -n1 requirements/requirements.txt | grep -q "." && echo ""; } >> requirements/requirements.txt; echo "pip==24.0" >> requirements/requirements.txt;'
+        + 'pip install "pip==24.0"; '
+        + SPECS_HYDRA[k]["install"]
+    )
     # isort is moved to PyCQA now
-    SPECS_HYDRA[k]['install'] = "sed -i 's|isort@git+git://github.com/timothycrosley/isort|isort@git+https://github.com/timothycrosley/isort|g' requirements/dev.txt; " + SPECS_HYDRA[k]['install']
+    SPECS_HYDRA[k]["install"] = (
+        "sed -i 's|isort@git+git://github.com/timothycrosley/isort|isort@git+https://github.com/timothycrosley/isort|g' requirements/dev.txt; "
+        + SPECS_HYDRA[k]["install"]
+    )
 MAP_REPO_VERSION_TO_SPECS.update({"facebookresearch/hydra": SPECS_HYDRA})
 
 
@@ -2426,13 +3300,13 @@ SPECS_NUMPY = {}
 TEST_NUMPY = TEST_PYTEST
 TEST_NUMPY_DISTRIBUTED = TEST_PYTEST_DISTRIBUTED
 
-for k in ['1.15', '1.16']:
+for k in ["1.15", "1.16"]:
     SPECS_NUMPY[k] = {
         "python": "3.6",
         "packages": "'cython==0.28.4' 'pytest' swig",
         "pre_install": [
             "apt-get -y update && apt-get -y upgrade && apt-get install -y libopenblas-dev",
-            r'''[ -f pytest.ini ] && sed -i.bak '/^\[pytest\]/a\markers =\n    slow: marks tests as slow' pytest.ini''',
+            r"""[ -f pytest.ini ] && sed -i.bak '/^\[pytest\]/a\markers =\n    slow: marks tests as slow' pytest.ini""",
             "pip install 'setuptools>=48,<60'",
         ],
         "install": "pip install --no-build-isolation -e .",
@@ -2444,16 +3318,16 @@ for k in ['1.15', '1.16']:
             "pytest-env",
             "pytest-xdist",
             "'setuptools>=48,<60'",
-        ]
+        ],
     }
 
-for k in ['1.17']:
+for k in ["1.17"]:
     SPECS_NUMPY[k] = {
         "python": "3.6",
         "packages": "'cython==0.29.2' 'pytest' swig",
         "pre_install": [
             "apt-get -y update && apt-get -y upgrade && apt-get install -y libopenblas-dev",
-            r'''[ -f pytest.ini ] && sed -i.bak '/^\[pytest\]/a\markers =\n    slow: marks tests as slow' pytest.ini''',
+            r"""[ -f pytest.ini ] && sed -i.bak '/^\[pytest\]/a\markers =\n    slow: marks tests as slow' pytest.ini""",
             "pip install 'setuptools>=48,<60'",
         ],
         "install": "pip install --no-build-isolation -e .",
@@ -2465,10 +3339,10 @@ for k in ['1.17']:
             "pytest-env",
             "pytest-xdist",
             "'setuptools>=48,<60'",
-        ]
+        ],
     }
-    
-for k in ['1.18', '1.19']:
+
+for k in ["1.18", "1.19"]:
     SPECS_NUMPY[k] = {
         "python": "3.7",
         "packages": "'cython<3' pytest swig",
@@ -2485,10 +3359,10 @@ for k in ['1.18', '1.19']:
             "pytest-env",
             "pytest-xdist",
             "'setuptools>=48,<60'",
-        ]
+        ],
     }
 
-for k in ['1.20', '1.21', '1.22', '1.23', '1.24']:
+for k in ["1.20", "1.21", "1.22", "1.23", "1.24"]:
     SPECS_NUMPY[k] = {
         "python": "3.9",
         "packages": "requirements.txt",
@@ -2506,10 +3380,10 @@ for k in ['1.20', '1.21', '1.22', '1.23', '1.24']:
             "meson",
             "meson-python",
             "ninja",
-        ]
+        ],
     }
 
-for k in ['1.25']:
+for k in ["1.25"]:
     SPECS_NUMPY[k] = {
         "packages": "environment.yml",
         "pre_install": [
@@ -2522,10 +3396,10 @@ for k in ['1.25']:
             "'cython==3.0.6'",
             "setuptools",
             "pytest-xdist",
-        ]
+        ],
     }
 
-for k in ['1.26']:
+for k in ["1.26"]:
     SPECS_NUMPY[k] = {
         "packages": "environment.yml",
         "pre_install": [
@@ -2538,10 +3412,10 @@ for k in ['1.26']:
             "'cython==3.0.6'",
             "setuptools",
             "pytest-xdist",
-        ]
+        ],
     }
 
-for k in ['2.0', '2.1', '2.2']:
+for k in ["2.0", "2.1", "2.2"]:
     SPECS_NUMPY[k] = {
         "packages": "environment.yml",
         "pre_install": [
@@ -2556,9 +3430,9 @@ for k in ['2.0', '2.1', '2.2']:
             "pip",
             "wheel",
             "pytest-xdist",
-        ]
+        ],
     }
-     
+
 MAP_REPO_VERSION_TO_SPECS.update({"numpy/numpy": SPECS_NUMPY})
 
 
@@ -2574,13 +3448,13 @@ SCIPY_FLAGS = """\
 export CFLAGS="-fcommon"; export FFLAGS="-fcommon -fallow-argument-mismatch -fPIC"; export FCFLAGS="-fcommon -fallow-argument-mismatch -fPIC"
 """.strip()
 
-for k in ['0.18', '0.19']:
+for k in ["0.18", "0.19"]:
     SPECS_SCIPY[k] = {
         "python": "3.6",
         "packages": "'cython==0.28.5'",
         "pre_install": [
             "apt-get -y update && apt-get -y upgrade && apt-get install -y libopenblas-dev",
-            'rm -f pyproject.toml', # Remove this because its causing issues.
+            "rm -f pyproject.toml",  # Remove this because its causing issues.
             SCIPY_FLAGS,
         ],
         "install": f"pip install --no-build-isolation -e .",
@@ -2594,10 +3468,10 @@ for k in ['0.18', '0.19']:
             "pytest-env",
             "pytest-xdist",
             "pytest-timeout",
-        ]
+        ],
     }
-    
-for k in ['1.0', '1.1']:
+
+for k in ["1.0", "1.1"]:
     SPECS_SCIPY[k] = {
         "python": "3.7",
         "packages": "'pytest<8'",
@@ -2617,11 +3491,10 @@ for k in ['1.0', '1.1']:
             "pytest-xdist",
             "pytest-timeout",
             "pillow",
-            
-        ]
-    }    
+        ],
+    }
 
-for k in ['1.2']:
+for k in ["1.2"]:
     SPECS_SCIPY[k] = {
         "python": "3.7",
         "packages": "'pytest<8'",
@@ -2641,12 +3514,11 @@ for k in ['1.2']:
             "pytest-xdist",
             "pytest-timeout",
             "pillow",
-            
-        ]
+        ],
     }
 
-    
-for k in ['1.3', '1.4', '1.5']:
+
+for k in ["1.3", "1.4", "1.5"]:
     SPECS_SCIPY[k] = {
         "python": "3.7",
         "packages": "'pytest<8' suitesparse swig scikit-umfpack",
@@ -2670,11 +3542,11 @@ for k in ['1.3', '1.4', '1.5']:
             "mpmath",
             "matplotlib",
             "xarray",
-        ]
+        ],
     }
 
 
-for k in ['1.6', '1.7']:
+for k in ["1.6", "1.7"]:
     SPECS_SCIPY[k] = {
         "python": "3.8",
         "packages": "'pytest<8' 'meson-python<0.9.0' suitesparse swig scikit-umfpack",
@@ -2702,10 +3574,10 @@ for k in ['1.6', '1.7']:
             "threadpoolctl",
             "'pyproject-metadata==0.6.0'",
             "xarray",
-        ]
+        ],
     }
 
-for k in ['1.8']:
+for k in ["1.8"]:
     SPECS_SCIPY[k] = {
         "python": "3.8",
         "packages": "pytest 'meson==0.63' 'meson-python==0.8.0' suitesparse swig scikit-umfpack",
@@ -2733,10 +3605,10 @@ for k in ['1.8']:
             "gmpy2",
             "threadpoolctl",
             "xarray",
-        ]
+        ],
     }
 
-for k in ['1.9']:
+for k in ["1.9"]:
     SPECS_SCIPY[k] = {
         "python": "3.8",
         "packages": "pytest 'meson==0.64' 'meson-python==0.12.0' suitesparse swig scikit-umfpack",
@@ -2764,11 +3636,11 @@ for k in ['1.9']:
             "gmpy2",
             "threadpoolctl",
             "xarray",
-        ]
+        ],
     }
-    
 
-for k in ['1.10', '1.11']:
+
+for k in ["1.10", "1.11"]:
     SPECS_SCIPY[k] = {
         "python": "3.10",
         "packages": "pytest 'numpy>=1.22.4,<1.29.0' 'meson-python==0.14.0' ninja suitesparse swig scikit-umfpack 'pythran<0.18.0' pybind11 'cython<3' pkg-config openblas",
@@ -2792,12 +3664,11 @@ for k in ['1.10', '1.11']:
             "pooch",
             "hypothesis",
             "xarray",
-        ]
+        ],
     }
 
 
-    
-for k in ['1.12', '1.13']:
+for k in ["1.12", "1.13"]:
     SPECS_SCIPY[k] = {
         "python": "3.10",
         "packages": "pytest 'numpy>=1.22.4,<1.29.0' 'meson-python==0.15.0' ninja suitesparse swig scikit-umfpack 'pythran<0.18.0' pybind11 'cython>=0.29.35,<=3.1' pkg-config openblas",
@@ -2822,11 +3693,11 @@ for k in ['1.12', '1.13']:
             "pooch",
             "hypothesis",
             "xarray",
-        ]
+        ],
     }
-    
-    
-for k in ['1.14', "1.15"]:
+
+
+for k in ["1.14", "1.15"]:
     SPECS_SCIPY[k] = {
         "python": "3.11",
         "packages": "pytest 'numpy>=1.23.5,<2.3' compilers 'meson-python' ninja suitesparse swig scikit-umfpack 'pythran<0.18.0' pybind11 'cython<=3.1' pkg-config openblas",
@@ -2853,13 +3724,13 @@ for k in ['1.14', "1.15"]:
             "'hypothesis>=6.30'",
             "'array-api-strict>=2.0'",
             "xarray",
-        ]
+        ],
     }
-    
+
 MAP_REPO_VERSION_TO_SPECS.update({"scipy/scipy": SPECS_SCIPY})
 
 SPECS_SPACY = {}
-for k in ['2.3', '3.0', '3.1', '3.2', '3.3', '3.4']:
+for k in ["2.3", "3.0", "3.1", "3.2", "3.3", "3.4"]:
     SPECS_SPACY[k] = {
         "python": "3.6",
         "packages": "requirements.txt",
@@ -2867,20 +3738,13 @@ for k in ['2.3', '3.0', '3.1', '3.2', '3.3', '3.4']:
             "sed -i 's/cython>=/cython==/g' $HOME/requirements.txt",
             "cat $HOME/requirements.txt",
         ],
-        "pre_install": [
-            "conda install murmurhash"
-        ],
+        "pre_install": ["conda install murmurhash"],
         "install": "pip install --no-build-isolation -e .",
         "test_cmd": TEST_PYTEST,
-        "pip_packages": [
-            "pytest",
-            "'setuptools<60'",
-            "'wheel'",
-            "'cython<0.29'"
-        ]
+        "pip_packages": ["pytest", "'setuptools<60'", "'wheel'", "'cython<0.29'"],
     }
-    
-# for k in ['3.5', '3.6', '3.7']: 
+
+# for k in ['3.5', '3.6', '3.7']:
 #     SPECS_SPACY[k] = {
 #         "python": "3.7",
 #         "packages": "requirements.txt",
@@ -2895,7 +3759,7 @@ for k in ['2.3', '3.0', '3.1', '3.2', '3.3', '3.4']:
 #             "'setuptools<65'",
 #             "wheel",
 #         ]
-#     }    
+#     }
 
 # for k in ['3.8', '4.0']:
 #     SPECS_SPACY[k] = {
@@ -2912,14 +3776,14 @@ for k in ['2.3', '3.0', '3.1', '3.2', '3.3', '3.4']:
 #             "setuptools",
 #             "wheel",
 #         ]
-#     }    
+#     }
 
 
 MAP_REPO_VERSION_TO_SPECS.update({"explosion/spacy": SPECS_SPACY})
 
 # TODO: not tested
 SPECS_STATSMODELS = {}
-for k in ['0.8', '0.9', '0.10', '0.11']:
+for k in ["0.8", "0.9", "0.10", "0.11"]:
     SPECS_STATSMODELS[k] = {
         "python": "3.6",
         "packages": "pytest 'cython<0.28' 'numpy<1.13'",
@@ -2934,10 +3798,10 @@ for k in ['0.8', '0.9', '0.10', '0.11']:
             "'pandas==0.19'",
             "'scipy==0.18'",
             "'setuptools<60'",
-        ]
-    } 
-    
-for k in ['0.11', '0.12']:
+        ],
+    }
+
+for k in ["0.11", "0.12"]:
     SPECS_STATSMODELS[k] = {
         "python": "3.7",
         "packages": "pytest 'cython==0.29' 'numpy==1.17'",
@@ -2948,10 +3812,10 @@ for k in ['0.11', '0.12']:
             "'pandas<1'",
             "'scipy==1.3'",
             "'setuptools<65'",
-        ]
-    } 
-    
-for k in ['0.13', '0.14']:
+        ],
+    }
+
+for k in ["0.13", "0.14"]:
     SPECS_STATSMODELS[k] = {
         "python": "3.9",
         "packages": "pytest 'numpy==1.22.3'",
@@ -2963,49 +3827,92 @@ for k in ['0.13', '0.14']:
             "'pandas==1.4'",
             "'scipy==1.8'",
             "'setuptools<65'",
-        ]
-    } 
-    
+        ],
+    }
+
 MAP_REPO_VERSION_TO_SPECS.update({"statsmodels/statsmodels": SPECS_STATSMODELS})
 
 # TODO not tested.
 
 SPECS_SCIKIT_IMAGE = {}
-for k in ['0.12', '0.13', '0.14', '0.15', '0.16', '0.17', '0.18', '0.19', '0.20', '0.21', '0.22', '0.23', '0.24', '0.25', '0.26']:
+for k in [
+    "0.12",
+    "0.13",
+    "0.14",
+    "0.15",
+    "0.16",
+    "0.17",
+    "0.18",
+    "0.19",
+    "0.20",
+    "0.21",
+    "0.22",
+    "0.23",
+    "0.24",
+    "0.25",
+    "0.26",
+]:
     SPECS_SCIKIT_IMAGE[k] = {
         "python": "3.6",
-        "pre_install": [
-            "pip install -r requirements.txt"
-        ],
+        "pre_install": ["pip install -r requirements.txt"],
         "install": "pip install -e .",
         "test_cmd": TEST_PYTEST,
-    } 
-    
-for k in ['0.18', '0.19']:
-    SPECS_SCIKIT_IMAGE[k]['python'] = "3.8"
+    }
 
-for k in ['0.20', '0.21', '0.22', '0.23', '0.24', '0.25', '0.26']:
-    SPECS_SCIKIT_IMAGE[k]['python'] = "3.10"
+for k in ["0.18", "0.19"]:
+    SPECS_SCIKIT_IMAGE[k]["python"] = "3.8"
+
+for k in ["0.20", "0.21", "0.22", "0.23", "0.24", "0.25", "0.26"]:
+    SPECS_SCIKIT_IMAGE[k]["python"] = "3.10"
 
 MAP_REPO_VERSION_TO_SPECS.update({"scikit-image/scikit-image": SPECS_SCIKIT_IMAGE})
 
 
-
-for k in ['0.17', '0.18', '0.20', '0.22', '0.23', '0.25', '0.26', '0.28', '0.29', '0.30', '0.31', '0.32', '0.33']:
+for k in [
+    "0.17",
+    "0.18",
+    "0.20",
+    "0.22",
+    "0.23",
+    "0.25",
+    "0.26",
+    "0.28",
+    "0.29",
+    "0.30",
+    "0.31",
+    "0.32",
+    "0.33",
+]:
     # pymc-devs/pytensor
     pass
 
 
-
-for k in ['1.9', '2.0', '2.61', '2.62', '2.63', '2.7', '2.71', '2.8', '3.01', '3.02', '3.11', '3.20', '3.30', '3.31', '3.40', '3.41', '3.50', '3.51']:
+for k in [
+    "1.9",
+    "2.0",
+    "2.61",
+    "2.62",
+    "2.63",
+    "2.7",
+    "2.71",
+    "2.8",
+    "3.01",
+    "3.02",
+    "3.11",
+    "3.20",
+    "3.30",
+    "3.31",
+    "3.40",
+    "3.41",
+    "3.50",
+    "3.51",
+]:
     # networkx/networkx
     pass
 
 
 # Exceptions to allow stackframe..
-STACKFRAME_CHECK_EXCEPTONS = {
-    "pandas-dev__pandas-45247"
-}
+STACKFRAME_CHECK_EXCEPTONS = {"pandas-dev__pandas-45247"}
 
 
 # All keys should be in lower case

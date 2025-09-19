@@ -1,13 +1,12 @@
+import collections
 import json
 import multiprocessing
-import datasets
 from pathlib import Path
 
-import collections
+import datasets
 import tqdm
 
 from swefficiency.harness.log_parsers import MAP_REPO_TO_PARSER
-
 
 # Take old dataset and check: some errors:
 # dataset = datasets.load_dataset("swefficiency/swefficiency", split='test', revision="718e5821f73f86414fa72bf8b7f716651a3a835a")

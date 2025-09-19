@@ -1,25 +1,27 @@
-import os
 import json
-from pathlib import Path
+import os
 from collections import defaultdict
+from pathlib import Path
 from typing import Dict, List, Tuple
 
-import tqdm
 import numpy as np
+import tqdm
 from datasets import load_dataset
+
 from swefficiency.harness.run_validation import parse_perf_summary
 
 # ----------------------------
 # Config
 # ----------------------------
 NUM_BINS = 20
-TARGET_N = 100                 # keep it < 100; adjust as you like
-RANDOM_SEED = 42              # reproducibility
+TARGET_N = 100  # keep it < 100; adjust as you like
+RANDOM_SEED = 42  # reproducibility
 GOLD_RESULT_FOLDER = Path("logs/run_evaluation/ground_truth5/gold")
-SPLIT = "test"                # change if needed
+SPLIT = "test"  # change if needed
 DATASET_ID = "swefficiency/swefficiency"  # as in your snippet
 
 rng = np.random.default_rng(RANDOM_SEED)
+
 
 # ----------------------------
 # Helpers
@@ -38,7 +40,10 @@ def _logspace_edges(values: np.ndarray, num_bins: int) -> np.ndarray:
             vmax *= 1.1
     return np.logspace(np.log10(vmin), np.log10(vmax), num_bins + 1)
 
-def _assign_bins(values: Dict[str, float], num_bins: int) -> Tuple[List[List[str]], Dict[str, int]]:
+
+def _assign_bins(
+    values: Dict[str, float], num_bins: int
+) -> Tuple[List[List[str]], Dict[str, int]]:
     """
     Assign instance_ids to log-spaced bins based on their numeric values.
     Returns:
@@ -64,7 +69,10 @@ def _assign_bins(values: Dict[str, float], num_bins: int) -> Tuple[List[List[str
     idx_map = {iid: int(b) for iid, b in zip(ids, bin_idx)}
     return bins, idx_map
 
-def _multinomial_allocation(counts: List[int], total: int, rng: np.random.Generator) -> List[int]:
+
+def _multinomial_allocation(
+    counts: List[int], total: int, rng: np.random.Generator
+) -> List[int]:
     """Allocate 'total' draws across bins with probability proportional to 'counts'."""
     counts = np.array(counts, dtype=float)
     if counts.sum() == 0:
@@ -74,7 +82,10 @@ def _multinomial_allocation(counts: List[int], total: int, rng: np.random.Genera
     draws = rng.multinomial(total, probs)
     return draws.tolist()
 
-def _sample_from_bins(bins: List[List[str]], alloc: List[int], rng: np.random.Generator) -> List[str]:
+
+def _sample_from_bins(
+    bins: List[List[str]], alloc: List[int], rng: np.random.Generator
+) -> List[str]:
     """Sample alloc[k] items from bins[k] without replacement (or all if not enough)."""
     selected = []
     shortfall = 0
@@ -102,22 +113,29 @@ def _sample_from_bins(bins: List[List[str]], alloc: List[int], rng: np.random.Ge
 
     return selected
 
+
 def _inverse_density_weights(
-    sigs: Dict[str, Tuple[int, int, int]],
-    bins_by_metric: Dict[str, List[List[str]]]
+    sigs: Dict[str, Tuple[int, int, int]], bins_by_metric: Dict[str, List[List[str]]]
 ) -> Dict[str, float]:
     """Weight each instance by inverse product of its bin densities across all three metrics."""
     # Precompute bin sizes
     sizes = {
         "size_of_patch": [len(b) for b in bins_by_metric["size_of_patch"]],
-        "pre_edit_workload_runtime": [len(b) for b in bins_by_metric["pre_edit_workload_runtime"]],
+        "pre_edit_workload_runtime": [
+            len(b) for b in bins_by_metric["pre_edit_workload_runtime"]
+        ],
         "improvement": [len(b) for b in bins_by_metric["improvement"]],
     }
     weights = {}
     for iid, (b0, b1, b2) in sigs.items():
-        denom = (sizes["size_of_patch"][b0] or 1) * (sizes["pre_edit_workload_runtime"][b1] or 1) * (sizes["improvement"][b2] or 1)
+        denom = (
+            (sizes["size_of_patch"][b0] or 1)
+            * (sizes["pre_edit_workload_runtime"][b1] or 1)
+            * (sizes["improvement"][b2] or 1)
+        )
         weights[iid] = 1.0 / denom
     return weights
+
 
 # ----------------------------
 # Collect metrics
@@ -130,7 +148,6 @@ for d in ds:
         continue
 
     instance_id = d["instance_id"]
-
 
     # Metric 1: size_of_patch
     patch = d.get("patch", "") or ""
@@ -154,8 +171,8 @@ for d in ds:
         # Guard against bad numbers
         continue
 
-    pre_edit_workload_runtime = before                                 # Metric 2
-    improvement = before / after                                       # Metric 3 (speedup factor)
+    pre_edit_workload_runtime = before  # Metric 2
+    improvement = before / after  # Metric 3 (speedup factor)
 
     key_info[instance_id] = {
         "size_of_patch": size_of_patch,
@@ -164,14 +181,18 @@ for d in ds:
     }
 
 if not key_info:
-    raise RuntimeError("No valid instances collected. Check paths and data assumptions.")
+    raise RuntimeError(
+        "No valid instances collected. Check paths and data assumptions."
+    )
 
 # ----------------------------
 # Build bins for each metric
 # ----------------------------
 metrics = {
     "size_of_patch": {iid: m["size_of_patch"] for iid, m in key_info.items()},
-    "pre_edit_workload_runtime": {iid: m["pre_edit_workload_runtime"] for iid, m in key_info.items()},
+    "pre_edit_workload_runtime": {
+        iid: m["pre_edit_workload_runtime"] for iid, m in key_info.items()
+    },
     "improvement": {iid: m["improvement"] for iid, m in key_info.items()},
 }
 
@@ -191,7 +212,9 @@ per_metric_quota = [N // 3, N // 3, N - 2 * (N // 3)]  # sums to N
 
 selected_set = set()
 
-for quota, name in zip(per_metric_quota, ["size_of_patch", "pre_edit_workload_runtime", "improvement"]):
+for quota, name in zip(
+    per_metric_quota, ["size_of_patch", "pre_edit_workload_runtime", "improvement"]
+):
     bin_counts = [len(b) for b in bins_by_metric[name]]
     alloc = _multinomial_allocation(bin_counts, quota, rng)
     picks = _sample_from_bins(bins_by_metric[name], alloc, rng)
@@ -218,7 +241,12 @@ if len(selected_set) < N:
             w = None  # fall back to uniform
         needed = N - len(selected_set)
         needed = min(needed, remaining.size)
-        extra = rng.choice(remaining, size=needed, replace=False, p=(w / w.sum()) if w is not None else None).tolist()
+        extra = rng.choice(
+            remaining,
+            size=needed,
+            replace=False,
+            p=(w / w.sum()) if w is not None else None,
+        ).tolist()
         selected_set.update(extra)
 
 # If we somehow overshot (shouldn't happen), trim randomly
@@ -244,7 +272,9 @@ with open(out_dir / "selected_metrics.json", "w") as f:
 
 # Print a brief summary
 print(f"Selected {len(selected)} instances (target {N}, total pool {len(all_ids)})")
-print(f"Saved to: {out_dir/'selected_instance_ids.json'} and {out_dir/'selected_metrics.json'}")
+print(
+    f"Saved to: {out_dir/'selected_instance_ids.json'} and {out_dir/'selected_metrics.json'}"
+)
 
 # Optional: show per-metric selected coverage by bin (coarse sanity check)
 for name in ["size_of_patch", "pre_edit_workload_runtime", "improvement"]:
@@ -253,7 +283,7 @@ for name in ["size_of_patch", "pre_edit_workload_runtime", "improvement"]:
     sel_bins = [idx_map[iid] for iid in selected if iid in idx_map]
     hist = np.bincount(sel_bins, minlength=NUM_BINS)
     print(f"[{name}] selected-per-bin:", hist.tolist())
-    
+
 # Filter dataset to selected instances and save as a new dataset (with split "lite")
 lite_ds = ds.filter(lambda example: example["instance_id"] in selected)
 

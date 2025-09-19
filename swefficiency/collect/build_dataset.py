@@ -5,14 +5,13 @@ import json
 import logging
 import os
 from typing import Optional
-from swefficiency.perf_filter.attributes.filter import is_perf_pr
-
 
 from swefficiency.collect.utils import (
+    Repo,
     extract_patches,
     extract_problem_statement_and_hints,
-    Repo,
 )
+from swefficiency.perf_filter.attributes.filter import is_perf_pr
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"

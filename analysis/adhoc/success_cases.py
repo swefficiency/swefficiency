@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 import json
 from collections import Counter
-import matplotlib.pyplot as plt
 from pathlib import Path
+
+import matplotlib.pyplot as plt
+import pandas as pd
 from datasets import load_dataset
 
 from swefficiency.harness.run_validation import parse_perf_summary
-
-import pandas as pd
 
 # Hardcoded path
 GOLD_JSONL_PATH = "nalysis/llm/outputs/diff_explanation.jsonl"

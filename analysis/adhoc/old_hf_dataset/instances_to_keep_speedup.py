@@ -1,5 +1,6 @@
-import datasets
 from pathlib import Path
+
+import datasets
 import tqdm
 
 dataset = datasets.load_dataset("swefficiency/swefficiency", split="test")
