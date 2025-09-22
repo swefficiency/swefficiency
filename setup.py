@@ -7,11 +7,11 @@ setuptools.setup(
     name="swefficiency",
     author="SWEfficiency Team",
     author_email="swefficiencyperf@gmail.com",
-    description="The official SWE-fficiency package - a benchmark for evaluating LMs on software engineering",
+    description="The official SWE-fficiency package - a benchmark for evaluating LMs on automated performance engineering",
     keywords="nlp, benchmark, code",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://swefficiency.com",
+    url="<TODO_WEBSITE_LINK>",
     project_urls={
         "Documentation": "https://github.com/<PUBLIC_REPO_HERE>",
         "Bug Reports": "http://github.com/<PUBLIC_REPO_HERE>/issues",

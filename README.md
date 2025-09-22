@@ -5,13 +5,13 @@
 
 
 <p align="center">
-  <a href="https://swefficiency.com/">
+  <a href="<TODO_WEBSITE_LINK>">
     <img src="https://img.shields.io/badge/project-Home-b31b1b.svg" alt="home">
   </a>
   <a href="https://huggingface.co/datasets/swefficiency-anon/swefficiency">
     <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Data-blue" alt="Data">
   </a>
-  <a href="TODO: paper link">
+  <a href="<TODO_PAPER_LINK>">
     <img src="https://img.shields.io/badge/ICLR-2026-b31b1b.svg" alt="paper">
   </a>
 </p>
