@@ -1,23 +1,26 @@
-import datasets
-from collections import Counter, defaultdict
-
-from typing import Iterable, Dict, Any, Tuple, Set, List, Optional
-
 import math
+from collections import Counter, defaultdict
+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
+
+import datasets
 from matplotlib import pyplot as plt
 
-ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
+ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
 
-def get_repo_count(ds):    
+
+def get_repo_count(ds):
     repos = []
     for item in ds:
         repo = item["repo"].split("/")[-1]
         repos.append(repo)
 
-    return Counter(repos)   
+    return Counter(repos)
+
+
+import math
 
 import matplotlib.pyplot as plt
-import math
+
 
 def make_pie_chart_with_callouts(repo_counts, title_suffix: str = "") -> plt.Figure:
     labels = list(repo_counts.keys())
@@ -47,13 +50,12 @@ def make_pie_chart_with_callouts(repo_counts, title_suffix: str = "") -> plt.Fig
         ha = "left" if x > 0 else "right"
         ax.annotate(
             f"{labels[i]} ({sizes[i]})",
-            xy=(x, y), xytext=(r * x, r * y),
-            ha=ha, va="center",
+            xy=(x, y),
+            xytext=(r * x, r * y),
+            ha=ha,
+            va="center",
             arrowprops=dict(
-                arrowstyle="-", 
-                connectionstyle="arc3,rad=0",
-                lw=0.8,
-                color="black"
+                arrowstyle="-", connectionstyle="arc3,rad=0", lw=0.8, color="black"
             ),
             fontsize=20,
         )
@@ -77,6 +79,7 @@ fig.savefig("swefficiency_distribution_test_set.png", bbox_inches="tight", dpi=3
 # Helpers to compute statistics
 # -----------------------------
 
+
 def _safe_len(x) -> Optional[int]:
     if x is None:
         return None
@@ -84,6 +87,7 @@ def _safe_len(x) -> Optional[int]:
         return len(x)
     except Exception:
         return None
+
 
 def _parse_git_diff(patch_text: Optional[str]) -> Tuple[int, int, int]:
     """
@@ -123,9 +127,7 @@ def _parse_git_diff(patch_text: Optional[str]) -> Tuple[int, int, int]:
                 current_file = None
 
         # Count edited lines (exclude headers)
-        if line.startswith(("+", "-")) and not (
-            line.startswith(("+++", "---", "@@"))
-        ):
+        if line.startswith(("+", "-")) and not (line.startswith(("+++", "---", "@@"))):
             lines_edited += 1
 
             # Naive function/class name extraction on changed lines
@@ -146,11 +148,13 @@ def _parse_git_diff(patch_text: Optional[str]) -> Tuple[int, int, int]:
 
     return lines_edited, len(files), len(funcs)
 
+
 def _mean(nums: List[float]) -> Optional[float]:
     nums = [n for n in nums if n is not None and not math.isnan(n)]
     if not nums:
         return None
     return sum(nums) / len(nums)
+
 
 def _fmt_number(x: Optional[float], k_suffix: bool = False, pct: bool = False) -> str:
     if x is None:
@@ -163,9 +167,11 @@ def _fmt_number(x: Optional[float], k_suffix: bool = False, pct: bool = False) -
         return f"{int(x)}"
     return f"{x:.1f}"
 
+
 # -----------------------------
 # Aggregation from dataset rows
 # -----------------------------
+
 
 def aggregate_metrics(rows: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
     """Compute all summary stats needed for the table and pie chart."""
@@ -209,38 +215,43 @@ def aggregate_metrics(rows: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
         "n_instances": total_instances,
         "n_repos": len(set(repos)),
         "repo_counts": repo_counts,
-
         "tests_min": min([x for x in tests_per_inst if x is not None], default=None),
         "tests_mean": _mean([x for x in tests_per_inst if x is not None]),
         "tests_max": max([x for x in tests_per_inst if x is not None], default=None),
-
-        "workload_min": min(workload_lines_per_inst) if workload_lines_per_inst else None,
+        "workload_min": (
+            min(workload_lines_per_inst) if workload_lines_per_inst else None
+        ),
         "workload_mean": _mean(workload_lines_per_inst),
-        "workload_max": max(workload_lines_per_inst) if workload_lines_per_inst else None,
-
+        "workload_max": (
+            max(workload_lines_per_inst) if workload_lines_per_inst else None
+        ),
         "lines_edit_min": min(lines_edited_per_inst) if lines_edited_per_inst else None,
         "lines_edit_mean": _mean(lines_edited_per_inst),
         "lines_edit_max": max(lines_edited_per_inst) if lines_edited_per_inst else None,
-
         "files_edit_min": min(files_edited_per_inst) if files_edited_per_inst else None,
         "files_edit_mean": _mean(files_edited_per_inst),
         "files_edit_max": max(files_edited_per_inst) if files_edited_per_inst else None,
-
         "funcs_edit_mean": _mean(funcs_edited_per_inst),
         "funcs_edit_max": max(funcs_edited_per_inst) if funcs_edited_per_inst else None,
-
         # Keep speedup as-is; many users store >1 == faster; adapt if you prefer percentage.
         "speedup_mean": _mean([x for x in speedup_per_inst if x is not None]),
-        "speedup_max": max([x for x in speedup_per_inst if x is not None], default=None),
+        "speedup_max": max(
+            [x for x in speedup_per_inst if x is not None], default=None
+        ),
     }
     return metrics
 
-def make_summary_table_latex(metrics: Dict[str, Any],
-                             caption: str = "Average and maximum numbers characterizing different attributes of SWE-Perf.",
-                             label: str = "tab:sweperf-summary") -> str:
+
+def make_summary_table_latex(
+    metrics: Dict[str, Any],
+    caption: str = "Average and maximum numbers characterizing different attributes of SWE-Perf.",
+    label: str = "tab:sweperf-summary",
+) -> str:
     """Return LaTeX code for the summary table (Booktabs)."""
 
-    def _fmt_number(x: Optional[float], k_suffix: bool = False, pct: bool = False) -> str:
+    def _fmt_number(
+        x: Optional[float], k_suffix: bool = False, pct: bool = False
+    ) -> str:
         if x is None:
             return "—"
         if pct:
@@ -254,7 +265,9 @@ def make_summary_table_latex(metrics: Dict[str, Any],
     rows: List[Tuple[str, str, str, str]] = []
 
     # Size
-    rows.append(("Size", r"\# Instances", _fmt_number(metrics.get("n_instances")), ""))  # total
+    rows.append(
+        ("Size", r"\# Instances", _fmt_number(metrics.get("n_instances")), "")
+    )  # total
     rows.append(("Size", r"\# Repos", _fmt_number(metrics.get("n_repos")), ""))
 
     # Codebase (placeholders)
@@ -262,20 +275,40 @@ def make_summary_table_latex(metrics: Dict[str, Any],
     rows.append(("Codebase", r"\# Lines (non-test)", "—", "—"))
 
     # Expert Patch
-    rows.append(("Expert Patch", r"\# Lines edited",
-                 _fmt_number(metrics.get("lines_edit_mean")),
-                 _fmt_number(metrics.get("lines_edit_max"))))
-    rows.append(("Expert Patch", r"\# Files edited",
-                 _fmt_number(metrics.get("files_edit_mean")),
-                 _fmt_number(metrics.get("files_edit_max"))))
-    rows.append(("Expert Patch", r"\# Func. Edited",
-                 _fmt_number(metrics.get("funcs_edit_mean")),
-                 _fmt_number(metrics.get("funcs_edit_max"))))
+    rows.append(
+        (
+            "Expert Patch",
+            r"\# Lines edited",
+            _fmt_number(metrics.get("lines_edit_mean")),
+            _fmt_number(metrics.get("lines_edit_max")),
+        )
+    )
+    rows.append(
+        (
+            "Expert Patch",
+            r"\# Files edited",
+            _fmt_number(metrics.get("files_edit_mean")),
+            _fmt_number(metrics.get("files_edit_max")),
+        )
+    )
+    rows.append(
+        (
+            "Expert Patch",
+            r"\# Func. Edited",
+            _fmt_number(metrics.get("funcs_edit_mean")),
+            _fmt_number(metrics.get("funcs_edit_max")),
+        )
+    )
 
     # Tests
-    rows.append(("Tests", r"\# Related tests",
-                 _fmt_number(metrics.get("tests_mean")),
-                 _fmt_number(metrics.get("tests_max"))))
+    rows.append(
+        (
+            "Tests",
+            r"\# Related tests",
+            _fmt_number(metrics.get("tests_mean")),
+            _fmt_number(metrics.get("tests_max")),
+        )
+    )
     rows.append(("Tests", "Original runtime / s", "—", "—"))
 
     # Functions
@@ -283,10 +316,18 @@ def make_summary_table_latex(metrics: Dict[str, Any],
     rows.append(("Functions", r"\# Realistic", "—", "—"))
 
     # Performance
-    if metrics.get("speedup_mean") is not None or metrics.get("speedup_max") is not None:
-        rows.append(("Performance", "Speedup",
-                     _fmt_number(metrics.get("speedup_mean")),
-                     _fmt_number(metrics.get("speedup_max"))))
+    if (
+        metrics.get("speedup_mean") is not None
+        or metrics.get("speedup_max") is not None
+    ):
+        rows.append(
+            (
+                "Performance",
+                "Speedup",
+                _fmt_number(metrics.get("speedup_mean")),
+                _fmt_number(metrics.get("speedup_max")),
+            )
+        )
     else:
         rows.append(("Performance", "Ratio", "—", "—"))
 
@@ -315,6 +356,7 @@ def make_summary_table_latex(metrics: Dict[str, Any],
 
     return "\n".join(lines)
 
+
 metrics = aggregate_metrics(ds)
 latex_table = make_summary_table_latex(metrics)
 
@@ -322,4 +364,3 @@ print(metrics)
 
 with open("swefficiency_summary_table.tex", "w") as f:
     f.write(latex_table)
-

@@ -150,14 +150,6 @@ def try_to_apply_patch(container, instance_id, logger, base_commit=None):
     )
     if val.exit_code != 0:
         logger.info(f"Failed to apply patch to container, trying again...")
-
-        # # try "patch --batch --fuzz=5 -p1 -i {patch_path}" to try again
-        # val = container.exec_run(
-        #     "patch --batch --fuzz=5 -p1 -i /tmp/patch.diff",
-        #     workdir="/testbed",
-        #     user="root",
-        # )
-        # if val.exit_code != 0:
         logger.info(f"{APPLY_PATCH_FAIL}:\n{val.output.decode('utf-8')}")
 
         # Try to revert to base_commit first.
@@ -264,6 +256,9 @@ def run_instance(
 
     # cpu_groups = ",".join([str(e) for e in global_cpu_groups[thread_idx]])
     cpu_groups = global_cpu_groups[thread_idx] if global_cpu_groups else None
+    # dockerhub_image_key = (
+    #     f"ghcr.io/swefficiency/swefficiency-images:{test_spec.instance_id}"
+    # )
     dockerhub_image_key = (
         f"ghcr.io/swefficiency/swefficiency-images:{test_spec.instance_id}"
     )
@@ -482,6 +477,8 @@ def run_instance(
             matching_tests = Path(log_dir / "covering_tests.txt")
             matching_tests.write_text("\n".join(covered_test_files))
 
+        perf_patch_applied = False
+
         if run_perf:
             perf_summary_file = log_dir / "perf_summary.txt"
             if not perf_summary_file.exists():
@@ -591,6 +588,7 @@ def run_instance(
                 try_to_apply_patch(
                     container, instance_id, logger, test_spec.base_commit
                 )
+                perf_patch_applied = True
 
                 # Run post edit.
                 post_edit_perf_output, timed_out, post_edit_perf_runtime = (
@@ -663,9 +661,7 @@ def run_instance(
                 postedit_runtime_mean, postedit_runtime_sd = parse_perf_output(
                     post_edit_perf_output
                 )
-                improvement = (
-                    postedit_runtime_mean - preedit_runtime_mean
-                ) / preedit_runtime_mean
+                improvement = preedit_runtime_mean / postedit_runtime_mean
 
                 perf_summary_file.write_text(
                     "\n".join(
@@ -679,7 +675,7 @@ def run_instance(
                     )
                 )
 
-                if improvement >= 0:
+                if improvement < 1.0:
                     flag_bad_workload_file = Path(log_dir / "flag_bad_workload.txt")
                     flag_bad_workload_file.write_text(
                         f"Improvement is {improvement * 100:.2f}%, which is not a performance improvement. "
@@ -791,29 +787,34 @@ def run_instance(
                     Path(DEFAULT_SINGLE_THREAD_COVERING_TESTS_LOCATION),
                 )
 
-                if not run_perf:
+                if not run_perf or not perf_patch_applied:
                     # Assume that patch is applied already if we run perf.
                     try_to_apply_patch(container, instance_id, logger)
-
-                # # For correctness, we first revert the test files to the base commit. This ensures that patches cannot
-                # # reward hack by modifying tests.
-                # revert_val = container.exec_run(
-                #     f"git checkout {test_spec.base_commit} -- {' '.join(correctness_tests)}",
-                #     workdir="/testbed",
-                # )
 
                 paths = correctness_tests
                 base = test_spec.base_commit
                 revert_test_cmd = (
-                    "/bin/bash -lc 'commit={c}; for p in {paths}; do "
-                    'if [ -e "$p" ]; then '
-                    '  git checkout "$commit" -- "$p" || {{ echo "Failed to revert $p" >&2; exit 1; }}; '
-                    "fi; "
-                    "done'".format(
-                        c=shlex.quote(base),
-                        paths=" ".join(shlex.quote(p) for p in paths)
-                        or "''",  # safe if empty
-                    )
+                    "/bin/bash -lc '"
+                    "set -euo pipefail; "
+                    "commit={c}; "
+                    # tracked in the index (including deleted-but-tracked)?
+                    'is_tracked() {{ git ls-files --error-unmatch --cached --deleted -- "$1" >/dev/null 2>&1; }}; '
+                    # present in the target commit's tree? (avoid pathspec errors)
+                    'in_commit() {{ git ls-tree -r --name-only "$commit" -- "$1" | grep -q .; }}; '
+                    "for p in {paths}; do "
+                    '  if is_tracked "$p"; then '
+                    '    if in_commit "$p"; then '
+                    '      git checkout "$commit" -- "$p" || {{ echo "Failed to revert $p" >&2; exit 1; }}; '
+                    "    else "
+                    '      echo "Skipping $p (tracked now, but not present in $commit)"; '
+                    "    fi; "
+                    "  else "
+                    '    echo "Skipping $p (not tracked by git)"; '
+                    "  fi; "
+                    "done'"
+                ).format(
+                    c=shlex.quote(base),
+                    paths=" ".join(shlex.quote(p) for p in paths) or "''",
                 )
                 revert_val = container.exec_run(revert_test_cmd, workdir="/testbed")
 

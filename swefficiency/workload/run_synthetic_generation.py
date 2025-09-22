@@ -1,17 +1,14 @@
-from pathlib import Path
-
-from argparse import ArgumentParser
+import json
+import os
 import random
 import re
 import time
+from argparse import ArgumentParser
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
 
 import requests
-
-from concurrent.futures import ThreadPoolExecutor, as_completed
-import json
-
 from litellm import completion
-import os
 from tqdm import tqdm
 
 from swefficiency.harness.constants import SWEfficiencyInstance
@@ -71,8 +68,8 @@ print("Mean:", statistics.mean(runtimes))
 print("Std Dev:", statistics.stdev(runtimes))
 ```
 """
-    
-    
+
+
 CONTEXT_MSG = """Here's a commit and it's information that does some optimization in the {repo_name} repository that might be relevant to writing the test:
 ## Commit Diff:
 ```
@@ -83,6 +80,7 @@ CONTEXT_MSG = """Here's a commit and it's information that does some optimizatio
 {pre_edit_code}
 """
 
+
 def extract_code_block(text):
     if text is None:
         return None
@@ -91,19 +89,20 @@ def extract_code_block(text):
         return match.group(1).strip()
     return None
 
+
 def worker_function(
     datum: SWEfficiencyInstance,
     run_id: str,
-):            
+):
     output_file = WORKLOAD_GENERATION_DIR / run_id / f"{datum['instance_id']}.py"
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
     # Get relevant files from the patch.
-    patch = datum['patch']
+    patch = datum["patch"]
     diff_pattern = r"diff --git a/.* b/(.*)"
     directives = re.findall(diff_pattern, patch)
     directives = [d for d in directives]
-    
+
     owner, repo = datum["repo"].split("/")
     commit_hash = datum["base_commit"]
 
@@ -123,23 +122,29 @@ def worker_function(
                 time.sleep(1)  # Wait before retrying
                 print(f"Failed to fetch {file_path} from {url}, retrying...")
                 continue
-        
+
     # Combine all file contents into a single string
     commit_diff = patch.strip()
     all_preedit_file_contents = "\n".join(file_contents)
-    
+
     while True:
         try:
             response = completion(
-                model="gemini/gemini-2.5-flash", 
+                model="gemini/gemini-2.5-flash",
                 messages=[
                     {"role": "system", "content": SYSTEM_MSG},
-                    {"role": "user", "content": CONTEXT_MSG.format(
-                        repo_name=repo,
-                        commit_diff=commit_diff,
-                        pre_edit_code=all_preedit_file_contents
-                    )},
-                    {"role": "user", "content": "Can you write a workload in same style as the example?"},
+                    {
+                        "role": "user",
+                        "content": CONTEXT_MSG.format(
+                            repo_name=repo,
+                            commit_diff=commit_diff,
+                            pre_edit_code=all_preedit_file_contents,
+                        ),
+                    },
+                    {
+                        "role": "user",
+                        "content": "Can you write a workload in same style as the example?",
+                    },
                 ],
                 temperature=0.0,
             )
@@ -147,14 +152,14 @@ def worker_function(
         except Exception as e:
             print(f"Error during completion: {e}")
             time.sleep(5)
-    
+
     result = response.choices[0].message.content
     code_block_content = extract_code_block(result)
-    
+
     with open(output_file, "w") as f:
         if code_block_content:
             f.write(code_block_content)
-    
+
     return {
         "instance_id": datum["instance_id"],
         "run_id": run_id,
@@ -171,7 +176,7 @@ def main(
 ):
     dataset = load_swefficiency_dataset(dataset_name, split)
     random.shuffle(dataset)  # Shuffle dataset for randomness
-    
+
     WORKLOAD_GENERATION_DIR.mkdir(parents=True, exist_ok=True)
     output_dir = WORKLOAD_GENERATION_DIR / run_id
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -187,7 +192,9 @@ def main(
             executor.submit(worker_function, datum, run_id): datum["instance_id"]
             for datum in dataset
         }
-        for future in tqdm(as_completed(futures), total=len(futures), desc="Generating workloads"):
+        for future in tqdm(
+            as_completed(futures), total=len(futures), desc="Generating workloads"
+        ):
             result = future.result()
             results.append(result)
 
@@ -199,11 +206,30 @@ def main(
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--dataset_name", default="swefficiency/swefficiency", type=str, help="Name of dataset or path to JSON file.")
-    parser.add_argument("--split", type=str, default="test", help="Split of the dataset")
-    parser.add_argument("--instance_ids", nargs="+", type=str, help="Instance IDs to run (space separated)")
-    parser.add_argument("--max_workers", type=int, default=16, help="Maximum number of workers (should be <= 75%% of CPU cores)")
-    parser.add_argument("--run_id", type=str, required=True, help="Run ID - identifies the run")
+    parser.add_argument(
+        "--dataset_name",
+        default="swefficiency-anon/swefficiency",
+        type=str,
+        help="Name of dataset or path to JSON file.",
+    )
+    parser.add_argument(
+        "--split", type=str, default="test", help="Split of the dataset"
+    )
+    parser.add_argument(
+        "--instance_ids",
+        nargs="+",
+        type=str,
+        help="Instance IDs to run (space separated)",
+    )
+    parser.add_argument(
+        "--max_workers",
+        type=int,
+        default=16,
+        help="Maximum number of workers (should be <= 75%% of CPU cores)",
+    )
+    parser.add_argument(
+        "--run_id", type=str, required=True, help="Run ID - identifies the run"
+    )
     args = parser.parse_args()
 
     main(**vars(args))

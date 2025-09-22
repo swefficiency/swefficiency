@@ -131,10 +131,11 @@ USER_PROMPT = """\
 
 import multiprocessing
 import time
+
 import datasets
 from litellm import completion
 
-ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
+ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
 predictions_file = "SWE-Perf/predictions/converted/oh_claude37sonnet.jsonl"
 
 predictions = {}
@@ -211,7 +212,6 @@ with multiprocessing.Pool(processes=4) as pool:
 
 # Save results
 import json
-
 from pathlib import Path
 
 output_dir = Path("analysis/llm/outputs")

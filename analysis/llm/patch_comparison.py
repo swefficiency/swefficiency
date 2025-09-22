@@ -1,4 +1,3 @@
-
 SYSTEM_PROMPT = """\
 Here’s a drop-in **system prompt** you can use:
 
@@ -88,7 +87,6 @@ Return **only** a single JSON object, no prose before or after, with this schema
 """
 
 
-
 USER_PROMPT = """\
 ### WORKLOAD
 
@@ -110,49 +108,62 @@ USER_PROMPT = """\
 
 import multiprocessing
 import time
+
 import datasets
 from litellm import completion
 
-ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
+ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
 llm_predictions_path = "predictions/converted/sweagent_claude37sonnet.jsonl"
 
 llm_predictions = {}
 with open(llm_predictions_path, "r") as f:
     for line in f:
         import json
+
         obj = json.loads(line)
         llm_predictions[obj["instance_id"]] = obj
+
 
 def worker(instance):
     diff = instance["patch"]
     workload = instance["workload"]
-    pred_diff = llm_predictions.get(instance["instance_id"], {"model_patch": "", "model_name": ""})["model_patch"]
-    
+    pred_diff = llm_predictions.get(
+        instance["instance_id"], {"model_patch": "", "model_name": ""}
+    )["model_patch"]
+
     while True:
         try:
             response = completion(
-                model="gemini/gemini-2.5-flash", 
+                model="gemini/gemini-2.5-flash",
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": USER_PROMPT.format(
-                        patch_a=diff,
-                        patch_b=pred_diff,
-                        workload=workload
-                    )},
-                    {"role": "user", "content": "Think step-by-step about the code changes and their performance implications, then output the JSON object as specified."},
+                    {
+                        "role": "user",
+                        "content": USER_PROMPT.format(
+                            patch_a=diff, patch_b=pred_diff, workload=workload
+                        ),
+                    },
+                    {
+                        "role": "user",
+                        "content": "Think step-by-step about the code changes and their performance implications, then output the JSON object as specified.",
+                    },
                 ],
                 temperature=0.0,
             )
             text = response.choices[0].message.content
-            
+
             # Extract out the JSON object from the response
             import json
             import re
+
             match = re.search(r"\{.*\}", text, re.DOTALL)
             if match:
                 result = json.loads(match.group(0))
             else:
-                result = {"classification": "Unknown / Not Enough Information", "confidence": "low"}
+                result = {
+                    "classification": "Unknown / Not Enough Information",
+                    "confidence": "low",
+                }
 
             # Add instance ID for traceability
             result["instance_id"] = instance["instance_id"]
@@ -163,17 +174,17 @@ def worker(instance):
             print(f"Error processing instance {instance['instance_id']}: {e}")
             time.sleep(30)
             continue
-         
-import tqdm   
- 
+
+
+import tqdm
+
 with multiprocessing.Pool(processes=8) as pool:
     results = []
     for r in tqdm.tqdm(pool.imap(worker, ds), total=len(ds), desc="Classifying diffs"):
-        results.append(r)  
-    
+        results.append(r)
+
 # Save results
 import json
-
 from pathlib import Path
 
 output_dir = Path("analysis/llm/outputs")

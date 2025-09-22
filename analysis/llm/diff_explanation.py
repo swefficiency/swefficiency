@@ -1,5 +1,3 @@
-
-
 SYSTEM_PROMPT = """\
 You are an expert software engineer specializing in performance analysis and optimization. Given the following inputs:
 
@@ -65,8 +63,10 @@ WORKLOAD_SCRIPT:
 ```
 --- INPUTS END ---"""
 
-import pandas as pd
 import json
+
+import pandas as pd
+
 
 def extract_json_objects(s: str):
     dec = json.JSONDecoder()
@@ -74,35 +74,50 @@ def extract_json_objects(s: str):
     out = []
     while i < n:
         try:
-            i = s.index('{', i)           # next candidate
+            i = s.index("{", i)  # next candidate
             obj, end = dec.raw_decode(s, i)
-            if isinstance(obj, dict):     # only keep objects (not arrays, numbers, etc.)
+            if isinstance(obj, dict):  # only keep objects (not arrays, numbers, etc.)
                 out.append(s[i:end])
             i = end
         except ValueError:
-            break                          # no more '{'
+            break  # no more '{'
         except json.JSONDecodeError:
-            i += 1                         # not valid here; move one char and keep scanning
+            i += 1  # not valid here; move one char and keep scanning
     return out
-
 
 
 import multiprocessing
 import time
+
 import datasets
 from litellm import completion
 
-ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
+ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
 
-sonnet37_openhands_predictions = pd.read_json("predictions/converted/oh_claude37sonnet.jsonl", lines=True)
-gpt5_mini_openhands_predictions = pd.read_json("predictions/converted/oh_gpt5mini.jsonl", lines=True)
-gemini25_flash_openhands_predictions = pd.read_json("predictions/converted/oh_gemini25flash.jsonl", lines=True)
+sonnet37_openhands_predictions = pd.read_json(
+    "predictions/converted/oh_claude37sonnet.jsonl", lines=True
+)
+gpt5_mini_openhands_predictions = pd.read_json(
+    "predictions/converted/oh_gpt5mini.jsonl", lines=True
+)
+gemini25_flash_openhands_predictions = pd.read_json(
+    "predictions/converted/oh_gemini25flash.jsonl", lines=True
+)
 
 MAP_PATCH_TYPE = {
     "gold": {d["instance_id"]: d["patch"] for d in ds},
-    "sonnet37_openhands": {d["instance_id"]: d["model_patch"] for d in sonnet37_openhands_predictions.to_dict(orient="records")},
-    "gpt5mini_openhands": {d["instance_id"]: d["model_patch"] for d in gpt5_mini_openhands_predictions.to_dict(orient="records")},
-    "gemini25_openhands": {d["instance_id"]: d["model_patch"] for d in gemini25_flash_openhands_predictions.to_dict(orient="records")},
+    "sonnet37_openhands": {
+        d["instance_id"]: d["model_patch"]
+        for d in sonnet37_openhands_predictions.to_dict(orient="records")
+    },
+    "gpt5mini_openhands": {
+        d["instance_id"]: d["model_patch"]
+        for d in gpt5_mini_openhands_predictions.to_dict(orient="records")
+    },
+    "gemini25_openhands": {
+        d["instance_id"]: d["model_patch"]
+        for d in gemini25_flash_openhands_predictions.to_dict(orient="records")
+    },
 }
 
 TYPE = "gold"  # or "sonnet37_openhands"
@@ -113,34 +128,34 @@ TYPE = "gemini25_openhands"
 import regex as re
 
 PATTERN = re.compile(
-    r'\{(?=\s*")'                                 # first non-space after { is a quote (JSON key)
-    r'(?:[^{}"]+|"[^"\\]*(?:\\.[^"\\]*)*"|(?R))*' # text, strings, or nested {...}
-    r'\}',
-    re.DOTALL
+    r'\{(?=\s*")'  # first non-space after { is a quote (JSON key)
+    r'(?:[^{}"]+|"[^"\\]*(?:\\.[^"\\]*)*"|(?R))*'  # text, strings, or nested {...}
+    r"\}",
+    re.DOTALL,
 )
 
 
 def worker(instance):
-    diff = MAP_PATCH_TYPE[TYPE].get(instance["instance_id"], None)    
+    diff = MAP_PATCH_TYPE[TYPE].get(instance["instance_id"], None)
     workload = instance["workload"]
-    
+
     prompt = USER_PROMPT.format(diff=diff, workload=workload)
 
     for _ in range(5):
         try:
             response = completion(
-                model="gemini/gemini-2.5-flash", 
+                model="gemini/gemini-2.5-flash",
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": USER_PROMPT.format(
-                        diff=diff,
-                        workload=workload
-                    )},
+                    {
+                        "role": "user",
+                        "content": USER_PROMPT.format(diff=diff, workload=workload),
+                    },
                 ],
                 temperature=0.0,
             )
             text = response.choices[0].message.content
-            
+
             # Extract out the JSON object from the response
             result = {}
             result["explanation"] = text
@@ -154,23 +169,23 @@ def worker(instance):
             print(f"Error processing instance {instance['instance_id']}: {e}")
             time.sleep(5)
             continue
-        
+
     return {
         "explanation": None,
         "instance_id": instance["instance_id"],
-        "repo": instance["repo"]
+        "repo": instance["repo"],
     }
-         
-import tqdm   
- 
+
+
+import tqdm
+
 with multiprocessing.Pool(processes=8) as pool:
     results = []
     for r in tqdm.tqdm(pool.imap(worker, ds), total=len(ds), desc="Explaining diffs"):
-        results.append(r)  
-    
+        results.append(r)
+
 # Save results
 import json
-
 from pathlib import Path
 
 output_dir = Path("analysis/llm/outputs")
@@ -178,4 +193,3 @@ output_dir = Path("analysis/llm/outputs")
 with open(output_dir / f"diff_explanation_{TYPE}.jsonl", "w") as f:
     for r in results:
         f.write(json.dumps(r) + "\n")
-

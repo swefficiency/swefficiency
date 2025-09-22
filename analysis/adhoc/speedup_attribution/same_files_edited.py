@@ -9,7 +9,7 @@ SONNET_RUN = Path(
     "logs/run_evaluation/ground_truth5/us.anthropic.claude-3-7-sonnet-20250219-v1_0_maxiter_100_N_v0.51.1-no-hint-run_1"
 )
 
-ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
+ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
 
 
 def read_text(p: Path) -> str:

@@ -1,5 +1,3 @@
-
-
 SYSTEM_PROMPT = """\
 You are an excellent performance engineer. Given a code diff and an affected performance workload that shows a speedup as a result of this diff, output a single high-level performance bucket, the concrete signals from the diff that justify that bucket, a mechanism-level explanation of **why the specific code edits** improve performance, and a confidence score. Prefer software-side mechanisms; ignore hardware/microarchitecture unless explicitly cited.
 
@@ -131,41 +129,50 @@ USER_PROMPT = """\
 
 import multiprocessing
 import time
+
 import datasets
 from litellm import completion
 
-ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
+ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
+
 
 def worker(instance):
     diff = instance["patch"]
     workload = instance["workload"]
-    
+
     prompt = USER_PROMPT.format(diff=diff, workload=workload)
-    
+
     while True:
         try:
             response = completion(
-                model="gemini/gemini-2.5-flash", 
+                model="gemini/gemini-2.5-flash",
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": USER_PROMPT.format(
-                        diff=diff,
-                        workload=workload
-                    )},
-                    {"role": "user", "content": "Think step-by-step about the code changes and their performance implications, then output the JSON object as specified."},
+                    {
+                        "role": "user",
+                        "content": USER_PROMPT.format(diff=diff, workload=workload),
+                    },
+                    {
+                        "role": "user",
+                        "content": "Think step-by-step about the code changes and their performance implications, then output the JSON object as specified.",
+                    },
                 ],
                 temperature=0.0,
             )
             text = response.choices[0].message.content
-            
+
             # Extract out the JSON object from the response
             import json
             import re
+
             match = re.search(r"\{.*\}", text, re.DOTALL)
             if match:
                 result = json.loads(match.group(0))
             else:
-                result = {"classification": "Unknown / Not Enough Information", "confidence": "low"}
+                result = {
+                    "classification": "Unknown / Not Enough Information",
+                    "confidence": "low",
+                }
 
             # Add instance ID for traceability
             result["instance_id"] = instance["instance_id"]
@@ -176,17 +183,17 @@ def worker(instance):
             print(f"Error processing instance {instance['instance_id']}: {e}")
             time.sleep(5)
             continue
-         
-import tqdm   
- 
+
+
+import tqdm
+
 with multiprocessing.Pool(processes=8) as pool:
     results = []
     for r in tqdm.tqdm(pool.imap(worker, ds), total=len(ds), desc="Classifying diffs"):
-        results.append(r)  
-    
+        results.append(r)
+
 # Save results
 import json
-
 from pathlib import Path
 
 output_dir = Path("analysis/llm/outputs")

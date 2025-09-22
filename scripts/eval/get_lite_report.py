@@ -143,6 +143,10 @@ def evaluate_instance(
 
 def main(gold_run, pred_run, num_workers, output_dir):
     ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
+    ds_lite = datasets.load_dataset("swefficiency-anon/swefficiency_lite", split="test")
+
+    ds_lite_instance_ids = {item["instance_id"] for item in ds_lite}
+    ds = [item for item in ds if item["instance_id"] in ds_lite_instance_ids]
 
     if not output_dir.exists():
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -210,7 +214,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--output_dir",
         type=Path,
-        default=Path("./eval_reports"),
+        default=Path("./eval_reports_lite"),
         help="Output directory for the report",
     )
 

@@ -8,7 +8,7 @@
   <a href="https://swefficiency.com/">
     <img src="https://img.shields.io/badge/project-Home-b31b1b.svg" alt="home">
   </a>
-  <a href="https://huggingface.co/datasets/swefficiency/swefficiency">
+  <a href="https://huggingface.co/datasets/swefficiency-anon/swefficiency">
     <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Data-blue" alt="Data">
   </a>
   <a href="TODO: paper link">
@@ -18,7 +18,7 @@
 
 ---
 
-# SWE-fficiency: Can Language Models Optimize Real World Repositories on Real World Worloads?
+# SWE-fficiency: Can Language Models Optimize Real World Repositories on Real World Workloads?
 
 **TL;DR** — SWE-fficiency is a *repository-level* benchmark for **performance optimization** (not bug fixing). Each task ships:
 - a full codebase,
@@ -75,7 +75,7 @@ bash scripts/vm/setup_vm.sh
 
 ## 🧰 Dataset
 
-* **Location**: [Hugging Face — swefficiency/swefficiency](https://huggingface.co/datasets/swefficiency/swefficiency)
+* **Location**: [Hugging Face — swefficiency-anon/swefficiency](https://huggingface.co/datasets/swefficiency-anon/swefficiency)
 * **Task structure** (per instance):
 
   * Repo snapshot + diff metadata
@@ -114,7 +114,7 @@ See `scripts/eval/README.md` for detailed CLI usage and examples.
 
 ## 🛠️ Generation (Agents & Harness)
 
-We provide integration points for popular SWE agent harnesses lie OpenHands and SWE-agent via already containerized docker containers (`ghcr.io/swefficiency/swefficiency-images:<instance_id>`).
+We provide integration points for popular SWE agent harnesses lie OpenHands and SWE-agent via already containerized docker containers.
 
 We ship **prebuilt Docker images** for generation to match the evaluation environment and avoid dependency drift.
 
@@ -152,3 +152,4 @@ We include reference results in the paper across several modern LMs using OpenHa
 ---
 
 TODO: Add 📚 citation + 🤝 acknowledgments.
+TODO: Replace swefficiency-anon/swefficiency with non-anonymized HF repo name.

@@ -13,10 +13,10 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://swefficiency.com",
     project_urls={
-        "Documentation": "https://github.com/swefficiency/swefficiency",
-        "Bug Reports": "http://github.com/swefficiency/swefficiency/issues",
-        "Source Code": "http://github.com/swefficiency/swefficiency",
-        "Website": "https://swefficiency.com",
+        "Documentation": "https://github.com/<PUBLIC_REPO_HERE>",
+        "Bug Reports": "http://github.com/<PUBLIC_REPO_HERE>/issues",
+        "Source Code": "http://github.com/<PUBLIC_REPO_HERE>",
+        "Website": "<WEBSITE_URL_HERE>",
     },
     packages=setuptools.find_packages(),
     classifiers=[

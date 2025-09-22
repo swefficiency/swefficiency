@@ -1,6 +1,6 @@
 import datasets
 
-ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
+ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
 
 instance_id_to_github_url = {}
 

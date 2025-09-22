@@ -14,7 +14,7 @@ INSTANCE_IDS="pandas-dev__pandas-28447"
 
 
 python swefficiency/harness/run_validation.py \
-    --dataset_name swefficiency/swefficiency \
+    --dataset_name swefficiency-anon/swefficiency \
     --run_id $RUN_ID \
     --cache_level env \
     --max_build_workers 16 \

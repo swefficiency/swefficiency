@@ -5,14 +5,14 @@ import datasets
 ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
 instance_ids = set(d["instance_id"] for d in ds)
 
-OUTPUT_DIR = Path("/predictions/converted")
+OUTPUT_DIR = Path("predictions/lite_converted")
 
 # model_name = "gemini25flash"
 # model_name = "gpt5mini"
 # model_name = "claude37sonnet"
 
-for model_name in ["gemini25flash", "gpt5mini", "claude37sonnet"]:
-    INPUT_FILE = f"predictions/openhands/{model_name}_raw.jsonl"
+for model_name in ["gemini25pro"]:
+    INPUT_FILE = f"predictions/lite_openhands/{model_name}_raw.jsonl"
     OUTPUT_FILE = OUTPUT_DIR / f"oh_{model_name}.jsonl"
 
     # Read in JSONL file and convert to list of dict.
@@ -37,6 +37,7 @@ for model_name in ["gemini25flash", "gpt5mini", "claude37sonnet"]:
                 f"Warning: instance_id {item['instance_id']} not in dataset, skipping."
             )
             continue
+
         eval_entry = {
             "instance_id": item["instance_id"],
             "model_patch": item["test_result"].get("git_patch", ""),

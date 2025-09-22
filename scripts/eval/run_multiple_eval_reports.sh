@@ -12,7 +12,11 @@ MODEL_NAMES=(
     # "$EVAL_DIR/ground_truth13/gold"
     # "$EVAL_DIR/ground_truth14/gold"
     # "$EVAL_DIR/ground_truth15/gold"
-    "$EVAL_DIR/ground_truth16/gold"
+    # "$EVAL_DIR/ground_truth16/gold" # sparse broken
+    # "$EVAL_DIR/ground_truth17/gold"
+    # "$EVAL_DIR/ground_truth18/gold"
+    # "$EVAL_DIR/ground_truth19/gold"
+    "$EVAL_DIR/ground_truth21/gold"
     # "$EVAL_DIR/ground_truth5/gpt-5-mini_maxiter_100_N_v0.51.1-no-hint-run_1"
     # "$EVAL_DIR/ground_truth5/us.anthropic.claude-3-7-sonnet-20250219-v1_0_maxiter_100_N_v0.51.1-no-hint-run_1"
     # "$EVAL_DIR/ground_truth5/gemini-2.5-flash_maxiter_100_N_v0.51.1-no-hint-run_1"

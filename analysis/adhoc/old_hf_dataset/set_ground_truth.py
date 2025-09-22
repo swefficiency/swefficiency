@@ -8,18 +8,13 @@ import tqdm
 
 from swefficiency.harness.log_parsers import MAP_REPO_TO_PARSER
 
-# Take old dataset and check: some errors:
-# dataset = datasets.load_dataset("swefficiency/swefficiency", split='test', revision="718e5821f73f86414fa72bf8b7f716651a3a835a")
-# ground_truth_data = Path("logs/run_evaluation/perf_eval_ground_truth/gold")
-
-
-# dataset = datasets.load_dataset("swefficiency/swefficiency", split='test')
+# dataset = datasets.load_dataset("swefficiency-anon/swefficiency", split='test')
 
 new_dataset = []
 
 # Try 2: verify any flaky tests?
 dataset = datasets.load_dataset(
-    "swefficiency/swefficiency_old",
+    "swefficiency-anon/swefficiency_old",
     split="test",
     revision="48006d26383840d848db076517849facc2afec4d",
 )
@@ -354,6 +349,11 @@ def worker(d):
             "pandas/tests/io/parser/common/test_file_buffer_url.py::test_url",
             "pandas/tests/io/json/test_pandas.py::TestPandasContainer::test_round_trip_exception_",
             "pandas/tests/io/parser/test_common.py::test_url",
+            "pandas/tests/io/parser/test_parsers.py",
+            "numpy/f2py/tests/test_quoted_character.py",
+            "pandas/tests/io/pytables/test_store.py::test_coordinates",
+            "pandas/tests/io/pytables/test_select.py::test_select_as_multiple",
+            "xarray/tests/test_strategies.py::TestDimensionNamesStrategy::test_types",
         ]
 
         all_conditions = set(conditions + failed_tests)
@@ -389,7 +389,9 @@ def worker(d):
         if "PASS" in status and not skip_condition(test)
     ]
 
-    d_dict["image_name"] = f"ghcr.io/swefficiency/swefficiency-images:{instance_id}"
+    d_dict["image_name"] = (
+        f"ghcr.io/swefficiency-anon/swefficiency-images:{instance_id}"
+    )
 
     if "single_thread_tests" not in d_dict:
         d_dict["single_thread_tests"] = list(
@@ -436,4 +438,4 @@ print(f"Total instances with good performance: {len(new_dataset)}")
 new_dataset = datasets.Dataset.from_list(new_dataset)
 
 # Upload the new dataset
-new_dataset.push_to_hub("swefficiency/swefficiency", split="test")
+new_dataset.push_to_hub("swefficiency-anon/swefficiency", split="test")

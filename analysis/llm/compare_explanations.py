@@ -187,11 +187,12 @@ Return the JSON object as specified in the system prompt.
 
 import multiprocessing
 import time
+
 import datasets
 from litellm import completion
 
 # CHANGE THESE FILE PATHS AS NEEDED
-ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
+ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
 gold_explanations_file = "analysis/llm/outputs/diff_explanation.jsonl"
 
 
@@ -200,25 +201,30 @@ model_names = ["gpt5mini", "gemini25flash", "claude37sonnet"]
 for model_name in model_names:
 
     predictions_file = f"predictions/converted/oh_{model_name}.jsonl"
-    explanations_file = f"analysis/llm/outputs/diff_explanation_{model_name}_openhands.jsonl"
+    explanations_file = (
+        f"analysis/llm/outputs/diff_explanation_{model_name}_openhands.jsonl"
+    )
 
     # END CHANGE THESE FILE PATHS AS NEEDED
 
     predictions = {}
     for line in open(predictions_file):
         import json
+
         obj = json.loads(line)
         predictions[obj["instance_id"]] = obj
-        
+
     pred_explanations = {}
     for line in open(explanations_file):
         import json
+
         obj = json.loads(line)
         pred_explanations[obj["instance_id"]] = obj
-        
+
     gold_explanations = {}
     for line in open(gold_explanations_file):
         import json
+
         obj = json.loads(line)
         gold_explanations[obj["instance_id"]] = obj
 
@@ -229,9 +235,9 @@ for model_name in model_names:
                 "classification": "Unknown / Not Enough Information",
                 "confidence": "low",
                 "instance_id": instance["instance_id"],
-                "repo": instance["repo"]
+                "repo": instance["repo"],
             }
-        
+
         # expert_diff = instance["patch"]
 
         if instance_id in pred_explanations:
@@ -252,28 +258,35 @@ for model_name in model_names:
             expert_explanation=expert_explanation,
             expert_diff=expert_diff,
         )
-        
+
         for attempt in range(10):
             try:
                 response = completion(
-                    model="gemini/gemini-2.5-flash", 
+                    model="gemini/gemini-2.5-flash",
                     messages=[
                         {"role": "system", "content": SYSTEM_PROMPT},
                         {"role": "user", "content": user_prompt},
-                        {"role": "user", "content": "Think step-by-step about the code changes and their performance implications, then output the JSON object as specified."},
+                        {
+                            "role": "user",
+                            "content": "Think step-by-step about the code changes and their performance implications, then output the JSON object as specified.",
+                        },
                     ],
                     temperature=0.0,
                 )
                 text = response.choices[0].message.content
-                
+
                 # Extract out the JSON object from the response
                 import json
                 import re
+
                 match = re.search(r"\{.*\}", text, re.DOTALL)
                 if match:
                     result = json.loads(match.group(0))
                 else:
-                    result = {"classification": "Unknown / Not Enough Information", "confidence": "low"}
+                    result = {
+                        "classification": "Unknown / Not Enough Information",
+                        "confidence": "low",
+                    }
 
                 # Add instance ID for traceability
                 result["instance_id"] = instance["instance_id"]
@@ -284,25 +297,31 @@ for model_name in model_names:
                 print(f"Error processing instance {instance['instance_id']}: {e}")
                 time.sleep(5)
                 continue
-        
-        return {"classification": "Unknown / Not Enough Information", "confidence": "low"}
-        
-    import tqdm   
-    
+
+        return {
+            "classification": "Unknown / Not Enough Information",
+            "confidence": "low",
+        }
+
+    import tqdm
+
     with multiprocessing.Pool(processes=4) as pool:
         results = []
-        for r in tqdm.tqdm(pool.imap(worker, ds), total=len(ds), desc="Classifying diffs"):
-            results.append(r)  
-            
+        for r in tqdm.tqdm(
+            pool.imap(worker, ds), total=len(ds), desc="Classifying diffs"
+        ):
+            results.append(r)
+
         results = [r for r in results if r is not None]
-        
+
     # Save results
     import json
-
     from pathlib import Path
 
     output_dir = Path("analysis/llm/outputs")
 
-    with open(output_dir / f"diff_and_explain_comparision_{model_name}.jsonl", "w") as f:
+    with open(
+        output_dir / f"diff_and_explain_comparision_{model_name}.jsonl", "w"
+    ) as f:
         for r in results:
             f.write(json.dumps(r) + "\n")

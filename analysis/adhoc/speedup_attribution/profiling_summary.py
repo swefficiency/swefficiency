@@ -779,7 +779,7 @@ def main(model_name):
     import pandas as pd
     import tqdm
 
-    ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
+    ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
 
     # Filter out edits where we did not improve or correctness degraded.
     global PRED_RUN_DIR

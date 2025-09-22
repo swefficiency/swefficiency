@@ -41,7 +41,7 @@ def eval_command(args):
     Handle the eval subcommand.
     """
     # Set defaults
-    dataset_name = "swefficiency/swefficiency"
+    dataset_name = "swefficiency-anon/swefficiency"
     split = "test"
 
     # Handle prediction path - default to None if not provided

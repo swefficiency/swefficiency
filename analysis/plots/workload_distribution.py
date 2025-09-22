@@ -1,7 +1,8 @@
-from datasets import load_dataset
 from pathlib import Path
+
 import numpy as np
 import tqdm
+from datasets import load_dataset
 
 from swefficiency.harness.run_validation import parse_perf_summary
 
@@ -24,7 +25,7 @@ WSPACE = 0.04  # Only used when USE_CONSTRAINED = False
 # ================================================================
 
 # ---------------- Load data ----------------
-ds = load_dataset("swefficiency/swefficiency", split="test")
+ds = load_dataset("swefficiency-anon/swefficiency", split="test")
 gold_dir = Path("logs/run_evaluation/ground_truth5/gold")
 
 pre_edit_workload_runtimes = []
@@ -48,11 +49,11 @@ for instance in tqdm.tqdm(ds, total=len(ds), desc="Processing instances"):
 
 #!/usr/bin/env python3
 import json
-from collections import Counter
-import matplotlib.pyplot as plt
-import matplotlib as mpl
 import textwrap
+from collections import Counter
 
+import matplotlib as mpl
+import matplotlib.pyplot as plt
 from matplotlib.ticker import LogLocator, NullFormatter
 
 # Ensure hatch lines are visible

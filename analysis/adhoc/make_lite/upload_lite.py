@@ -18,7 +18,7 @@ TARGET_N = 100  # keep it < 100; adjust as you like
 RANDOM_SEED = 42  # reproducibility
 GOLD_RESULT_FOLDER = Path("logs/run_evaluation/ground_truth5/gold")
 SPLIT = "test"  # change if needed
-DATASET_ID = "swefficiency/swefficiency"  # as in your snippet
+DATASET_ID = "swefficiency-anon/swefficiency"  # as in your snippet
 
 rng = np.random.default_rng(RANDOM_SEED)
 
@@ -287,5 +287,18 @@ for name in ["size_of_patch", "pre_edit_workload_runtime", "improvement"]:
 # Filter dataset to selected instances and save as a new dataset (with split "lite")
 lite_ds = ds.filter(lambda example: example["instance_id"] in selected)
 
+# Make sure if current swefficiency_lite exists, we use the same instance_ids
+try:
+    existing = load_dataset("swefficiency-anon/swefficiency_lite", split="test")
+    existing_ids = set(d["instance_id"] for d in existing)
+    new_ids = set(d["instance_id"] for d in lite_ds)
+    if existing_ids != new_ids:
+        raise ValueError(
+            "Instance IDs in existing swefficiency_0lite differ from newly selected IDs."
+        )
+except Exception:
+    if "swefficiency_lite" in os.environ.get("HF_DATASETS_OFFLINE", ""):
+        raise
+
 # Upload to Hugging Face Hub
-lite_ds.push_to_hub("swefficiency/swefficiency_lite", split="test", private=False)
+lite_ds.push_to_hub("swefficiency-anon/swefficiency_lite", split="test", private=False)

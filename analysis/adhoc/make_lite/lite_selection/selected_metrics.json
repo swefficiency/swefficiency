@@ -1,502 +1,502 @@
 {
-  "scipy__scipy-12474": {
-    "size_of_patch": 158,
-    "pre_edit_workload_runtime": 3.7743602723348886,
-    "improvement": 1.2001491718083643
-  },
-  "scipy__scipy-10467": {
-    "size_of_patch": 22,
-    "pre_edit_workload_runtime": 0.3848433731449768,
-    "improvement": 3.016304198385927
-  },
-  "pandas-dev__pandas-51517": {
-    "size_of_patch": 150,
-    "pre_edit_workload_runtime": 9.377383104339241,
-    "improvement": 33.204239108512276
-  },
-  "astropy__astropy-17461": {
-    "size_of_patch": 118,
-    "pre_edit_workload_runtime": 0.23459250330924988,
-    "improvement": 1.4865711178863084
-  },
-  "pandas-dev__pandas-49177": {
-    "size_of_patch": 51,
-    "pre_edit_workload_runtime": 0.0030573892936110497,
-    "improvement": 5.517439337122511
-  },
-  "pandas-dev__pandas-53731": {
-    "size_of_patch": 691,
-    "pre_edit_workload_runtime": 6.953611031593755,
-    "improvement": 293.2119316686934
-  },
-  "scikit-learn__scikit-learn-15615": {
-    "size_of_patch": 34,
-    "pre_edit_workload_runtime": 21.041650235978885,
-    "improvement": 1.222794788631021
-  },
-  "pandas-dev__pandas-45387": {
-    "size_of_patch": 66,
-    "pre_edit_workload_runtime": 0.38247745344182477,
-    "improvement": 6.9027691264634665
-  },
-  "pandas-dev__pandas-42611": {
-    "size_of_patch": 95,
-    "pre_edit_workload_runtime": 0.007471609414555132,
-    "improvement": 41.268044542390186
-  },
-  "sympy__sympy-20228": {
-    "size_of_patch": 28,
-    "pre_edit_workload_runtime": 6.236428622412495,
-    "improvement": 1147.8256269648612
-  },
-  "scikit-learn__scikit-learn-29330": {
-    "size_of_patch": 109,
-    "pre_edit_workload_runtime": 110.50993762305006,
-    "improvement": 41.71471477422877
-  },
-  "scikit-learn__scikit-learn-9858": {
-    "size_of_patch": 26,
-    "pre_edit_workload_runtime": 38.53245779972834,
-    "improvement": 1.8695807128331483
-  },
-  "pandas-dev__pandas-43352": {
-    "size_of_patch": 69,
-    "pre_edit_workload_runtime": 0.12783346128417178,
-    "improvement": 1.5354237561344672
-  },
-  "pandas-dev__pandas-48723": {
-    "size_of_patch": 31,
-    "pre_edit_workload_runtime": 0.4986091745016165,
-    "improvement": 7759.48899855308
-  },
-  "pandas-dev__pandas-26711": {
-    "size_of_patch": 43,
-    "pre_edit_workload_runtime": 0.4573867621645331,
-    "improvement": 46.93415984958715
-  },
-  "pandas-dev__pandas-57252": {
-    "size_of_patch": 85,
-    "pre_edit_workload_runtime": 1.221684731002897,
-    "improvement": 1.0673148701536157
-  },
-  "pandas-dev__pandas-37149": {
-    "size_of_patch": 62,
-    "pre_edit_workload_runtime": 4.151570300438907,
-    "improvement": 4761.204723375217
-  },
-  "pandas-dev__pandas-55736": {
-    "size_of_patch": 128,
-    "pre_edit_workload_runtime": 4.336669368902221,
-    "improvement": 1.1324267093886131
-  },
-  "astropy__astropy-7616": {
-    "size_of_patch": 26,
-    "pre_edit_workload_runtime": 0.04145215283613652,
-    "improvement": 1.238087372542368
-  },
-  "pandas-dev__pandas-52541": {
-    "size_of_patch": 69,
-    "pre_edit_workload_runtime": 0.33071398300584404,
-    "improvement": 4.188764221802584
-  },
-  "scikit-learn__scikit-learn-17235": {
-    "size_of_patch": 207,
-    "pre_edit_workload_runtime": 0.436773847755976,
-    "improvement": 4.316439926971039
-  },
-  "sympy__sympy-21391": {
-    "size_of_patch": 27,
-    "pre_edit_workload_runtime": 4.879428080725484,
-    "improvement": 2.108781060914753
-  },
-  "scipy__scipy-11358": {
-    "size_of_patch": 81,
-    "pre_edit_workload_runtime": 0.5507973689585924,
-    "improvement": 31.831780732283516
-  },
-  "scipy__scipy-16840": {
-    "size_of_patch": 123,
-    "pre_edit_workload_runtime": 0.14102999734925106,
-    "improvement": 11.211100143789668
-  },
-  "pandas-dev__pandas-28447": {
-    "size_of_patch": 122,
-    "pre_edit_workload_runtime": 5.1273549709934745,
-    "improvement": 852.4590194644578
-  },
-  "pandas-dev__pandas-55084": {
-    "size_of_patch": 35,
-    "pre_edit_workload_runtime": 1.153585561621003,
-    "improvement": 1.2586384331887772
-  },
-  "pandas-dev__pandas-57534": {
-    "size_of_patch": 40,
-    "pre_edit_workload_runtime": 0.38814166174037384,
-    "improvement": 2.250070158131558
-  },
-  "dask__dask-10922": {
-    "size_of_patch": 17,
-    "pre_edit_workload_runtime": 65.61250957497396,
-    "improvement": 254.67673390142653
-  },
-  "pandas-dev__pandas-40339": {
-    "size_of_patch": 83,
-    "pre_edit_workload_runtime": 0.6445609424007125,
-    "improvement": 1.1189658429850233
-  },
-  "pandas-dev__pandas-26391": {
-    "size_of_patch": 64,
-    "pre_edit_workload_runtime": 4.007920302916318,
-    "improvement": 2.669317803326068
-  },
-  "astropy__astropy-15900": {
-    "size_of_patch": 62,
-    "pre_edit_workload_runtime": 9.600330283865332e-05,
-    "improvement": 1.1335230834010481
-  },
-  "astropy__astropy-16096": {
-    "size_of_patch": 14,
-    "pre_edit_workload_runtime": 0.00015921693136915566,
-    "improvement": 1.3155612069949618
-  },
-  "pandas-dev__pandas-51518": {
-    "size_of_patch": 13,
-    "pre_edit_workload_runtime": 0.6793577489675954,
-    "improvement": 16.42163860028668
-  },
-  "pandas-dev__pandas-56089": {
-    "size_of_patch": 37,
-    "pre_edit_workload_runtime": 0.17008645960129798,
-    "improvement": 5.24281217712719
-  },
-  "pandas-dev__pandas-37130": {
-    "size_of_patch": 20,
-    "pre_edit_workload_runtime": 0.0003358799467328936,
-    "improvement": 68.17934060851414
-  },
-  "pandas-dev__pandas-39972": {
-    "size_of_patch": 37,
-    "pre_edit_workload_runtime": 0.23982333244523033,
-    "improvement": 2.7315094696863285
-  },
-  "numpy__numpy-13250": {
-    "size_of_patch": 36,
-    "pre_edit_workload_runtime": 0.5650390067882836,
-    "improvement": 1.0739667988779622
-  },
-  "pandas-dev__pandas-52430": {
-    "size_of_patch": 65,
-    "pre_edit_workload_runtime": 0.20817354230186902,
-    "improvement": 18955.059901011646
-  },
-  "pandas-dev__pandas-51738": {
-    "size_of_patch": 111,
-    "pre_edit_workload_runtime": 0.19098996438551694,
-    "improvement": 2764.667000700068
-  },
-  "pandas-dev__pandas-34178": {
-    "size_of_patch": 66,
-    "pre_edit_workload_runtime": 0.11215426218695938,
-    "improvement": 3.324262124294867
-  },
-  "pandas-dev__pandas-40178": {
-    "size_of_patch": 168,
-    "pre_edit_workload_runtime": 0.29845793650485575,
-    "improvement": 1.1185801731585714
-  },
-  "pandas-dev__pandas-32825": {
-    "size_of_patch": 112,
-    "pre_edit_workload_runtime": 0.08997178901918232,
-    "improvement": 12.464192004799141
-  },
-  "pandas-dev__pandas-48609": {
-    "size_of_patch": 66,
-    "pre_edit_workload_runtime": 0.4415309780300595,
-    "improvement": 2.117369437780004
-  },
-  "scipy__scipy-10393": {
-    "size_of_patch": 3925,
-    "pre_edit_workload_runtime": 2.2647097520530224e-05,
-    "improvement": 1.7331873476055897
-  },
-  "pandas-dev__pandas-38103": {
-    "size_of_patch": 37,
-    "pre_edit_workload_runtime": 0.0003965504311560653,
-    "improvement": 6.907848440436678
-  },
-  "pandas-dev__pandas-44758": {
-    "size_of_patch": 82,
-    "pre_edit_workload_runtime": 0.2639537052770611,
-    "improvement": 3.297073782850151
-  },
-  "pandas-dev__pandas-43308": {
-    "size_of_patch": 54,
-    "pre_edit_workload_runtime": 0.00022270062611205504,
-    "improvement": 1.9130552843723851
-  },
-  "pandas-dev__pandas-52548": {
-    "size_of_patch": 81,
-    "pre_edit_workload_runtime": 2.7860246520955116,
-    "improvement": 49.12930526894226
-  },
-  "pandas-dev__pandas-31409": {
-    "size_of_patch": 57,
-    "pre_edit_workload_runtime": 1.4926845425739885e-05,
-    "improvement": 3.5391553879089477
-  },
-  "scipy__scipy-19776": {
-    "size_of_patch": 138,
-    "pre_edit_workload_runtime": 0.03227877098345198,
-    "improvement": 1.4992333734162697
-  },
-  "pandas-dev__pandas-51339": {
-    "size_of_patch": 25,
-    "pre_edit_workload_runtime": 0.012652455133618786,
-    "improvement": 7.36040548613265
-  },
-  "pandas-dev__pandas-43285": {
-    "size_of_patch": 14,
-    "pre_edit_workload_runtime": 0.132077696332708,
-    "improvement": 3.0191946380436683
-  },
-  "pandas-dev__pandas-39332": {
-    "size_of_patch": 78,
-    "pre_edit_workload_runtime": 0.06630060053430498,
-    "improvement": 216.72217447422523
-  },
-  "pandas-dev__pandas-55131": {
-    "size_of_patch": 36,
-    "pre_edit_workload_runtime": 0.8891534060821868,
-    "improvement": 20.310512068609086
-  },
-  "astropy__astropy-6940": {
-    "size_of_patch": 33,
-    "pre_edit_workload_runtime": 0.2904422436025925,
-    "improvement": 3.036947229907227
-  },
-  "pandas-dev__pandas-52054": {
-    "size_of_patch": 26,
-    "pre_edit_workload_runtime": 0.005503640096634626,
-    "improvement": 4.605708101137006
-  },
-  "pandas-dev__pandas-34052": {
-    "size_of_patch": 311,
-    "pre_edit_workload_runtime": 1.1938408869318664,
-    "improvement": 21.860323087867858
-  },
-  "dask__dask-5501": {
-    "size_of_patch": 18,
-    "pre_edit_workload_runtime": 0.6915901591302827,
-    "improvement": 3.9658292850997494
-  },
-  "sympy__sympy-11789": {
-    "size_of_patch": 294,
-    "pre_edit_workload_runtime": 0.49585676703136417,
-    "improvement": 22.066459248672388
-  },
   "pandas-dev__pandas-42704": {
     "size_of_patch": 77,
     "pre_edit_workload_runtime": 0.09168177045416087,
     "improvement": 2.065930181963807
-  },
-  "sympy__sympy-16134": {
-    "size_of_patch": 47,
-    "pre_edit_workload_runtime": 22.319305939483456,
-    "improvement": 30484.405707030237
-  },
-  "scipy__scipy-14085": {
-    "size_of_patch": 75,
-    "pre_edit_workload_runtime": 0.31030033393064516,
-    "improvement": 2334.7375130466553
-  },
-  "pandas-dev__pandas-43335": {
-    "size_of_patch": 64,
-    "pre_edit_workload_runtime": 0.03910697137168609,
-    "improvement": 2.3287033855080757
-  },
-  "pandas-dev__pandas-43518": {
-    "size_of_patch": 347,
-    "pre_edit_workload_runtime": 0.12754694873932748,
-    "improvement": 2.193141382390166
-  },
-  "scipy__scipy-10939": {
-    "size_of_patch": 53,
-    "pre_edit_workload_runtime": 0.11145913846651093,
-    "improvement": 2.216560145429722
-  },
-  "pandas-dev__pandas-45434": {
-    "size_of_patch": 109,
-    "pre_edit_workload_runtime": 0.014730024675372988,
-    "improvement": 3449.8219740634795
-  },
-  "pandas-dev__pandas-40254": {
-    "size_of_patch": 75,
-    "pre_edit_workload_runtime": 0.004157079890929162,
-    "improvement": 1.1109924089621086
-  },
-  "pandas-dev__pandas-25070": {
-    "size_of_patch": 557,
-    "pre_edit_workload_runtime": 0.003091914439573884,
-    "improvement": 17.214432844291345
-  },
-  "pandas-dev__pandas-23888": {
-    "size_of_patch": 60,
-    "pre_edit_workload_runtime": 0.046638273829594255,
-    "improvement": 9.204406274527955
-  },
-  "pandas-dev__pandas-46109": {
-    "size_of_patch": 93,
-    "pre_edit_workload_runtime": 0.024295105739030987,
-    "improvement": 2.705339156712416
-  },
-  "pandas-dev__pandas-43694": {
-    "size_of_patch": 67,
-    "pre_edit_workload_runtime": 0.007584584719408304,
-    "improvement": 1.1756662721424365
-  },
-  "pandas-dev__pandas-44908": {
-    "size_of_patch": 56,
-    "pre_edit_workload_runtime": 0.926583420559764,
-    "improvement": 2.6015832993453714
-  },
-  "pydata__xarray-7374": {
-    "size_of_patch": 946,
-    "pre_edit_workload_runtime": 0.13759676940971985,
-    "improvement": 1.419913805875513
-  },
-  "pandas-dev__pandas-41567": {
-    "size_of_patch": 13,
-    "pre_edit_workload_runtime": 0.007272908068262041,
-    "improvement": 1.2651264500818653
-  },
-  "pandas-dev__pandas-40072": {
-    "size_of_patch": 176,
-    "pre_edit_workload_runtime": 19.853719475353138,
-    "improvement": 8859.262786335667
-  },
-  "matplotlib__matplotlib-21564": {
-    "size_of_patch": 14,
-    "pre_edit_workload_runtime": 7.319903333764524,
-    "improvement": 5.561318489058454
-  },
-  "numpy__numpy-27830": {
-    "size_of_patch": 15,
-    "pre_edit_workload_runtime": 0.37593019207706674,
-    "improvement": 1.654412142030807
   },
   "pandas-dev__pandas-42841": {
     "size_of_patch": 307,
     "pre_edit_workload_runtime": 0.027419488814426587,
     "improvement": 1.9765949873012556
   },
-  "sympy__sympy-19270": {
-    "size_of_patch": 58,
-    "pre_edit_workload_runtime": 0.45551122177392245,
-    "improvement": 1.3543103873912954
+  "pandas-dev__pandas-44758": {
+    "size_of_patch": 82,
+    "pre_edit_workload_runtime": 0.2639537052770611,
+    "improvement": 3.297073782850151
   },
-  "pandas-dev__pandas-57855": {
-    "size_of_patch": 13,
-    "pre_edit_workload_runtime": 0.008057699090661482,
-    "improvement": 6.282789681817041
+  "pandas-dev__pandas-52541": {
+    "size_of_patch": 69,
+    "pre_edit_workload_runtime": 0.33071398300584404,
+    "improvement": 4.188764221802584
   },
   "astropy__astropy-13471": {
     "size_of_patch": 13,
     "pre_edit_workload_runtime": 0.006816369515843689,
     "improvement": 32.86367263806241
   },
-  "pandas-dev__pandas-43059": {
-    "size_of_patch": 58,
-    "pre_edit_workload_runtime": 0.6933994295168668,
-    "improvement": 1.3189651253606822
-  },
-  "scikit-learn__scikit-learn-21837": {
-    "size_of_patch": 45,
-    "pre_edit_workload_runtime": 1.2572812811867333,
-    "improvement": 16.730073432280786
-  },
-  "pandas-dev__pandas-52928": {
-    "size_of_patch": 42,
-    "pre_edit_workload_runtime": 0.21147453960962592,
-    "improvement": 1.2563097931648592
-  },
-  "scipy__scipy-14004": {
+  "pandas-dev__pandas-56089": {
     "size_of_patch": 37,
-    "pre_edit_workload_runtime": 0.025740172679768875,
-    "improvement": 8.877156105792523
+    "pre_edit_workload_runtime": 0.17008645960129798,
+    "improvement": 5.24281217712719
   },
-  "pandas-dev__pandas-44827": {
-    "size_of_patch": 26,
-    "pre_edit_workload_runtime": 1.6000147517421284,
-    "improvement": 2084.2175177291274
+  "sympy__sympy-18591": {
+    "size_of_patch": 177,
+    "pre_edit_workload_runtime": 1.833000471815467e-05,
+    "improvement": 1.8502014131310187
   },
-  "pandas-dev__pandas-40818": {
-    "size_of_patch": 254,
-    "pre_edit_workload_runtime": 0.7399972854484804,
-    "improvement": 2.4710769895523024
-  },
-  "matplotlib__matplotlib-17995": {
-    "size_of_patch": 31,
-    "pre_edit_workload_runtime": 7.164403901357825,
-    "improvement": 16.708217182148257
-  },
-  "pandas-dev__pandas-46235": {
-    "size_of_patch": 61,
-    "pre_edit_workload_runtime": 2.065463371509686,
-    "improvement": 2.955214927538653
-  },
-  "astropy__astropy-12699": {
-    "size_of_patch": 22,
-    "pre_edit_workload_runtime": 0.0007642959936056286,
-    "improvement": 16.45618308152599
-  },
-  "astropy__astropy-13899": {
-    "size_of_patch": 33,
-    "pre_edit_workload_runtime": 9.903387103695422e-05,
-    "improvement": 44.95402624867158
-  },
-  "pandas-dev__pandas-36638": {
-    "size_of_patch": 70,
-    "pre_edit_workload_runtime": 0.9844903931720183,
-    "improvement": 107.48370173723376
-  },
-  "pandas-dev__pandas-46330": {
-    "size_of_patch": 299,
-    "pre_edit_workload_runtime": 0.4154191034380347,
-    "improvement": 6.848866960431119
-  },
-  "scipy__scipy-22660": {
-    "size_of_patch": 22,
-    "pre_edit_workload_runtime": 38.68398941704072,
-    "improvement": 39.569978889709546
+  "pandas-dev__pandas-39332": {
+    "size_of_patch": 78,
+    "pre_edit_workload_runtime": 0.06630060053430498,
+    "improvement": 216.72217447422523
   },
   "pandas-dev__pandas-51344": {
     "size_of_patch": 31,
     "pre_edit_workload_runtime": 0.2552952581155114,
     "improvement": 1.4685228234503462
   },
-  "pandas-dev__pandas-50078": {
-    "size_of_patch": 65,
-    "pre_edit_workload_runtime": 0.8764556582574733,
-    "improvement": 2.0754113676152977
+  "pandas-dev__pandas-51517": {
+    "size_of_patch": 150,
+    "pre_edit_workload_runtime": 9.377383104339241,
+    "improvement": 33.204239108512276
   },
-  "pandas-dev__pandas-43760": {
-    "size_of_patch": 112,
-    "pre_edit_workload_runtime": 0.4204634474776685,
-    "improvement": 1.2109281162164367
+  "astropy__astropy-13899": {
+    "size_of_patch": 33,
+    "pre_edit_workload_runtime": 9.903387103695422e-05,
+    "improvement": 44.95402624867158
+  },
+  "pandas-dev__pandas-44908": {
+    "size_of_patch": 56,
+    "pre_edit_workload_runtime": 0.926583420559764,
+    "improvement": 2.6015832993453714
+  },
+  "pandas-dev__pandas-55084": {
+    "size_of_patch": 35,
+    "pre_edit_workload_runtime": 1.153585561621003,
+    "improvement": 1.2586384331887772
+  },
+  "pandas-dev__pandas-44827": {
+    "size_of_patch": 26,
+    "pre_edit_workload_runtime": 1.6000147517421284,
+    "improvement": 2084.2175177291274
+  },
+  "pandas-dev__pandas-43694": {
+    "size_of_patch": 67,
+    "pre_edit_workload_runtime": 0.007584584719408304,
+    "improvement": 1.1756662721424365
+  },
+  "scipy__scipy-14004": {
+    "size_of_patch": 37,
+    "pre_edit_workload_runtime": 0.025740172679768875,
+    "improvement": 8.877156105792523
+  },
+  "pandas-dev__pandas-43518": {
+    "size_of_patch": 347,
+    "pre_edit_workload_runtime": 0.12754694873932748,
+    "improvement": 2.193141382390166
+  },
+  "pandas-dev__pandas-36638": {
+    "size_of_patch": 70,
+    "pre_edit_workload_runtime": 0.9844903931720183,
+    "improvement": 107.48370173723376
+  },
+  "pandas-dev__pandas-43059": {
+    "size_of_patch": 58,
+    "pre_edit_workload_runtime": 0.6933994295168668,
+    "improvement": 1.3189651253606822
+  },
+  "pandas-dev__pandas-45387": {
+    "size_of_patch": 66,
+    "pre_edit_workload_runtime": 0.38247745344182477,
+    "improvement": 6.9027691264634665
   },
   "scikit-learn__scikit-learn-25713": {
     "size_of_patch": 128,
     "pre_edit_workload_runtime": 116.91328730798948,
     "improvement": 55.970569439863795
   },
+  "astropy__astropy-12699": {
+    "size_of_patch": 22,
+    "pre_edit_workload_runtime": 0.0007642959936056286,
+    "improvement": 16.45618308152599
+  },
+  "pandas-dev__pandas-28447": {
+    "size_of_patch": 122,
+    "pre_edit_workload_runtime": 5.1273549709934745,
+    "improvement": 852.4590194644578
+  },
+  "pandas-dev__pandas-32825": {
+    "size_of_patch": 112,
+    "pre_edit_workload_runtime": 0.08997178901918232,
+    "improvement": 12.464192004799141
+  },
+  "pandas-dev__pandas-26711": {
+    "size_of_patch": 43,
+    "pre_edit_workload_runtime": 0.4573867621645331,
+    "improvement": 46.93415984958715
+  },
+  "pandas-dev__pandas-55131": {
+    "size_of_patch": 36,
+    "pre_edit_workload_runtime": 0.8891534060821868,
+    "improvement": 20.310512068609086
+  },
+  "pandas-dev__pandas-46330": {
+    "size_of_patch": 299,
+    "pre_edit_workload_runtime": 0.4154191034380347,
+    "improvement": 6.848866960431119
+  },
+  "sympy__sympy-16134": {
+    "size_of_patch": 47,
+    "pre_edit_workload_runtime": 22.319305939483456,
+    "improvement": 30484.405707030237
+  },
+  "pandas-dev__pandas-57534": {
+    "size_of_patch": 40,
+    "pre_edit_workload_runtime": 0.38814166174037384,
+    "improvement": 2.250070158131558
+  },
+  "pandas-dev__pandas-48723": {
+    "size_of_patch": 31,
+    "pre_edit_workload_runtime": 0.4986091745016165,
+    "improvement": 7759.48899855308
+  },
+  "pandas-dev__pandas-48609": {
+    "size_of_patch": 66,
+    "pre_edit_workload_runtime": 0.4415309780300595,
+    "improvement": 2.117369437780004
+  },
+  "scipy__scipy-22660": {
+    "size_of_patch": 22,
+    "pre_edit_workload_runtime": 38.68398941704072,
+    "improvement": 39.569978889709546
+  },
+  "pandas-dev__pandas-45434": {
+    "size_of_patch": 109,
+    "pre_edit_workload_runtime": 0.014730024675372988,
+    "improvement": 3449.8219740634795
+  },
+  "scipy__scipy-12474": {
+    "size_of_patch": 158,
+    "pre_edit_workload_runtime": 3.7743602723348886,
+    "improvement": 1.2001491718083643
+  },
+  "pandas-dev__pandas-37130": {
+    "size_of_patch": 20,
+    "pre_edit_workload_runtime": 0.0003358799467328936,
+    "improvement": 68.17934060851414
+  },
+  "scipy__scipy-10939": {
+    "size_of_patch": 53,
+    "pre_edit_workload_runtime": 0.11145913846651093,
+    "improvement": 2.216560145429722
+  },
+  "scikit-learn__scikit-learn-21837": {
+    "size_of_patch": 45,
+    "pre_edit_workload_runtime": 1.2572812811867333,
+    "improvement": 16.730073432280786
+  },
+  "dask__dask-10922": {
+    "size_of_patch": 17,
+    "pre_edit_workload_runtime": 65.61250957497396,
+    "improvement": 254.67673390142653
+  },
+  "pandas-dev__pandas-53731": {
+    "size_of_patch": 691,
+    "pre_edit_workload_runtime": 6.953611031593755,
+    "improvement": 293.2119316686934
+  },
+  "astropy__astropy-15900": {
+    "size_of_patch": 62,
+    "pre_edit_workload_runtime": 9.600330283865332e-05,
+    "improvement": 1.1335230834010481
+  },
+  "matplotlib__matplotlib-17995": {
+    "size_of_patch": 31,
+    "pre_edit_workload_runtime": 7.164403901357825,
+    "improvement": 16.708217182148257
+  },
+  "scipy__scipy-11358": {
+    "size_of_patch": 81,
+    "pre_edit_workload_runtime": 0.5507973689585924,
+    "improvement": 31.831780732283516
+  },
+  "numpy__numpy-13250": {
+    "size_of_patch": 36,
+    "pre_edit_workload_runtime": 0.5650390067882836,
+    "improvement": 1.0739667988779622
+  },
+  "pandas-dev__pandas-43308": {
+    "size_of_patch": 54,
+    "pre_edit_workload_runtime": 0.00022270062611205504,
+    "improvement": 1.9130552843723851
+  },
+  "scipy__scipy-10467": {
+    "size_of_patch": 22,
+    "pre_edit_workload_runtime": 0.3848433731449768,
+    "improvement": 3.016304198385927
+  },
+  "astropy__astropy-6940": {
+    "size_of_patch": 33,
+    "pre_edit_workload_runtime": 0.2904422436025925,
+    "improvement": 3.036947229907227
+  },
+  "pandas-dev__pandas-40072": {
+    "size_of_patch": 176,
+    "pre_edit_workload_runtime": 19.853719475353138,
+    "improvement": 8859.262786335667
+  },
+  "pandas-dev__pandas-52430": {
+    "size_of_patch": 65,
+    "pre_edit_workload_runtime": 0.20817354230186902,
+    "improvement": 18955.059901011646
+  },
+  "matplotlib__matplotlib-21564": {
+    "size_of_patch": 14,
+    "pre_edit_workload_runtime": 7.319903333764524,
+    "improvement": 5.561318489058454
+  },
+  "scikit-learn__scikit-learn-29330": {
+    "size_of_patch": 109,
+    "pre_edit_workload_runtime": 110.50993762305006,
+    "improvement": 41.71471477422877
+  },
+  "pandas-dev__pandas-50078": {
+    "size_of_patch": 65,
+    "pre_edit_workload_runtime": 0.8764556582574733,
+    "improvement": 2.0754113676152977
+  },
+  "scikit-learn__scikit-learn-9858": {
+    "size_of_patch": 26,
+    "pre_edit_workload_runtime": 38.53245779972834,
+    "improvement": 1.8695807128331483
+  },
+  "pandas-dev__pandas-46109": {
+    "size_of_patch": 93,
+    "pre_edit_workload_runtime": 0.024295105739030987,
+    "improvement": 2.705339156712416
+  },
+  "pandas-dev__pandas-52054": {
+    "size_of_patch": 26,
+    "pre_edit_workload_runtime": 0.005503640096634626,
+    "improvement": 4.605708101137006
+  },
+  "pydata__xarray-7374": {
+    "size_of_patch": 946,
+    "pre_edit_workload_runtime": 0.13759676940971985,
+    "improvement": 1.419913805875513
+  },
+  "pandas-dev__pandas-34178": {
+    "size_of_patch": 66,
+    "pre_edit_workload_runtime": 0.11215426218695938,
+    "improvement": 3.324262124294867
+  },
+  "pandas-dev__pandas-26391": {
+    "size_of_patch": 64,
+    "pre_edit_workload_runtime": 4.007920302916318,
+    "improvement": 2.669317803326068
+  },
+  "pandas-dev__pandas-51738": {
+    "size_of_patch": 111,
+    "pre_edit_workload_runtime": 0.19098996438551694,
+    "improvement": 2764.667000700068
+  },
+  "pandas-dev__pandas-46235": {
+    "size_of_patch": 61,
+    "pre_edit_workload_runtime": 2.065463371509686,
+    "improvement": 2.955214927538653
+  },
+  "sympy__sympy-19270": {
+    "size_of_patch": 58,
+    "pre_edit_workload_runtime": 0.45551122177392245,
+    "improvement": 1.3543103873912954
+  },
+  "astropy__astropy-17461": {
+    "size_of_patch": 118,
+    "pre_edit_workload_runtime": 0.23459250330924988,
+    "improvement": 1.4865711178863084
+  },
+  "pandas-dev__pandas-34052": {
+    "size_of_patch": 311,
+    "pre_edit_workload_runtime": 1.1938408869318664,
+    "improvement": 21.860323087867858
+  },
+  "sympy__sympy-20228": {
+    "size_of_patch": 28,
+    "pre_edit_workload_runtime": 6.236428622412495,
+    "improvement": 1147.8256269648612
+  },
+  "pandas-dev__pandas-43760": {
+    "size_of_patch": 112,
+    "pre_edit_workload_runtime": 0.4204634474776685,
+    "improvement": 1.2109281162164367
+  },
+  "pandas-dev__pandas-41567": {
+    "size_of_patch": 13,
+    "pre_edit_workload_runtime": 0.007272908068262041,
+    "improvement": 1.2651264500818653
+  },
   "sympy__sympy-15909": {
     "size_of_patch": 22,
     "pre_edit_workload_runtime": 0.0006175828799605369,
     "improvement": 1.3646289337968467
   },
-  "sympy__sympy-18591": {
-    "size_of_patch": 177,
-    "pre_edit_workload_runtime": 1.833000471815467e-05,
-    "improvement": 1.8502014131310187
+  "astropy__astropy-16096": {
+    "size_of_patch": 14,
+    "pre_edit_workload_runtime": 0.00015921693136915566,
+    "improvement": 1.3155612069949618
+  },
+  "scipy__scipy-19776": {
+    "size_of_patch": 138,
+    "pre_edit_workload_runtime": 0.03227877098345198,
+    "improvement": 1.4992333734162697
+  },
+  "pandas-dev__pandas-43335": {
+    "size_of_patch": 64,
+    "pre_edit_workload_runtime": 0.03910697137168609,
+    "improvement": 2.3287033855080757
+  },
+  "pandas-dev__pandas-40818": {
+    "size_of_patch": 254,
+    "pre_edit_workload_runtime": 0.7399972854484804,
+    "improvement": 2.4710769895523024
+  },
+  "pandas-dev__pandas-57855": {
+    "size_of_patch": 13,
+    "pre_edit_workload_runtime": 0.008057699090661482,
+    "improvement": 6.282789681817041
+  },
+  "scipy__scipy-16840": {
+    "size_of_patch": 123,
+    "pre_edit_workload_runtime": 0.14102999734925106,
+    "improvement": 11.211100143789668
+  },
+  "dask__dask-5501": {
+    "size_of_patch": 18,
+    "pre_edit_workload_runtime": 0.6915901591302827,
+    "improvement": 3.9658292850997494
+  },
+  "pandas-dev__pandas-51339": {
+    "size_of_patch": 25,
+    "pre_edit_workload_runtime": 0.012652455133618786,
+    "improvement": 7.36040548613265
+  },
+  "pandas-dev__pandas-37149": {
+    "size_of_patch": 62,
+    "pre_edit_workload_runtime": 4.151570300438907,
+    "improvement": 4761.204723375217
+  },
+  "pandas-dev__pandas-23888": {
+    "size_of_patch": 60,
+    "pre_edit_workload_runtime": 0.046638273829594255,
+    "improvement": 9.204406274527955
+  },
+  "sympy__sympy-21391": {
+    "size_of_patch": 27,
+    "pre_edit_workload_runtime": 4.879428080725484,
+    "improvement": 2.108781060914753
+  },
+  "pandas-dev__pandas-25070": {
+    "size_of_patch": 557,
+    "pre_edit_workload_runtime": 0.003091914439573884,
+    "improvement": 17.214432844291345
+  },
+  "scipy__scipy-10393": {
+    "size_of_patch": 3925,
+    "pre_edit_workload_runtime": 2.2647097520530224e-05,
+    "improvement": 1.7331873476055897
+  },
+  "scipy__scipy-14085": {
+    "size_of_patch": 75,
+    "pre_edit_workload_runtime": 0.31030033393064516,
+    "improvement": 2334.7375130466553
+  },
+  "pandas-dev__pandas-39972": {
+    "size_of_patch": 37,
+    "pre_edit_workload_runtime": 0.23982333244523033,
+    "improvement": 2.7315094696863285
+  },
+  "scikit-learn__scikit-learn-15615": {
+    "size_of_patch": 34,
+    "pre_edit_workload_runtime": 21.041650235978885,
+    "improvement": 1.222794788631021
+  },
+  "pandas-dev__pandas-57252": {
+    "size_of_patch": 85,
+    "pre_edit_workload_runtime": 1.221684731002897,
+    "improvement": 1.0673148701536157
+  },
+  "pandas-dev__pandas-43285": {
+    "size_of_patch": 14,
+    "pre_edit_workload_runtime": 0.132077696332708,
+    "improvement": 3.0191946380436683
+  },
+  "astropy__astropy-7616": {
+    "size_of_patch": 26,
+    "pre_edit_workload_runtime": 0.04145215283613652,
+    "improvement": 1.238087372542368
+  },
+  "pandas-dev__pandas-55736": {
+    "size_of_patch": 128,
+    "pre_edit_workload_runtime": 4.336669368902221,
+    "improvement": 1.1324267093886131
+  },
+  "pandas-dev__pandas-40254": {
+    "size_of_patch": 75,
+    "pre_edit_workload_runtime": 0.004157079890929162,
+    "improvement": 1.1109924089621086
+  },
+  "pandas-dev__pandas-52548": {
+    "size_of_patch": 81,
+    "pre_edit_workload_runtime": 2.7860246520955116,
+    "improvement": 49.12930526894226
+  },
+  "numpy__numpy-27830": {
+    "size_of_patch": 15,
+    "pre_edit_workload_runtime": 0.37593019207706674,
+    "improvement": 1.654412142030807
+  },
+  "scikit-learn__scikit-learn-17235": {
+    "size_of_patch": 207,
+    "pre_edit_workload_runtime": 0.436773847755976,
+    "improvement": 4.316439926971039
+  },
+  "pandas-dev__pandas-42611": {
+    "size_of_patch": 95,
+    "pre_edit_workload_runtime": 0.007471609414555132,
+    "improvement": 41.268044542390186
+  },
+  "pandas-dev__pandas-40178": {
+    "size_of_patch": 168,
+    "pre_edit_workload_runtime": 0.29845793650485575,
+    "improvement": 1.1185801731585714
+  },
+  "pandas-dev__pandas-49177": {
+    "size_of_patch": 51,
+    "pre_edit_workload_runtime": 0.0030573892936110497,
+    "improvement": 5.517439337122511
+  },
+  "pandas-dev__pandas-43352": {
+    "size_of_patch": 69,
+    "pre_edit_workload_runtime": 0.12783346128417178,
+    "improvement": 1.5354237561344672
+  },
+  "pandas-dev__pandas-38103": {
+    "size_of_patch": 37,
+    "pre_edit_workload_runtime": 0.0003965504311560653,
+    "improvement": 6.907848440436678
+  },
+  "pandas-dev__pandas-51518": {
+    "size_of_patch": 13,
+    "pre_edit_workload_runtime": 0.6793577489675954,
+    "improvement": 16.42163860028668
+  },
+  "pandas-dev__pandas-40339": {
+    "size_of_patch": 83,
+    "pre_edit_workload_runtime": 0.6445609424007125,
+    "improvement": 1.1189658429850233
+  },
+  "sympy__sympy-11789": {
+    "size_of_patch": 294,
+    "pre_edit_workload_runtime": 0.49585676703136417,
+    "improvement": 22.066459248672388
+  },
+  "pandas-dev__pandas-31409": {
+    "size_of_patch": 57,
+    "pre_edit_workload_runtime": 1.4926845425739885e-05,
+    "improvement": 3.5391553879089477
+  },
+  "pandas-dev__pandas-52928": {
+    "size_of_patch": 42,
+    "pre_edit_workload_runtime": 0.21147453960962592,
+    "improvement": 1.2563097931648592
   }
 }

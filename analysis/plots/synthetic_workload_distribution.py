@@ -1,11 +1,12 @@
-from datasets import load_dataset
 from pathlib import Path
+
 import numpy as np
 import tqdm
+from datasets import load_dataset
 
 from swefficiency.harness.run_validation import parse_perf_summary
 
-ds = load_dataset("swefficiency/swefficiency", split="test")
+ds = load_dataset("swefficiency-anon/swefficiency", split="test")
 gold_dir = Path("logs/run_evaluation/ground_truth2/gold")
 synthetic_dir = Path("logs/run_evaluation/synthetic_workloads/gold")
 

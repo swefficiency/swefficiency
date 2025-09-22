@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 import json
 from collections import Counter
-import matplotlib.pyplot as plt
 from pathlib import Path
+
+import matplotlib.pyplot as plt
 from datasets import load_dataset
 
 from swefficiency.harness.run_validation import parse_perf_summary
@@ -12,10 +13,13 @@ GOLD_JSONL_PATH = "analysis/llm/outputs/diff_classification_results.jsonl"
 JSONL_PATH = "analysis/llm/outputs/diff_classification_results_pred.jsonl"
 
 GOLD_RESULTS_DIR = Path("logs/run_evaluation/ground_truth5/gold")
-PRED_RESULTS_DIR = Path("logs/run_evaluation/ground_truth5/us.anthropic.claude-3-7-sonnet-20250219-v1_0_maxiter_100_N_v0.51.1-no-hint-run_1")
+PRED_RESULTS_DIR = Path(
+    "logs/run_evaluation/ground_truth5/us.anthropic.claude-3-7-sonnet-20250219-v1_0_maxiter_100_N_v0.51.1-no-hint-run_1"
+)
 
 GOLD_SPEEDUP_RESULTS = "eval_reports2/eval_report_gold.csv"
 PRED_SPEEDUP_RESULTS = "eval_reports2/eval_report_us.anthropic.claude-3-7-sonnet-20250219-v1_0_maxiter_100_N_v0.51.1-no-hint-run_1.csv"
+
 
 def read_jsonl(path):
     """Yield parsed JSON objects from a JSONL file."""
@@ -26,12 +30,13 @@ def read_jsonl(path):
                 continue
             yield json.loads(line)
 
-            
+
 def disagreeement(gold, pred):
     if gold["classification"] != pred["classification"]:
         return True
-    
-    return False        
+
+    return False
+
 
 import pandas as pd
 
@@ -43,40 +48,52 @@ gold_speedup_results = pd.read_csv(GOLD_SPEEDUP_RESULTS)
 pred_speedup_results = pd.read_csv(PRED_SPEEDUP_RESULTS)
 
 # Get easy map from instance ID to speedup
-gold_id_to_speedup = {row['instance_id']: row for _, row in gold_speedup_results.iterrows()}
-pred_id_to_speedup = {row['instance_id']: row for _, row in pred_speedup_results.iterrows()}
+gold_id_to_speedup = {
+    row["instance_id"]: row for _, row in gold_speedup_results.iterrows()
+}
+pred_id_to_speedup = {
+    row["instance_id"]: row for _, row in pred_speedup_results.iterrows()
+}
 
-ds = load_dataset("swefficiency/swefficiency", split="test")
+ds = load_dataset("swefficiency-anon/swefficiency", split="test")
 id_to_instance = {inst["instance_id"]: inst for inst in ds}
 
 counter = []
 correct_counter = []
 print(f"Examples of disagreements:")
 for g, p in zip(gold_results, pred_results):
-    pred_speedup = pred_id_to_speedup.get(p['instance_id'], None)
-    
+    pred_speedup = pred_id_to_speedup.get(p["instance_id"], None)
+
     if pred_speedup["correctness"] != 1.0:
         continue
-    
-    correct_counter.append((g['classification'], p['classification']))
-    
+
+    correct_counter.append((g["classification"], p["classification"]))
+
     if disagreeement(g, p):
         print(f"Instance ID: {g['instance_id']}")
         print(f"Gold: {g['classification']}, Pred: {p['classification']}")
-        gold_instance = id_to_instance[g['instance_id']]
-        
+        gold_instance = id_to_instance[g["instance_id"]]
+
         gold_patch = gold_instance["patch"]
-        gold_speedup = gold_id_to_speedup.get(g['instance_id'], None)
-       
+        gold_speedup = gold_id_to_speedup.get(g["instance_id"], None)
+
         pred_patch = ""
-        if (PRED_RESULTS_DIR / g['instance_id'] / "patch.diff").exists():
-            pred_patch = (PRED_RESULTS_DIR / g['instance_id'] / "patch.diff").read_text()
-        
+        if (PRED_RESULTS_DIR / g["instance_id"] / "patch.diff").exists():
+            pred_patch = (
+                PRED_RESULTS_DIR / g["instance_id"] / "patch.diff"
+            ).read_text()
 
-
-        print(f"Gold Instance: {len(gold_patch.splitlines())}", gold_speedup["gold_speedup_ratio"] if gold_speedup is not None else "N/A")
-        print(f"Pred Patch: {len(pred_patch.splitlines())}", pred_speedup["pred_speedup_ratio"] if pred_speedup is not None else "N/A")
-        print(f"Correctness: {pred_speedup['correctness'] if pred_speedup is not None else 'N/A'}")
+        print(
+            f"Gold Instance: {len(gold_patch.splitlines())}",
+            gold_speedup["gold_speedup_ratio"] if gold_speedup is not None else "N/A",
+        )
+        print(
+            f"Pred Patch: {len(pred_patch.splitlines())}",
+            pred_speedup["pred_speedup_ratio"] if pred_speedup is not None else "N/A",
+        )
+        print(
+            f"Correctness: {pred_speedup['correctness'] if pred_speedup is not None else 'N/A'}"
+        )
 
         print("-----")
 
@@ -129,13 +146,14 @@ def main():
             va="center",
             ha="left",
             fontsize=14,
-            fontweight="bold"
+            fontweight="bold",
         )
 
     plt.tight_layout()
 
     # Save the plot
     plt.savefig("assets/figures/diff_classification_counts_pred.png")
+
 
 if __name__ == "__main__":
     main()
