@@ -1,8 +1,8 @@
 
 EVAL_DIR="logs/run_evaluation"
 
-GOLD_RUN_NAME="$EVAL_DIR/ground_truth5/gold"
-GOLD_RUN_NAME="$EVAL_DIR/ground_truth10/gold"
+GOLD_RUN_NAME="$EVAL_DIR/ground_truth21/gold"
+# GOLD_RUN_NAME="$EVAL_DIR/ground_truth10/gold"
 
 MODEL_NAMES=(
     # "$EVAL_DIR/ground_truth5/gold"
@@ -16,7 +16,8 @@ MODEL_NAMES=(
     # "$EVAL_DIR/ground_truth17/gold"
     # "$EVAL_DIR/ground_truth18/gold"
     # "$EVAL_DIR/ground_truth19/gold"
-    "$EVAL_DIR/ground_truth21/gold"
+    # "$EVAL_DIR/ground_truth21/gold"
+    "$EVAL_DIR/ground_truth_latest/gold"
     # "$EVAL_DIR/ground_truth5/gpt-5-mini_maxiter_100_N_v0.51.1-no-hint-run_1"
     # "$EVAL_DIR/ground_truth5/us.anthropic.claude-3-7-sonnet-20250219-v1_0_maxiter_100_N_v0.51.1-no-hint-run_1"
     # "$EVAL_DIR/ground_truth5/gemini-2.5-flash_maxiter_100_N_v0.51.1-no-hint-run_1"

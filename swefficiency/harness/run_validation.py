@@ -787,8 +787,8 @@ def run_instance(
                     Path(DEFAULT_SINGLE_THREAD_COVERING_TESTS_LOCATION),
                 )
 
-                if not run_perf or not perf_patch_applied:
-                    # Assume that patch is applied already if we run perf.
+                if not perf_patch_applied:
+                    # Check if the patch has been applied, if not, apply it now.
                     try_to_apply_patch(container, instance_id, logger)
 
                 paths = correctness_tests

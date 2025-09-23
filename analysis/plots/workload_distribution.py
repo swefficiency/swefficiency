@@ -245,3 +245,16 @@ fig.savefig(
     pad_inches=0.1,
 )
 plt.close(fig)
+
+# Compute average speedup and max speedup
+if speedups:
+    # Use harmonic mean for average speedup
+    avg_speedup = len(speedups) / sum(1.0 / s for s in speedups)
+    max_speedup = max(speedups)
+    print(f"\nAverage speedup: {avg_speedup:.2f}x")
+    print(f"Max speedup: {max_speedup:.2f}x")
+
+if pre_edit_workload_runtimes:
+    avg_pre = sum(pre_edit_workload_runtimes) / len(pre_edit_workload_runtimes)
+    print(f"Average pre-edit runtime: {avg_pre:.2f} seconds")
+    print(f"Max pre-edit runtime: {max(pre_edit_workload_runtimes):.2f} seconds")

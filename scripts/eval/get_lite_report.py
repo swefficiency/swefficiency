@@ -75,9 +75,9 @@ def evaluate_instance(
     num_modified_lines = get_number_of_patch_modified_lines(instance["patch"])
 
     if not correctness_dir.exists():
-        print(
-            f"Instance {instance_id} has no correctness output directory.", flush=True
-        )
+        # print(
+        #     f"Instance {instance_id} has no correctness output directory.", flush=True
+        # )
         pred_speedup_ratio = 1.0
         return {
             "instance_id": instance_id,
@@ -113,14 +113,15 @@ def evaluate_instance(
 
     correctness_pct = len(passed_tests) / len(pass_to_pass) if pass_to_pass else 1.0
     if correctness_pct < 1.0:
-        print(
-            f"Instance {instance_id} failed {len(pass_to_pass) - len(passed_tests)} out of {len(pass_to_pass)} pass-to-pass tests.",
-            flush=True,
-        )
-        for test in pass_to_pass:
-            if test not in passed_tests:
-                print(f"  Failed test: {test}")
-        print("==========================", flush=True)
+        # print(
+        #     f"Instance {instance_id} failed {len(pass_to_pass) - len(passed_tests)} out of {len(pass_to_pass)} pass-to-pass tests.",
+        #     flush=True,
+        # )
+        # for test in pass_to_pass:
+        #     if test not in passed_tests:
+        #         print(f"  Failed test: {test}")
+        # print("==========================", flush=True)
+        pass
 
     adjusted_pred_speedup_ratio = 1.0 if correctness_pct != 1.0 else pred_speedup_ratio
 
@@ -143,7 +144,7 @@ def evaluate_instance(
 
 def main(gold_run, pred_run, num_workers, output_dir):
     ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
-    ds_lite = datasets.load_dataset("swefficiency-anon/swefficiency_lite", split="test")
+    ds_lite = datasets.load_dataset("swefficiency/swefficiency_lite", split="test")
 
     ds_lite_instance_ids = {item["instance_id"] for item in ds_lite}
     ds = [item for item in ds if item["instance_id"] in ds_lite_instance_ids]
