@@ -1,7 +1,8 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 
 # -----------------------------------------------------------------------------
 # Inputs (reuse your list; add/remove models as needed)
@@ -19,24 +20,29 @@ eval_reports = [
         "Gemini 2.5 Flash (OH)",
         "eval_reports/eval_report_gemini-2.5-flash_maxiter_100_N_v0.51.1-no-hint-run_1.csv",
     ),
+    (
+        "DeepSeek V3.1 (OH)",
+        "eval_reports/eval_report_deepseek-reasoner_maxiter_100_N_v0.51.1-no-hint-run_1.csv",
+    ),
 ]
 
 # -----------------------------------------------------------------------------
 # Style mapping (colors per family; marker/linestyle kept for future line plots)
 # -----------------------------------------------------------------------------
 _model_styles = {
-    "GPT-5 Mini (OH)": dict(color="black", marker="o", alpha=0.7),
+    "GPT-5 Mini (OH)": dict(color="black", marker="^", alpha=0.7),
     "GPT-5 Mini (SWE-agent)": dict(
-        color="black", marker="^", alpha=0.7, linestyle="dashed"
+        color="black", marker="o", alpha=0.9, linestyle="dashed"
     ),
     "Claude 3.7 Sonnet (OH)": dict(color="#c15f3c", marker="o", alpha=0.7),
     "Claude 3.7 Sonnet (SWE-agent)": dict(
-        color="#c15f3c", marker="^", alpha=0.7, linestyle="dashed"
+        color="#c15f3c", marker="o", alpha=0.9, linestyle="dashed"
     ),
-    "Gemini 2.5 Flash (OH)": dict(color="#088cfb", marker="o", alpha=0.7),
+    "Gemini 2.5 Flash (OH)": dict(color="#088cfb", marker="s", alpha=0.7),
     "Gemini 2.5 Flash (SWE-agent)": dict(
-        color="#088cfb", marker="^", alpha=0.7, linestyle="dashed"
+        color="#088cfb", marker="o", alpha=0.9, linestyle="dashed"
     ),
+    "DeepSeek V3.1 (OH)": dict(color="#2b4eff", marker="D", alpha=0.5),
 }
 
 
@@ -473,22 +479,6 @@ _plot_subplots_grouped_bars_vertical(
 )
 
 print(f"Saved plots to: {OUTDIR.resolve()}")
-
-# Style mapping: same color per foundation model family; different marker/alpha per variant
-_model_styles = {
-    "GPT-5 Mini (OH)": dict(color="black", marker="^", alpha=0.7),
-    "GPT-5 Mini (SWE-agent)": dict(
-        color="black", marker="o", alpha=0.9, linestyle="dashed"
-    ),
-    "Claude 3.7 Sonnet (OH)": dict(color="#c15f3c", marker="o", alpha=0.7),
-    "Claude 3.7 Sonnet (SWE-agent)": dict(
-        color="#c15f3c", marker="o", alpha=0.9, linestyle="dashed"
-    ),
-    "Gemini 2.5 Flash (OH)": dict(color="#088cfb", marker="s", alpha=0.7),
-    "Gemini 2.5 Flash (SWE-agent)": dict(
-        color="#088cfb", marker="o", alpha=0.9, linestyle="dashed"
-    ),
-}
 
 
 # --- Plotter: centered markers (no lines), one vertical stack per x tick -----

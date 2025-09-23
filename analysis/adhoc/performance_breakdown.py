@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 
-reports_dir = Path("eval_reports2")
+reports_dir = Path("eval_reports")
 
 for report_file in sorted(reports_dir.glob("*.csv")):
     if "gold" in report_file.name:

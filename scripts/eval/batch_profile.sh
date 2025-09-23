@@ -12,6 +12,9 @@
 # scripts/eval/run_profiler_only.sh profile_runs 12 predictions/converted/oh_gpt5mini.jsonl;
 # docker rm -f $(docker ps -aq); docker system prune -a -f;
 
-scripts/eval/run_profiler_only.sh profile_runs 12 predictions/converted/oh_claude37sonnet.jsonl;
+# scripts/eval/run_profiler_only.sh profile_runs 12 predictions/converted/oh_claude37sonnet.jsonl;
+# docker rm -f $(docker ps -aq); docker system prune -a -f;
+
+scripts/eval/run_profiler_only.sh profile_runs 12 predictions/converted/oh_deepseekv31.jsonl;
 docker rm -f $(docker ps -aq); docker system prune -a -f;
 
