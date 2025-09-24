@@ -183,3 +183,5 @@ logs_no_test_patch/
 
 predictions/**/*.json
 predictions/**/*.jsonl
+
+analysis/adhoc/patch_analysis/interesting_patches

@@ -741,7 +741,7 @@ def wrapper(
 model_name_to_run_results = {
     "claude37sonnet_sweagent": (
         Path(
-            "eval_reports2/eval_report_default_sweperf_claude__anthropic--claude-3-7-sonnet-20250219__t-0.00__p-1.00__c-1.00___swefficiency_full_test.csv"
+            "eval_reports/eval_report_default_sweperf_claude__anthropic--claude-3-7-sonnet-20250219__t-0.00__p-1.00__c-1.00___swefficiency_full_test.csv"
         ),
         Path(
             "logs/run_evaluation/profile_runs/default_sweperf_claude__anthropic--claude-3-7-sonnet-20250219__t-0.00__p-1.00__c-1.00___swefficiency_full_test"
@@ -749,7 +749,7 @@ model_name_to_run_results = {
     ),
     "claude37sonnet_oh": (
         Path(
-            "eval_reports2/eval_report_us.anthropic.claude-3-7-sonnet-20250219-v1_0_maxiter_100_N_v0.51.1-no-hint-run_1.csv"
+            "eval_reports/eval_report_us.anthropic.claude-3-7-sonnet-20250219-v1_0_maxiter_100_N_v0.51.1-no-hint-run_1.csv"
         ),
         Path(
             "logs/run_evaluation/profile_runs/us.anthropic.claude-3-7-sonnet-20250219-v1_0_maxiter_100_N_v0.51.1-no-hint-run_1"
@@ -757,7 +757,7 @@ model_name_to_run_results = {
     ),
     "gpt5mini_oh": (
         Path(
-            "eval_reports2/eval_report_gpt-5-mini_maxiter_100_N_v0.51.1-no-hint-run_1.csv"
+            "eval_reports/eval_report_gpt-5-mini_maxiter_100_N_v0.51.1-no-hint-run_1.csv"
         ),
         Path(
             "logs/run_evaluation/profile_runs/gpt-5-mini_maxiter_100_N_v0.51.1-no-hint-run_1"
@@ -765,10 +765,18 @@ model_name_to_run_results = {
     ),
     "gemini25flash_oh": (
         Path(
-            "eval_reports2/eval_report_gemini-2.5-flash_maxiter_100_N_v0.51.1-no-hint-run_1.csv"
+            "eval_reports/eval_report_gemini-2.5-flash_maxiter_100_N_v0.51.1-no-hint-run_1.csv"
         ),
         Path(
             "logs/run_evaluation/profile_runs/gemini-2.5-flash_maxiter_100_N_v0.51.1-no-hint-run_1"
+        ),
+    ),
+    "deepseekv31_oh": (
+        Path(
+            "eval_reports/eval_report_deepseek-reasoner_maxiter_100_N_v0.51.1-no-hint-run_1.csv"
+        ),
+        Path(
+            "logs/run_evaluation/profile_runs/deepseek-reasoner_maxiter_100_N_v0.51.1-no-hint-run_1"
         ),
     ),
 }
