@@ -15,7 +15,6 @@ from unidiff.constants import LINE_TYPE_ADDED, LINE_TYPE_REMOVED
 
 # TODO: Switch this if needed.
 FILE_IGNORE_FN = lambda filepath: not filepath.startswith("/testbed")
-# FILE_IGNORE_FN = lambda filepath: not 'SWE-Perf' in filepath
 
 print("Starting coverage AST script...")
 

@@ -142,10 +142,9 @@ We include reference results in the paper across several modern LMs using OpenHa
 .
 ├── scripts/
 │   ├── eval/           # evaluation runner + aggregator
-│   ├── vm/             # docker & VM pinning helpers
-│   └── gen/            # (optional) agent harness helpers
+│   └── vm/             # docker & VM pinning helpers
 ├── swefficiency/       # python package (cli, utils, loaders)
-├── assets_figures/     # logos, diagrams
+├── assets/figures/     # logos, diagrams
 └── README.md
 ```
 

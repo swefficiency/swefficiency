@@ -69,5 +69,5 @@ until podman --url "\$SOCKET_URL" info >/dev/null 2>&1; do
     sleep 1
 done
 
-scripts/vm/run_eval.sh jeff_perf_ground_truth_recheck$INDEX $NUM_JOB_WORKERS preds_08012025_gemini25flash.json
+scripts/vm/run_eval.sh perf_ground_truth_recheck$INDEX $NUM_JOB_WORKERS preds_08012025_gemini25flash.json
 EOT

@@ -33,10 +33,10 @@ def create_instance(repo: Repo, pull: dict) -> dict:
     """
     patch, test_patch = extract_patches(pull, repo)
     problem_statement, hints = extract_problem_statement_and_hints(pull, repo)
-    
+
     # pr_title = pull.get('title', '')
     # pr_body = pull.get('body', '')
-    
+
     # print(pr_title, pr_body)
     return {
         "repo": repo.repo.full_name,
@@ -65,7 +65,7 @@ def is_valid_pull(pull: dict) -> bool:
     """
     if pull["merged_at"] is None:
         return False
-    # SWE-Perf change: We don't need to check for resolved issues.
+    # SWE-fficency change: We don't need to check for resolved issues.
     # if "resolved_issues" not in pull or len(pull["resolved_issues"]) < 1:
     #     return False
     return True
@@ -82,7 +82,7 @@ def is_valid_instance(instance: dict) -> bool:
     """
     if instance["patch"] is None or instance["patch"] == "":
         return False
-    # SWE-Perf change: We don't need to check for problem statement.
+    # SWE-fficiency change: We don't need to check for problem statement.
     # if instance["problem_statement"] is None or instance["problem_statement"] == "":
     #     return False
     return True
@@ -142,7 +142,9 @@ def main(pr_file: str, output: str, token: Optional[str] = None):
                     completed += 1
                     if has_test_patch(pr):
                         with_tests += 1
-    logger.info(f"Will skip {len(seen_prs)} pull requests that have already been inspected")    
+    logger.info(
+        f"Will skip {len(seen_prs)} pull requests that have already been inspected"
+    )
 
     # Write to .all file for all PRs
     write_mode_all = "w" if not os.path.exists(all_output) else "a"
@@ -169,17 +171,17 @@ def main(pr_file: str, output: str, token: Optional[str] = None):
                 if not is_valid_pull(pull):
                     # Throw out invalid PRs
                     continue
-                
+
                 # Create task instance
                 repo_name = pull["base"]["repo"]["full_name"]
                 if repo_name not in repos:
                     repos[repo_name] = load_repo(repo_name)
                 repo = repos[repo_name]
 
-                # Maybe add this back later?                
+                # Maybe add this back later?
                 # if not is_perf_pr(repo.name, pull):
                 #     continue
-                
+
                 instance = create_instance(repo, pull)
                 if is_valid_instance(instance):
                     # If valid, write to .all output file
@@ -191,8 +193,12 @@ def main(pr_file: str, output: str, token: Optional[str] = None):
                         # If has test suite, write to output file
                         print(json.dumps(instance), end="\n", flush=True, file=output)
                         with_tests += 1
-    logger.info(f"[{', '.join(repos.keys())}] Total instances: {total_instances}, completed: {completed}, with tests: {with_tests}")
-    logger.info(f"[{', '.join(repos.keys())}] Skipped {len(seen_prs)} pull requests that have already been inspected")
+    logger.info(
+        f"[{', '.join(repos.keys())}] Total instances: {total_instances}, completed: {completed}, with tests: {with_tests}"
+    )
+    logger.info(
+        f"[{', '.join(repos.keys())}] Skipped {len(seen_prs)} pull requests that have already been inspected"
+    )
 
 
 if __name__ == "__main__":

@@ -23,19 +23,19 @@ dataset = datasets.load_dataset(
 
 log_dir = Path("logs/run_evaluation/")
 ground_truth_data_dirs = [
-    log_dir / "jeff_perf_ground_truth1/gold",
-    log_dir / "jeff_perf_ground_truth2/gold",
-    log_dir / "jeff_perf_ground_truth3/gold",
-    log_dir / "jeff_perf_ground_truth4/gold",
-    log_dir / "jeff_perf_ground_truth5/gold",
+    log_dir / "perf_ground_truth1/gold",
+    log_dir / "ground_truth2/gold",
+    log_dir / "ground_truth3/gold",
+    log_dir / "ground_truth4/gold",
+    log_dir / "perf_ground_truth5/gold",
 ]
 
 flaky_rerun_data_dirs = [
-    log_dir / "jeff_perf_ground_truth_flaky/gold",
-    log_dir / "jeff_perf_ground_truth_flaky2/gold",
-    log_dir / "jeff_perf_ground_truth_flaky3/gold",
-    log_dir / "jeff_perf_ground_truth_flaky4/gold",
-    log_dir / "jeff_perf_ground_truth_flaky5/gold",
+    log_dir / "perf_ground_truth_flaky/gold",
+    log_dir / "perf_ground_truth_flaky2/gold",
+    log_dir / "perf_ground_truth_flaky3/gold",
+    log_dir / "perf_ground_truth_flaky4/gold",
+    log_dir / "perf_ground_truth_flaky5/gold",
 ]
 
 

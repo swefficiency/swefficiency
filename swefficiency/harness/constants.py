@@ -27,7 +27,7 @@ class SWEfficiencyInstance(TypedDict):
     PASS_TO_PASS: str
     environment_setup_commit: str
 
-    # SWE-Perf Additions
+    # SWE-fficiency Additions
     workload: NotRequired[str]
     speedup: NotRequired[float]
     covering_tests: NotRequired[list[str]]

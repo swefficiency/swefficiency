@@ -57,7 +57,7 @@ def get_sweperf_data(annotate_spreadsheet_name="global_sweperf_all_data_annotate
 
     entries = []
     for i, annotate_row in tqdm.tqdm(
-        df.iterrows(), total=len(df), desc="Processing SWE-Perf data"
+        df.iterrows(), total=len(df), desc="Processing SWE-fficiency data"
     ):
         instance_id = annotate_row["instance_id"]
 
@@ -125,7 +125,7 @@ def get_sweperf_data(annotate_spreadsheet_name="global_sweperf_all_data_annotate
             "environment_setup_commit": instance_row.get(
                 "environment_setup_commit", instance_row["base_commit"]
             ),  # Fallback to base_commit if not present
-            # SWE-Perf specific fields
+            # SWE-fficiency specific fields
             "workload": workload,
             "speedup": speedup,
             "covering_tests": covering_tests,
@@ -177,7 +177,7 @@ def get_sweperf_data(annotate_spreadsheet_name="global_sweperf_all_data_annotate
     return data
 
 
-print("Fetching SWE-Perf data...")
+print("Fetching SWE-fficiency data...")
 data = get_sweperf_data()
 print("Data fetched successfully.")
 

@@ -136,7 +136,7 @@ import datasets
 from litellm import completion
 
 ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
-predictions_file = "SWE-Perf/predictions/converted/oh_claude37sonnet.jsonl"
+predictions_file = "predictions/converted/oh_claude37sonnet.jsonl"
 
 predictions = {}
 for line in open(predictions_file):

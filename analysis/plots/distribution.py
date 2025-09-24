@@ -60,10 +60,6 @@ def make_pie_chart_with_callouts(repo_counts, title_suffix: str = "") -> plt.Fig
             fontsize=20,
         )
 
-    # ax.set_title(
-    #     "Distribution of SWE-Perf across open-source GitHub repositories" + title_suffix,
-    #     pad=25
-    # )
     fig.tight_layout()
     return fig
 
@@ -244,7 +240,7 @@ def aggregate_metrics(rows: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
 
 def make_summary_table_latex(
     metrics: Dict[str, Any],
-    caption: str = "Average and maximum numbers characterizing different attributes of SWE-Perf.",
+    caption: str = "Average and maximum numbers characterizing different attributes of SWE-fficiency.",
     label: str = "tab:sweperf-summary",
 ) -> str:
     """Return LaTeX code for the summary table (Booktabs)."""

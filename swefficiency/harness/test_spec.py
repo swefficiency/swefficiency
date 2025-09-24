@@ -2,24 +2,22 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import platform
 import re
-import os
-
-from dataclasses import dataclass
 import textwrap
-from typing import Any, Union, cast, Callable, Optional
-
 import traceback
+from dataclasses import dataclass
+from typing import Any, Callable, Optional, Union, cast
 
 from swefficiency.harness.constants import (
-    SWEfficiencyInstance,
-    KEY_INSTANCE_ID,
     FAIL_TO_PASS,
-    PASS_TO_PASS,
+    KEY_INSTANCE_ID,
     MAP_REPO_TO_INSTALL,
     MAP_REPO_VERSION_TO_SPECS,
+    PASS_TO_PASS,
     USE_X86,
+    SWEfficiencyInstance,
 )
 from swefficiency.harness.dockerfiles import (
     get_dockerfile_annotate_instance,
@@ -28,8 +26,8 @@ from swefficiency.harness.dockerfiles import (
     get_dockerfile_instance,
 )
 from swefficiency.harness.utils import (
-    get_requirements,
     get_environment_yml,
+    get_requirements,
     get_test_directives,
 )
 from swefficiency.perf_filter import utils as perf_utils
@@ -266,7 +264,7 @@ def make_repo_script_list(
     if "install" in specs:
         setup_commands.append(specs["install"])
 
-    # SWE-Perf: Add coverage, pytest-profiling, pytest-memray.
+    # SWE-fficiency: Add coverage, pytest-profiling, pytest-memray.
     setup_commands.append("python -m pip install coverage unidiff")
 
     # TODO: Add pytest-profiling, pytest-memray later.
@@ -519,7 +517,7 @@ def make_eval_script_list(
     return eval_commands
 
 
-### BEGIN SWE-PERF EDITS
+### BEGIN SWE-FFICIENCY EDITS
 
 AST_START_TAG = "SWEPERF_AST_START"
 AST_END_TAG = "SWEPERF_AST_END"
@@ -1330,7 +1328,7 @@ def get_introspection_guard_cmds(
     return eval_commands
 
 
-### END SWE-PERF EDITS
+### END SWE-FFICIENCY EDITS
 
 BUILD_TIMEOUT_CONFIGS_OVERRIDES = {
     "scikit-learn/scikit-learn": 600,
