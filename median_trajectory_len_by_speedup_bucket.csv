@@ -1,9 +1,0 @@
-human_speedup_bucket,gpt-5-mini_oh,claude-3-7-sonnet_oh,gemini-2.5-flash_oh,deepseek-v3.1_oh
-"Very Weak
-< 0.25",29.5,47.0,33.0,49.5
-"Weak
-[0.25,0.5)",31.0,50.5,34.0,45.0
-"Moderate
-[0.5, 1.0)",31.0,43.0,34.0,48.0
-"Strong
-≥ 1.0",27.0,37.0,22.5,54.0

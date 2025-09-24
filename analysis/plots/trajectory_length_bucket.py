@@ -260,7 +260,7 @@ plt.close()
 # ---- write CSV (rows=buckets, cols=models; values=median traj len) ----
 summary_median_df = pd.DataFrame({m: s for m, s in medians_by_model.items()})
 summary_median_df.index.name = "human_speedup_bucket"
-summary_median_df.to_csv("median_trajectory_len_by_speedup_bucket.csv")
+# summary_median_df.to_csv("median_trajectory_len_by_speedup_bucket.csv")
 
 print("\nMedian trajectory length by human speedup bucket (rows) and model (cols):")
 print(summary_median_df.round(2))
