@@ -56,19 +56,26 @@ for metadata in run_metadata:
     for _, row in filtered_report.iterrows():
         instance_id = row["instance_id"]
         human_speedup_ratio = row["human_speedup_ratio"]
+        pred_speedup_ratio = row["pred_speedup_ratio"]
         print(f"Instance ID: {instance_id}, Human Speedup Ratio: {human_speedup_ratio}")
 
         # Load the corresponding log file.
         log_dir = Path(metadata["log_dir"]) / row["instance_id"]
         patch_file = log_dir / f"patch.diff"
+        workload_file = log_dir / "workload.py"
 
         if patch_file.exists():
             with open(patch_file, "r") as f:
                 patch_content = f.read()
 
+            with open(workload_file, "r") as f:
+                workload_content = f.read()
+
             # Add a header to the patch content.
             patch_content = (
-                f"# Instance ID: {instance_id}\n# Human Speedup Ratio: {human_speedup_ratio}\n=================================\n"
+                f"# Instance ID: {instance_id}\n# Human Speedup Ratio: {human_speedup_ratio}\n# Predicted Speedup Ratio: {pred_speedup_ratio}\n=================================\n"
+                + workload_content
+                + "\n=================================\n"
                 + patch_content
             )
 

@@ -1,19 +1,23 @@
 
+NUM_WORKERS=12
+MODELS=(
+    "oh_gpt5mini"
+    "oh_claude37sonnet"
+    "oh_gemini25flash"
+    "oh_deepseekv31"
+    "sweagent_gpt5mini"
+    "sweagent_claude37sonnet"
+    "sweagent_gemini25flash"
+)
 
-# scripts/eval/run_eval.sh ground_truth6 12;
-# docker rm -f $(docker ps -aq); docker system prune -a -f;
+RUN_NAME="ground_truth_perf_isolation"
 
-# scripts/eval/run_eval.sh ground_truth5 12 predictions/converted/sweagent_gpt5mini.jsonl; 
-# docker rm -f $(docker ps -aq); docker system prune -a -f;
-
-scripts/eval/run_eval.sh ground_truth5 12 predictions/converted/sweagent_claude37sonnet.jsonl;
+# Run gold
+swefficiency eval --num_workers $NUM_WORKERS --run_id $RUN_NAME
 docker rm -f $(docker ps -aq); docker system prune -a -f;
 
-scripts/eval/run_eval.sh ground_truth5 12 predictions/converted/sweagent_gemini25flash.jsonl;
-docker rm -f $(docker ps -aq); docker system prune -a -f;
+for MODEL in "${MODELS[@]}"; do
+    echo "Running evaluation for model: $MODEL"
 
-scripts/eval/run_eval.sh ground_truth5 12 predictions/converted/oh_gpt5mini.jsonl;
-docker rm -f $(docker ps -aq); docker system prune -a -f;
-
-scripts/eval/run_eval.sh ground_truth5 12 predictions/converted/oh_claude37sonnet.jsonl;
-docker rm -f $(docker ps -aq); docker system prune -a -f;
+    swefficiency eval --num_workers $NUM_WORKERS --run_id $RUN_NAME --prediction_path predictions/converted/$MODEL.jsonl
+    docker rm -f $(docker ps -aq); docker system prune -a -f;

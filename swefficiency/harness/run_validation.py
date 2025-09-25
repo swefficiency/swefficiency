@@ -51,6 +51,7 @@ from swefficiency.harness.docker_utils import (
 )
 from swefficiency.harness.grading import get_logs_eval
 from swefficiency.harness.log_parsers import MAP_REPO_TO_PARSER
+from swefficiency.harness.run_to_run_isolation import transform_to_isolated_workload
 from swefficiency.harness.test_spec import (
     COARSE_COVERAGE_AST_SCRIPT_LOCATION,
     COVERAGE_ANALYSIS_SCRIPT_LOCATION,
@@ -492,6 +493,9 @@ def run_instance(
 
                 # Copy over the "workload.py" and the "covering_tests.txt.
                 workload_file = Path(log_dir / "workload.py")
+
+                # TODO: This breaks profiling, need to fix.
+                workload_text = transform_to_isolated_workload(workload_text)
                 workload_file.write_text(workload_text)
 
                 logger.info(
