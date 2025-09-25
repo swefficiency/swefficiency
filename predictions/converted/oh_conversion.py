@@ -2,7 +2,7 @@ from pathlib import Path
 
 import datasets
 
-ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
+ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
 instance_ids = set(d["instance_id"] for d in ds)
 
 OUTPUT_DIR = Path("/predictions/converted")

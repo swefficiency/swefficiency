@@ -55,7 +55,7 @@ pred_id_to_speedup = {
     row["instance_id"]: row for _, row in pred_speedup_results.iterrows()
 }
 
-ds = load_dataset("swefficiency-anon/swefficiency", split="test")
+ds = load_dataset("swefficiency/swefficiency", split="test")
 id_to_instance = {inst["instance_id"]: inst for inst in ds}
 
 counter = []

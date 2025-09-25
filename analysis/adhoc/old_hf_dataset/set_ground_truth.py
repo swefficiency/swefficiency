@@ -8,13 +8,13 @@ import tqdm
 
 from swefficiency.harness.log_parsers import MAP_REPO_TO_PARSER
 
-# dataset = datasets.load_dataset("swefficiency-anon/swefficiency", split='test')
+# dataset = datasets.load_dataset("swefficiency/swefficiency", split='test')
 
 new_dataset = []
 
 # Try 2: verify any flaky tests?
 dataset = datasets.load_dataset(
-    "swefficiency-anon/swefficiency_old",
+    "swefficiency/swefficiency_old",
     split="test",
     revision="48006d26383840d848db076517849facc2afec4d",
 )
@@ -389,9 +389,7 @@ def worker(d):
         if "PASS" in status and not skip_condition(test)
     ]
 
-    d_dict["image_name"] = (
-        f"ghcr.io/swefficiency-anon/swefficiency-images:{instance_id}"
-    )
+    d_dict["image_name"] = f"ghcr.io/swefficiency/swefficiency-images:{instance_id}"
 
     if "single_thread_tests" not in d_dict:
         d_dict["single_thread_tests"] = list(
@@ -438,4 +436,4 @@ print(f"Total instances with good performance: {len(new_dataset)}")
 new_dataset = datasets.Dataset.from_list(new_dataset)
 
 # Upload the new dataset
-new_dataset.push_to_hub("swefficiency-anon/swefficiency", split="test")
+new_dataset.push_to_hub("swefficiency/swefficiency", split="test")

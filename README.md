@@ -5,10 +5,10 @@
 
 
 <p align="center">
-  <a href="<TODO_WEBSITE_LINK>">
+  <a href="https://swefficiency.com">
     <img src="https://img.shields.io/badge/project-Home-b31b1b.svg" alt="home">
   </a>
-  <a href="https://huggingface.co/datasets/swefficiency-anon/swefficiency">
+  <a href="https://huggingface.co/datasets/swefficiency/swefficiency">
     <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Data-blue" alt="Data">
   </a>
   <a href="<TODO_PAPER_LINK>">
@@ -75,7 +75,7 @@ bash scripts/vm/setup_vm.sh
 
 ## 🧰 Dataset
 
-* **Location**: [Hugging Face — swefficiency-anon/swefficiency](https://huggingface.co/datasets/swefficiency-anon/swefficiency)
+* **Location**: [Hugging Face — swefficiency/swefficiency](https://huggingface.co/datasets/swefficiency/swefficiency)
 * **Task structure** (per instance):
 
   * Repo snapshot + diff metadata

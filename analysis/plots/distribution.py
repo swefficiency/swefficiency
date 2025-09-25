@@ -5,7 +5,7 @@ from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 import datasets
 from matplotlib import pyplot as plt
 
-ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
+ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
 
 
 def get_repo_count(ds):

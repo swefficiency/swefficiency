@@ -10,7 +10,7 @@ if [ -n "$PREDICTIONS_PATH" ]; then
 fi
 
 python swefficiency/harness/run_validation.py \
-    --dataset_name swefficiency-anon/swefficiency \
+    --dataset_name swefficiency/swefficiency \
     --run_id $RUN_ID \
     --cache_level env \
     --max_build_workers 16 \

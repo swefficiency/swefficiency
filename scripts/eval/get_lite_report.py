@@ -143,7 +143,7 @@ def evaluate_instance(
 
 
 def main(gold_run, pred_run, num_workers, output_dir):
-    ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
+    ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
     ds_lite = datasets.load_dataset("swefficiency/swefficiency_lite", split="test")
 
     ds_lite_instance_ids = {item["instance_id"] for item in ds_lite}

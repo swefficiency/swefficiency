@@ -135,7 +135,7 @@ import time
 import datasets
 from litellm import completion
 
-ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
+ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
 predictions_file = "predictions/converted/oh_claude37sonnet.jsonl"
 
 predictions = {}

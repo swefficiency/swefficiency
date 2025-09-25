@@ -3,7 +3,7 @@ from pathlib import Path
 import datasets
 import tqdm
 
-dataset = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
+dataset = datasets.load_dataset("swefficiency/swefficiency", split="test")
 
 eval_dir = Path("logs/run_evaluation/ground_truth2/gold")
 

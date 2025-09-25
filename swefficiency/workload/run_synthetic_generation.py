@@ -208,7 +208,7 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument(
         "--dataset_name",
-        default="swefficiency-anon/swefficiency",
+        default="swefficiency/swefficiency",
         type=str,
         help="Name of dataset or path to JSON file.",
     )

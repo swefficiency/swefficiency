@@ -287,7 +287,7 @@ import datasets
 
 
 def get_from_hf():
-    ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
+    ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
     ds_list = []
     for instance in ds:
         ds_list.append(instance)

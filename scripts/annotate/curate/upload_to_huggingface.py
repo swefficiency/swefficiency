@@ -191,7 +191,7 @@ dataset_dict = DatasetDict({"test": dataset})
 
 # Define repo info
 repo_id = (
-    "swefficiency-anon/swefficiency"  # Change to your username and desired dataset name
+    "swefficiency/swefficiency"  # Change to your username and desired dataset name
 )
 
 # Push to hub

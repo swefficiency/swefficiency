@@ -143,7 +143,7 @@ def evaluate_instance(
 
 
 def main(gold_run, pred_run, num_workers, output_dir):
-    ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
+    ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
 
     if not output_dir.exists():
         output_dir.mkdir(parents=True, exist_ok=True)

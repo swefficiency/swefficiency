@@ -92,7 +92,7 @@ import time
 import datasets
 from litellm import completion
 
-ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
+ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
 
 sonnet37_openhands_predictions = pd.read_json(
     "predictions/converted/oh_claude37sonnet.jsonl", lines=True

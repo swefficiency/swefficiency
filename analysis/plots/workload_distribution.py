@@ -25,7 +25,7 @@ WSPACE = 0.04  # Only used when USE_CONSTRAINED = False
 # ================================================================
 
 # ---------------- Load data ----------------
-ds = load_dataset("swefficiency-anon/swefficiency", split="test")
+ds = load_dataset("swefficiency/swefficiency", split="test")
 gold_dir = Path("logs/run_evaluation/ground_truth5/gold")
 
 pre_edit_workload_runtimes = []

@@ -8,7 +8,7 @@ from swefficiency.harness.run_validation import parse_perf_summary
 SYNTHETIC_WORKLOADS_DIR = "logs/run_evaluation/synthetic_workloads/gold"
 REAL_WORKLOADS_DIR = "logs/run_evaluation/ground_truth5/gold"
 
-ds = load_dataset("swefficiency-anon/swefficiency", split="test")
+ds = load_dataset("swefficiency/swefficiency", split="test")
 
 
 def worker(d):

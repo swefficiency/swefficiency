@@ -47,7 +47,7 @@ if PRED_FILE is not None:
 
 import datasets
 
-ds = datasets.load_dataset("swefficiency-anon/swefficiency", split="test")
+ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
 
 for item in ds:
     gold_predictions[item["instance_id"]] = item["patch"]
