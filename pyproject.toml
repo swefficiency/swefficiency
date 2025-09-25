@@ -4,4 +4,5 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = "swefficiency"
-dynamic = ["version"]
+dynamic = ["version", "description", "readme", "authors", "keywords", "classifiers", "urls", "scripts", "dependencies", "optional-dependencies"]
+requires-python = ">=3.8"

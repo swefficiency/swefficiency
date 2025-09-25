@@ -100,7 +100,7 @@ def eval_command(args):
             use_dockerhub_images=True,
             use_podman=False,
             workload_predictions="",
-            force_rerun=True,
+            force_rerun=False,
         )
         print("Evaluation completed successfully!")
     except (ValueError, FileNotFoundError, subprocess.CalledProcessError) as e:

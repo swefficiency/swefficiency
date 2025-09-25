@@ -220,7 +220,7 @@ def run_instance(
     model_name_or_path = pred.get("model_name_or_path", "None").replace("/", "__")
     log_dir = RUN_EVALUATION_LOG_DIR / run_id / model_name_or_path / instance_id
 
-    if force_rerun:
+    if force_rerun and log_dir.exists():
         shutil.rmtree(log_dir)
 
     log_dir.mkdir(parents=True, exist_ok=True)
@@ -1350,13 +1350,14 @@ def main(
     client = docker.from_env(timeout=3600)
 
     # load predictions as map of instance_id to prediction
-    print("Using gold predictions - ignoring predictions_path")
     if empty_patch:
+        print("Using empty predictions - ignoring predictions_path")
         predictions = get_empty_predictions(dataset_name, split)
     elif model_predictions:
+        print(f"Loading model predictions from {model_predictions}...")
         predictions = get_model_predictions(model_predictions)
-        # predictions = get_model_predictions_sweagent(model_predictions)
     else:
+        print("Using gold predictions - ignoring predictions_path")
         predictions = get_gold_predictions(dataset_name, split)
     predictions = {pred[KEY_INSTANCE_ID]: pred for pred in predictions}
 
@@ -1517,7 +1518,7 @@ def main(
 
         print("Original dataset size:", len(dataset))
         print("Filtered dataset size:", len(filtered_dataset))
-        print("Instances:", [d[KEY_INSTANCE_ID] for d in filtered_dataset])
+        # print("Instances:", [d[KEY_INSTANCE_ID] for d in filtered_dataset])q
 
         dataset = filtered_dataset
         predictions = filtered_predictions
