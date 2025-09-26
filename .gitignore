@@ -185,3 +185,4 @@ predictions/**/*.json
 predictions/**/*.jsonl
 
 analysis/adhoc/patch_analysis/interesting_patches
+docs/Algotune_Template
