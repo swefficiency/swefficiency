@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 import json
 from collections import Counter
+
 import matplotlib.pyplot as plt
 
 # Hardcoded path
 JSONL_PATH = "analysis/llm/outputs/diff_classification_results.jsonl"
+
 
 def read_jsonl(path):
     """Yield parsed JSON objects from a JSONL file."""
@@ -59,13 +61,14 @@ def main():
             va="center",
             ha="left",
             fontsize=14,
-            fontweight="bold"
+            fontweight="bold",
         )
 
     plt.tight_layout()
 
     # Save the plot
-    plt.savefig("assets/figures/diff_classification_counts.png")
+    plt.savefig("docs/assets/figures/diff_classification_counts.png")
+
 
 if __name__ == "__main__":
     main()

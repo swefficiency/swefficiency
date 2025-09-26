@@ -81,7 +81,7 @@ THRESHOLD_LABELS = [
 # Which side of threshold is closed/inclusive for pd.cut
 THRESHOLD_SIDE = "right"  # "right" or "left"
 
-OUTDIR = Path("assets/figures")
+OUTDIR = Path("docs/assets/figures")
 OUTDIR.mkdir(parents=True, exist_ok=True)
 
 # One row, three columns: each entry is (metric_column, per-axes x-label, y-scale)

@@ -239,7 +239,7 @@ ax2.grid(True, which="minor", axis="x", alpha=0.25)
 
 # plt.tight_layout()
 fig.savefig(
-    "assets/figures/workload_distribution.png",
+    "docs/assets/figures/workload_distribution.png",
     dpi=300,
     bbox_inches="tight",
     pad_inches=0.1,

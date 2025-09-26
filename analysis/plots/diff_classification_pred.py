@@ -152,7 +152,7 @@ def main():
     plt.tight_layout()
 
     # Save the plot
-    plt.savefig("assets/figures/diff_classification_counts_pred.png")
+    plt.savefig("docs/assets/figures/diff_classification_counts_pred.png")
 
 
 if __name__ == "__main__":

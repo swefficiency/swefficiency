@@ -315,5 +315,5 @@ ax3.set_xlabel("Gold patch length (# lines)", fontsize=18)
 # ax3.set_title('Speedup vs patch-length threshold')
 ax3.set_ylim(bottom=-0.0015, top=0.03)
 
-plt.savefig("assets/figures/scaling_trends_all.png", dpi=300)
+plt.savefig("docs/assets/figures/scaling_trends_all.png", dpi=300)
 plt.close(fig)

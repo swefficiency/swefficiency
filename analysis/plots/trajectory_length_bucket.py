@@ -243,7 +243,7 @@ plt.yticks(fontsize=16)
 
 plt.legend()
 plt.tight_layout()
-# plt.savefig("assets/figures/trajectory_length_vs_speedup.png", dpi=300, bbox_inches="tight", pad_inches=0)
+# plt.savefig("docs/assets/figures/trajectory_length_vs_speedup.png", dpi=300, bbox_inches="tight", pad_inches=0)
 plt.close()
 
 # ---- OVERALL median per bucket (optional extra curve) ----
@@ -269,7 +269,7 @@ print(summary_median_df.round(2))
 _plot_median_markers_vertical_centered(
     medians_by_model,
     bucket_labels,
-    filename="assets/figures/median_traj_len_by_speedup_bucket.png",
+    filename="docs/assets/figures/median_traj_len_by_speedup_bucket.png",
     styles=styles,
     tick_span=0.8,  # tighten or loosen horizontal spacing of tick band
 )

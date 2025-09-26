@@ -121,7 +121,7 @@ ax.legend(handles=legend_patches, loc="upper left", ncols=2, fontsize=12)
 plt.tight_layout()
 
 # Save
-out_dir = "assets/figures"
+out_dir = "docs/assets/figures"
 os.makedirs(out_dir, exist_ok=True)
 png_path = os.path.join(out_dir, "openhands_speedup_missed_stacked.png")
 fig.savefig(png_path, dpi=300, bbox_inches="tight", pad_inches=0.05)
