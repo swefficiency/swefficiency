@@ -22,11 +22,9 @@
         <nav class="main-nav" aria-label="Primary navigation">
           <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">☰</button>
           <ul id="nav-menu" class="nav-links">
-            <li><a href="#overview">Overview</a></li>
             <li><a href="#abstract">Abstract</a></li>
             <li><a href="#leaderboard">Leaderboard</a></li>
-            <li><a href="#figures">Figures</a></li>
-            <li><a href="#paper">Paper</a></li>
+            <li><a href="#insights">Analysis</a></li>
             <li><a href="#resources">Resources</a></li>
           </ul>
         </nav>
@@ -34,51 +32,20 @@
     </header>
 
     <main id="top">
-      <section class="hero">
-        <div class="container hero-inner">
-          <div class="hero-text">
-            <h1>Can Language Models Optimize Real-World Repositories on Real Workloads?</h1>
-            <p class="subtitle">A benchmark for repository-level performance optimization while preserving correctness</p>
-            <p class="authors">Author 1 · Author 2 · Author 3</p>
-            <div class="cta-row">
-              <a class="button primary" href="#paper">Paper</a>
-              <a class="button" href="#resources">Code</a>
-            </div>
+      <section class="hero minimal">
+        <div class="container hero-centered">
+          <img class="hero-badge" src="../assets/logos/swefficiency_logo.png" alt="SWE-fficiency" />
+          <h1>Can Language Models Optimize Real-World Repositories on Real Workloads?</h1>
+          <p class="subtitle">A benchmark for repository-level performance optimization while preserving correctness</p>
+          <p class="authors">Author 1 · Author 2 · Author 3</p>
+          <div class="cta-row">
+            <a class="button primary" href="#abstract">Abstract</a>
+            <a class="button" href="#resources">Code</a>
           </div>
-          <div class="hero-art">
-            <img src="../assets/figures/swefficiency_overview.png" alt="SWE-fficiency overview diagram" />
-          </div>
-        </div>
-        <div class="hero-bg">
-          <img src="../assets/logos/swefficiency_banner.png" alt="" aria-hidden="true" />
         </div>
       </section>
 
-      <section id="overview" class="section">
-        <div class="container two-col">
-          <div>
-            <h2>Overview</h2>
-            <p>
-              SWE-fficiency evaluates systems' ability to optimize the runtime of real repositories
-              without breaking correctness. Given a complete codebase and a slow workload, an agent must
-              investigate code semantics, localize bottlenecks and relevant tests, and produce an edit that
-              matches or exceeds expert speedup while passing the same unit tests.
-            </p>
-            <ul class="feature-list">
-              <li><strong>Scale</strong>: 498 tasks across widely used data-science, ML, and HPC repos</li>
-              <li><strong>How-to-fix</strong>: Requires localized edits and reasoning across functions</li>
-              <li><strong>Correctness</strong>: Must pass repository unit tests pre/post optimization</li>
-            </ul>
-            <div class="buttons-inline">
-              <a class="button" href="#figures">Explore Figures</a>
-            </div>
-          </div>
-          <figure class="shadow-card">
-            <img src="../assets/figures/data_pipeline.png" alt="Data pipeline" />
-            <figcaption>Automated pipeline to mine, validate, and evaluate performance improving edits.</figcaption>
-          </figure>
-        </div>
-      </section>
+      
 
       <section id="abstract" class="section alt">
         <div class="container">
@@ -148,34 +115,10 @@
         </div>
       </section>
 
-      <section id="figures" class="section">
+      <section id="insights" class="section alt">
         <div class="container">
-          <h2>Selected Figures</h2>
-          <div class="gallery">
-            <figure class="shadow-card">
-              <img src="../assets/figures/flamegraph.png" alt="Flamegraph comparison" />
-              <figcaption>Flamegraph example highlighting hot paths.</figcaption>
-            </figure>
-            <figure class="shadow-card">
-              <img src="../assets/figures/median_traj_len_by_speedup_bucket.png" alt="Trajectory length by speedup bucket" />
-              <figcaption>Trajectory length distribution vs. speedup buckets.</figcaption>
-            </figure>
-            <figure class="shadow-card">
-              <img src="../assets/figures/workload_distribution.png" alt="Workload distribution" />
-              <figcaption>Workload coverage across repositories.</figcaption>
-            </figure>
-            <figure class="shadow-card">
-              <img src="../assets/figures/scaling_trends.png" alt="Scaling trends" />
-              <figcaption>Scaling trends across model families.</figcaption>
-            </figure>
-          </div>
-        </div>
-      </section>
-
-      <section id="paper" class="section alt">
-        <div class="container">
-          <h2>Paper</h2>
-          <p class="muted">Published as a conference paper at ICLR 2026</p>
+          <h2>Analysis & Insights</h2>
+          <p class="muted">Highlights and key findings from the paper.</p>
           <details class="paper-block" open>
             <summary>2.2 SWE-fficiency dataset distribution and unique benchmark features</summary>
             <div class="paper-content">
