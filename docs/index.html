@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SWE-fficiency: A Benchmark for Repository-Level Performance Optimization</title>
+    <meta name="description" content="SWE-fficiency is a benchmark for optimizing performance of real-world repositories while preserving correctness." />
+    <meta property="og:title" content="SWE-fficiency" />
+    <meta property="og:description" content="Benchmark for repository-level performance optimization on real workloads." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="../assets/logos/swefficiency_banner.png" />
+    <link rel="icon" href="../assets/logos/swefficiency_logo.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#top">
+          <img src="../assets/logos/swefficiency_logo.png" alt="SWE-fficiency logo" class="brand-logo" />
+          <span class="brand-name">SWE-fficiency</span>
+        </a>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">☰</button>
+          <ul id="nav-menu" class="nav-links">
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#abstract">Abstract</a></li>
+            <li><a href="#leaderboard">Leaderboard</a></li>
+            <li><a href="#figures">Figures</a></li>
+            <li><a href="#paper">Paper</a></li>
+            <li><a href="#resources">Resources</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-inner">
+          <div class="hero-text">
+            <h1>Can Language Models Optimize Real-World Repositories on Real Workloads?</h1>
+            <p class="subtitle">A benchmark for repository-level performance optimization while preserving correctness</p>
+            <p class="authors">Author 1 · Author 2 · Author 3</p>
+            <div class="cta-row">
+              <a class="button primary" href="#abstract">Read Abstract</a>
+              <a class="button" href="#resources">Get Started</a>
+            </div>
+          </div>
+          <div class="hero-art">
+            <img src="../assets/figures/swefficiency_overview.png" alt="SWE-fficiency overview diagram" />
+          </div>
+        </div>
+        <div class="hero-bg">
+          <img src="../assets/logos/swefficiency_banner.png" alt="" aria-hidden="true" />
+        </div>
+      </section>
+
+      <section id="overview" class="section">
+        <div class="container two-col">
+          <div>
+            <h2>Overview</h2>
+            <p>
+              SWE-fficiency evaluates systems' ability to optimize the runtime of real repositories
+              without breaking correctness. Given a complete codebase and a slow workload, an agent must
+              investigate code semantics, localize bottlenecks and relevant tests, and produce an edit that
+              matches or exceeds expert speedup while passing the same unit tests.
+            </p>
+            <ul class="feature-list">
+              <li><strong>Scale</strong>: 498 tasks across widely used data-science, ML, and HPC repos</li>
+              <li><strong>How-to-fix</strong>: Requires localized edits and reasoning across functions</li>
+              <li><strong>Correctness</strong>: Must pass repository unit tests pre/post optimization</li>
+            </ul>
+            <div class="buttons-inline">
+              <a class="button" href="#figures">Explore Figures</a>
+            </div>
+          </div>
+          <figure class="shadow-card">
+            <img src="../assets/figures/data_pipeline.png" alt="Data pipeline" />
+            <figcaption>Automated pipeline to mine, validate, and evaluate performance improving edits.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="abstract" class="section alt">
+        <div class="container">
+          <h2>Abstract</h2>
+          <div class="abstract">
+            <p>
+              Optimizing the performance of large-scale software repositories demands expertise in code
+              reasoning and software engineering (SWE) to reduce runtime while preserving program
+              correctness. However, most benchmarks emphasize what to fix rather than how to fix code. We
+              introduce SWE-fficiency, a benchmark for evaluating repository-level performance optimization
+              on real workloads. Our suite contains 498 tasks across nine widely used data-science,
+              machine-learning, and HPC repositories (e.g., numpy, pandas, scipy): given a complete
+              codebase and a slow workload, an agent must investigate code semantics, localize bottlenecks
+              and relevant tests, and produce a patch that matches or exceeds expert speedup while passing
+              the same unit tests.
+            </p>
+            <p>
+              To enable this how-to-fix evaluation, our automated pipeline scrapes GitHub pull requests for
+              performance-improving edits, combining keyword filtering, static analysis, coverage tooling,
+              and execution validation to both confirm expert speedup baselines and identify relevant
+              repository unit tests. Empirical evaluation of state-of-the-art agents reveals significant
+              underperformance. On average, top agents achieve less than 0.01× the expert speedup: agents
+              struggle in localizing optimization opportunities, reasoning about execution across functions,
+              and maintaining correctness in proposed edits.
+            </p>
+            <p>
+              We release the benchmark and accompanying data pipeline to facilitate research on automated
+              performance engineering and long-horizon software reasoning.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="leaderboard" class="section">
+        <div class="container">
+          <h2>Leaderboard</h2>
+          <p class="muted">Higher is better; 1.0× equals expert parity. Metric: Speedup Ratio (SR, pass@1).</p>
+          <div class="table-wrap shadow-card">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>System</th>
+                  <th class="num">Speedup Ratio (SR)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Claude 3.7 Sonnet (OpenHands)</td>
+                  <td class="num"><span class="sr">0.010×</span></td>
+                </tr>
+                <tr>
+                  <td>GPT-5 Mini (OpenHands)</td>
+                  <td class="num"><span class="sr">0.006×</span></td>
+                </tr>
+                <tr>
+                  <td>Gemini 2.5 Flash (OpenHands)</td>
+                  <td class="num"><span class="sr">0.002×</span></td>
+                </tr>
+                <tr>
+                  <td>DeepSeek V3.1 (OpenHands)</td>
+                  <td class="num"><span class="sr">0.002×</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="table-footnote">SR is normalized to expert speedup; 1.0× = expert parity.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="figures" class="section">
+        <div class="container">
+          <h2>Selected Figures</h2>
+          <div class="gallery">
+            <figure class="shadow-card">
+              <img src="../assets/figures/flamegraph.png" alt="Flamegraph comparison" />
+              <figcaption>Flamegraph example highlighting hot paths.</figcaption>
+            </figure>
+            <figure class="shadow-card">
+              <img src="../assets/figures/median_traj_len_by_speedup_bucket.png" alt="Trajectory length by speedup bucket" />
+              <figcaption>Trajectory length distribution vs. speedup buckets.</figcaption>
+            </figure>
+            <figure class="shadow-card">
+              <img src="../assets/figures/workload_distribution.png" alt="Workload distribution" />
+              <figcaption>Workload coverage across repositories.</figcaption>
+            </figure>
+            <figure class="shadow-card">
+              <img src="../assets/figures/scaling_trends.png" alt="Scaling trends" />
+              <figcaption>Scaling trends across model families.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section id="paper" class="section alt">
+        <div class="container">
+          <h2>Paper</h2>
+          <p class="muted">Published as a conference paper at ICLR 2026</p>
+          <details class="paper-block" open>
+            <summary>2.2 SWE-fficiency dataset distribution and unique benchmark features</summary>
+            <div class="paper-content">
+              <p>
+                Figure 3: SWE-FFICIENCY contains a diverse distribution over performance workload runtime (left); over gold patch speedup (speedup achieved from expert PR edit); and over types of optimizations made by the expert (right). We use an LM to categorize the gold patch for each instance (for high-level analysis only) and manually verify a randomly chosen subset: see Appendix B. We retain only instances that demonstrate significant speedups (runtime improvement greater than 2× measurement std. dev.) and log test statuses for benchmark correctness checks.
+              </p>
+              <p>
+                Open-ended but precise evaluation criteria. Providing agents with just an executable code snippet (workload) and codebase makes the task very open-ended: agents can choose any approach, including changes different from the expert’s gold patch. Our evaluation is made precise by grounding correctness in a set of unit tests and measuring LM speedup against gold patch speedup. Our benchmark encourages creativity in edit strategies while guaranteeing unambiguous criteria for strong optimizations.
+              </p>
+              <p>
+                Clear distinction between performance and correctness tests. SWE-FFICIENCY clearly separates performance evaluation workloads from repository correctness tests.
+              </p>
+              <p>
+                Preserving existing correctness during optimization. Unlike SWE-bench’s issue-resolution setting, our benchmark targets pass-to-pass optimization—speeding up already-correct code without introducing new behavior—and selects PRs that do not introduce new behavior.
+              </p>
+            </div>
+          </details>
+
+          <details class="paper-block">
+            <summary>2.3 Task formulation</summary>
+            <div class="paper-content">
+              <p>
+                Model input. An agent is given a complete codebase and a performance workload exercising codebase functionality. We task the agent with modifying the codebase so that workload runtime improves while expected repository unit tests still pass.
+              </p>
+              <p>
+                Evaluation metrics. Our primary metric is speedup ratio (SR): <code>SR = Speedup_LM / Speedup_gold</code>, where <code>Speedup_gold = T_pre / T_post-gold</code> and <code>Speedup_LM = T_pre / T_post-LM</code>. If the patch applies and tests pass, we compute SR per instance and aggregate via harmonic mean across tasks. Empty or failing patches receive <code>SR = 1 / Speedup_gold</code>.
+              </p>
+              <p>
+                Why a factor-based evaluation? SR provides a long runway for progress and rewards super-human performance beyond 1× expert parity, avoiding saturation associated with % solved metrics.
+              </p>
+            </div>
+          </details>
+
+          <details class="paper-block">
+            <summary>3 Evaluation setup</summary>
+            <div class="paper-content">
+              <p>
+                Machine configuration. Each task is containerized; evaluations run on a single GCP n2-standard-64 VM. We pin each worker to exclusive CPU cores and memory to avoid interference.
+              </p>
+              <p>
+                Agent scaffold. We provide baselines with OpenHands and SWE-agent. Agents have a 3-hour task limit, 30-minute per-step timeout, max 100 actions, and repo-specific rebuild/test commands.
+              </p>
+              <p>
+                Models. We evaluate Claude 3.7 Sonnet, GPT-5 Mini, Gemini 2.5 Flash, and DeepSeek V3.1 with pass@1 trajectories.
+              </p>
+            </div>
+          </details>
+
+          <details class="paper-block">
+            <summary>4 Experiments and results</summary>
+            <div class="paper-content">
+              <p>
+                Leading LM agents trail experts and often introduce correctness bugs. Agents perform strong on easy wins but are weak on harder speedups, and mislocalization at the function level is a major limiter. Qualitatively, models show satisficing behavior, shortcut bias and caching crutches, workload overfitting and semantic drift, and maintainability concerns in generated edits.
+              </p>
+            </div>
+          </details>
+
+          <details class="paper-block">
+            <summary>6 Discussion and conclusion</summary>
+            <div class="paper-content">
+              <p>
+                Limitations include Python/Cython focus and CPU-only setup; extending to lower-level stacks and heterogeneous hardware is future work. SWE-FFICIENCY offers 498 optimization tasks with containers, a rigorous curation pipeline, and a metric anchored at expert parity to motivate long-term research on autonomous performance engineering.
+              </p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section id="resources" class="section alt">
+        <div class="container two-col">
+          <div>
+            <h2>Resources</h2>
+            <p>Everything you need to try SWE-fficiency.</p>
+            <ul class="link-list">
+              <li><a href="../README.md">Repository README</a></li>
+              <li><a href="../pyproject.toml">Python Package</a></li>
+              <li><a href="../eval_reports/">Evaluation Reports</a></li>
+            </ul>
+            <div class="buttons-inline">
+              <a class="button primary" href="../README.md">Get Started</a>
+            </div>
+          </div>
+          <figure class="shadow-card">
+            <img src="../assets/figures/trajectory_length_vs_speedup.png" alt="Trajectory length vs speedup" />
+            <figcaption>Agent iteration dynamics vs. speedup.</figcaption>
+          </figure>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="copyright">© <span id="year"></span> SWE-fficiency</div>
+        <div class="footer-links">
+          <a href="#top">Back to top</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+  </html>
+
+
