@@ -798,9 +798,9 @@ def create_container_from_image(
 
         extra_args = {}
         if cpu_groups:
-            print(f"Using CPU groups: {cpu_groups}")
+            # print(f"Using CPU groups: {cpu_groups}")
             extra_args.update(cpu_groups)
-            print(f"Creating container with args: {extra_args}")
+            # print(f"Creating container with args: {extra_args}")
 
         # Create the container
         logger.info(f"Creating container for {test_spec.instance_id}...")

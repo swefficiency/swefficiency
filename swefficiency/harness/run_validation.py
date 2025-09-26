@@ -493,8 +493,10 @@ def run_instance(
 
                 # Copy over the "workload.py" and the "covering_tests.txt.
                 workload_file = Path(log_dir / "workload.py")
+                raw_workload_file = Path(log_dir / "workload_raw.py")
 
                 # TODO: This breaks profiling, need to fix.
+                raw_workload_file.write_text(workload_text)
                 workload_text = transform_to_isolated_workload(workload_text)
                 workload_file.write_text(workload_text)
 
@@ -1125,7 +1127,7 @@ def run_instances(
                     # Update progress bar, check if instance ran successfully
                     result = future.result()
                     if result is not None:
-                        print(f"Instance {result[0]} completed successfully.")
+                        # print(f"Instance {result[0]} completed successfully.")
                         instance_id, instance_report = result
                         per_instance_results[instance_id] = instance_report
                 except Exception as e:
