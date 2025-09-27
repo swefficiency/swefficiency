@@ -101,6 +101,7 @@ def eval_command(args):
             use_podman=False,
             workload_predictions="",
             force_rerun=False,
+            process_isolation=True,
         )
         print("Evaluation completed successfully!")
     except (ValueError, FileNotFoundError, subprocess.CalledProcessError) as e:

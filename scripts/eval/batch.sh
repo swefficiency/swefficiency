@@ -12,12 +12,14 @@ MODELS=(
 
 RUN_NAME="ground_truth_perf_isolation"
 
-# Run gold
-swefficiency eval --num_workers $NUM_WORKERS --run_id $RUN_NAME
-docker rm -f $(docker ps -aq); docker system prune -a -f;
+# # Run gold
+# swefficiency eval --num_workers $NUM_WORKERS --run_id $RUN_NAME
+# docker rm -f $(docker ps -aq); docker system prune -a -f;
 
-# for MODEL in "${MODELS[@]}"; do
-#     echo "Running evaluation for model: $MODEL"
+for MODEL in "${MODELS[@]}"; do
+    echo "Running evaluation for model: $MODEL"
 
-#     swefficiency eval --num_workers $NUM_WORKERS --run_id $RUN_NAME --prediction_path predictions/converted/$MODEL.jsonl
-#     docker rm -f $(docker ps -aq); docker system prune -a -f;
+    swefficiency eval --num_workers $NUM_WORKERS --run_id $RUN_NAME --prediction_path predictions/converted/$MODEL.jsonl
+    docker rm -f $(docker ps -aq); docker system prune -a -f;
+
+done

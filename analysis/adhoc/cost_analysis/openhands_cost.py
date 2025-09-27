@@ -66,6 +66,20 @@ PRICING: Dict[str, Dict[str, Decimal]] = {
         "hit": Decimal("0.03"),
         "out": Decimal("1.25"),
     },
+    "kimi-k2": {
+        "base_in": Decimal("0.6"),
+        "write_5m": Decimal("0.30"),
+        "write_1h": Decimal("0.50"),
+        "hit": Decimal("0.15"),
+        "out": Decimal("2.5"),
+    },
+    "kimi-k2-turbo-preview": {
+        "base_in": Decimal("2.4"),
+        "write_5m": Decimal("0.30"),
+        "write_1h": Decimal("0.50"),
+        "hit": Decimal("0.6"),
+        "out": Decimal("10.0"),
+    },
 }
 
 ALIASES = {
@@ -226,3 +240,6 @@ print(price_from_usage(per_token_breakdown, model="Claude Sonnet 3.7"))
 
 print(price_from_usage(per_token_breakdown, model="Claude Opus 4.1"))
 print(price_from_usage(per_token_breakdown, model="Claude Opus 4"))
+
+print(price_from_usage(per_token_breakdown, model="kimi-k2"))
+print(price_from_usage(per_token_breakdown, model="kimi-k2-turbo-preview"))

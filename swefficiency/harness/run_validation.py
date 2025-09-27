@@ -26,6 +26,7 @@ from swefficiency.harness.constants import (
     APPLY_PATCH_FAIL,
     APPLY_PATCH_PASS,
     INSTANCE_IMAGE_BUILD_DIR,
+    ISOLATION_CHECK_EXCEPTIONS,
     KEY_INSTANCE_ID,
     RUN_EVALUATION_LOG_DIR,
     STACKFRAME_CHECK_EXCEPTONS,
@@ -494,7 +495,7 @@ def run_instance(
 
                 # Copy over the "workload.py" and the "covering_tests.txt.
                 workload_file = Path(log_dir / "workload.py")
-                if process_isolation:
+                if process_isolation and instance_id not in ISOLATION_CHECK_EXCEPTIONS:
                     raw_workload_file = Path(log_dir / "workload_raw.py")
 
                     # TODO: This breaks profiling, need to fix.

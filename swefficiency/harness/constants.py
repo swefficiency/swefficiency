@@ -3914,6 +3914,11 @@ for k in [
 # Exceptions to allow stackframe..
 STACKFRAME_CHECK_EXCEPTONS = {"pandas-dev__pandas-45247"}
 
+# Isolation check exceptions
+ISOLATION_CHECK_EXCEPTIONS = {
+    "scikit-learn__scikit-learn-29330" # Uses loky, so already has memory isolation.
+}
+
 
 # All keys should be in lower case
 LOWER_MAP_REPO_VERSION_TO_SPECS = {

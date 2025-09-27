@@ -222,10 +222,9 @@ def transform_to_isolated_workload(src: str) -> str:
     )
     number = rep.number if rep.number is not None else 1
     repeat = rep.repeat if rep.repeat is not None else 5
+    slice_expr = find_runtimes_slice_expr(tree)
 
-    slice_expr = find_runtimes_slice_expr(tree)  # e.g., "-10000:" or "a:b" or "a:b:c"
-
-    # ---------- helpers ----------
+    # ---- helpers ----
     def _is_print_mean_or_std(call: ast.Call) -> bool:
         if not (isinstance(call.func, ast.Name) and call.func.id == "print"):
             return False
@@ -240,7 +239,6 @@ def transform_to_isolated_workload(src: str) -> str:
 
     def _call_is_teardown(call: ast.Call) -> bool:
         f = call.func
-        # os.remove(...), os.unlink(...), shutil.rmtree(...)
         if isinstance(f, ast.Attribute) and isinstance(f.value, ast.Name):
             if f.value.id in {"os", "shutil"} and f.attr in {
                 "remove",
@@ -248,31 +246,24 @@ def transform_to_isolated_workload(src: str) -> str:
                 "rmtree",
             }:
                 return True
-        # Path(...).unlink()
         if isinstance(f, ast.Attribute) and f.attr == "unlink":
             return True
-        # bare remove/unlink (rare)
         if isinstance(f, ast.Name) and f.id in {"remove", "unlink"}:
             return True
         return False
 
     def _node_contains_teardown(n: ast.AST) -> bool:
-        # NEW: nested scan (handles for/with/if blocks, etc.)
-        for sub in ast.walk(n):
-            if isinstance(sub, ast.Call) and _call_is_teardown(sub):
-                return True
-        return False
+        return any(
+            isinstance(sub, ast.Call) and _call_is_teardown(sub) for sub in ast.walk(n)
+        )
 
     def _indent_block(s: str, n: int) -> str:
         pad = " " * n
-        return "\n".join(
-            pad + line if line.strip() != "" else "" for line in s.splitlines()
-        )
+        return "\n".join((pad + line) if line else "" for line in s.splitlines())
 
-    # ---------- locate key regions ----------
     body = tree.body
 
-    # Find: runtimes = timeit.repeat(...)
+    # locate 'runtimes = timeit.repeat(...)'
     repeat_idx = None
     for i, n in enumerate(body):
         if (
@@ -288,7 +279,7 @@ def transform_to_isolated_workload(src: str) -> str:
             "Could not find 'timeit.repeat(...)' assignment to 'runtimes' in the script."
         )
 
-    # First summary print after repeat
+    # first summary print after repeat
     first_summary_print_idx = None
     for j in range(repeat_idx + 1, len(body)):
         n = body[j]
@@ -300,42 +291,50 @@ def transform_to_isolated_workload(src: str) -> str:
             first_summary_print_idx = j
             break
 
-    # Nodes to move: strictly between repeat and the first summary print (if any)
     nodes_to_move = (
         body[repeat_idx + 1 : first_summary_print_idx]
         if first_summary_print_idx is not None
         else []
     )
 
-    # Partition moved nodes into teardown vs other work (nested-aware)
-    moved_teardown_nodes = []
-    moved_other_nodes = []
-    for n in nodes_to_move:
-        if _node_contains_teardown(n):
-            moved_teardown_nodes.append(n)
-        else:
-            moved_other_nodes.append(n)
+    # detect top-level prewarm 'workload()'
+    prewarm_node = None
+    for n in body:
+        if isinstance(n, ast.Expr) and isinstance(n.value, ast.Call):
+            cal = n.value
+            if (
+                isinstance(cal.func, ast.Name)
+                and cal.func.id == workload
+                and not cal.args
+                and not cal.keywords
+            ):
+                prewarm_node = n
+                break
 
-    # ---------- build preserved original body ----------
+    moved_teardown_nodes, moved_other_nodes = [], []
+    for n in nodes_to_move:
+        (
+            moved_teardown_nodes if _node_contains_teardown(n) else moved_other_nodes
+        ).append(n)
+
     kept_nodes = []
     for n in body:
         skip = False
-        # Drop original timeit.repeat(...)
         if (
             isinstance(n, ast.Assign)
             and isinstance(n.value, ast.Call)
             and _is_timeit_repeat_call(n.value)
         ):
             skip = True
-        # Drop summary prints
         if (
             isinstance(n, ast.Expr)
             and isinstance(n.value, ast.Call)
             and _is_print_mean_or_std(n.value)
         ):
             skip = True
-        # Drop moved nodes
         if n in nodes_to_move:
+            skip = True
+        if prewarm_node is not None and n is prewarm_node:
             skip = True
         if not skip:
             kept_nodes.append(n)
@@ -350,9 +349,9 @@ def transform_to_isolated_workload(src: str) -> str:
 
     setup_expr = setup if setup else "(lambda: None)"
     view_assignment = (
-        "runtimes_view = runtimes\n"
+        "runtimes_view = runtimes"
         if not slice_expr
-        else f"runtimes_view = runtimes[{slice_expr}]\n"
+        else f"runtimes_view = runtimes[{slice_expr}]"
     )
 
     moved_other_src = (
@@ -366,38 +365,54 @@ def transform_to_isolated_workload(src: str) -> str:
 
     post_summary_block = ""
     if moved_other_src:
-        post_summary_block = f"""
-        # Moved from after original 'runtimes = ...' (pre-summary) to run after isolation:
-{_indent_block(moved_other_src, 8)}
-"""
+        post_summary_block = (
+            "# Moved from after original 'runtimes = ...' (pre-summary) to run after isolation:\n"
+            + moved_other_src
+        )
 
     finally_block = ""
     if moved_teardown_src:
-        finally_block = f"""
-    finally:
-        try:
-{_indent_block(moved_teardown_src, 12)}
-        except FileNotFoundError:
-            pass
-"""
+        finally_block = (
+            "    finally:\n"
+            "        try:\n" + _indent_block(moved_teardown_src, 12) + "\n"
+            "        except FileNotFoundError:\n"
+            "            pass\n"
+        )
 
-    # Build the main harness; emit try/finally ONLY if we have teardown
-    main_header = f"""
-if __name__ == "__main__":
-    _number = {number}
-    _repeat = {repeat}
-"""
-    main_core = f"""        runtimes = _run_isolated(_number, _repeat, start_method="spawn")
-        {view_assignment.rstrip()}
-        print("Mean:", _statistics.mean(runtimes_view))
-        print("Std Dev:", _statistics.stdev(runtimes_view) if len(runtimes_view) > 1 else 0.0)
-{post_summary_block if post_summary_block else ""}"""
+    # ---- build __main__ core (UNINDENTED), indent once at the end ----
+    core_lines = []
 
+    # optional prewarm (from top-level workload())
+    if prewarm_node is not None:
+        core_lines.append("# Prewarm moved from top-level")
+        if setup:
+            core_lines.append(f"{setup}()")
+        core_lines.append(f"{workload}()")
+
+    core_lines += [
+        'runtimes = _run_isolated(_number, _repeat, start_method="spawn")',
+        f"{view_assignment}",
+        'print("Mean:", _statistics.mean(runtimes_view))',
+        'print("Std Dev:", _statistics.stdev(runtimes_view) if len(runtimes_view) > 1 else 0.0)',
+    ]
+    if post_summary_block:
+        core_lines.append(post_summary_block)
+
+    core_src = "\n".join(core_lines)
+
+    # header and indentation choice
+    main_header = f'\nif __name__ == "__main__":\n    _number = {number}\n    _repeat = {repeat}\n'
     if finally_block:
-        main_block = main_header + "    try:\n" + main_core + finally_block + "\n"
+        main_block = (
+            main_header
+            + "    try:\n"
+            + _indent_block(core_src, 8)
+            + "\n"
+            + finally_block
+            + "\n"
+        )
     else:
-        # No teardown -> no try/finally
-        main_block = main_header + main_core.replace("\n", "\n", 1) + "\n"
+        main_block = main_header + _indent_block(core_src, 4) + "\n"
 
     harness = f"""
 # ---- AUTO-GENERATED ISOLATION HARNESS (timeit-in-child, spawn-safe) ----
