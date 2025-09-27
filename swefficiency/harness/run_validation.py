@@ -203,6 +203,7 @@ def run_instance(
     use_dockerhub_images: bool = False,
     use_podman: bool = False,  # Flip this to true if on SLURM or using podman without cgroups.
     force_rerun: bool = False,
+    process_isolation: bool = True,
 ):
     """
     Run a single instance with the given prediction.
@@ -493,11 +494,12 @@ def run_instance(
 
                 # Copy over the "workload.py" and the "covering_tests.txt.
                 workload_file = Path(log_dir / "workload.py")
-                raw_workload_file = Path(log_dir / "workload_raw.py")
+                if process_isolation:
+                    raw_workload_file = Path(log_dir / "workload_raw.py")
 
-                # TODO: This breaks profiling, need to fix.
-                raw_workload_file.write_text(workload_text)
-                workload_text = transform_to_isolated_workload(workload_text)
+                    # TODO: This breaks profiling, need to fix.
+                    raw_workload_file.write_text(workload_text)
+                    workload_text = transform_to_isolated_workload(workload_text)
                 workload_file.write_text(workload_text)
 
                 logger.info(
@@ -974,6 +976,7 @@ def run_instance(
             f"Check ({logger.log_file}) for more information."
         )
         logger.error(error_msg)
+        print(error_msg)
     finally:
         if push_to_dockerhub and not use_dockerhub_images:
             logger.info(
@@ -1022,6 +1025,7 @@ def run_instances(
     one_per_version_debug=False,
     use_podman=False,  # Set to True if running on SLURM or using podman without cgroups.
     force_rerun=True,
+    process_isolation=True,
 ):
     """
     Run all instances for the given predictions in parallel.
@@ -1117,6 +1121,7 @@ def run_instances(
                     use_dockerhub_images,
                     use_podman,
                     force_rerun,
+                    process_isolation,
                 ): None
                 for test_spec in test_specs
             }
@@ -1346,6 +1351,7 @@ def main(
     use_podman: bool,
     workload_predictions: str,
     force_rerun: bool,
+    process_isolation: bool,
 ):
     """
     Run evaluation harness for the given dataset and predictions.
@@ -1558,6 +1564,7 @@ def main(
             use_dockerhub_images=use_dockerhub_images,
             use_podman=use_podman,
             force_rerun=force_rerun,
+            process_isolation=process_isolation,
         )
     else:
         # build environment images + run instances
@@ -1579,6 +1586,7 @@ def main(
             push_to_dockerhub=push_to_dockerhub,
             use_podman=use_podman,
             force_rerun=force_rerun,
+            process_isolation=process_isolation,
         )
 
     # this will remove the container in the gloden run
@@ -1711,6 +1719,13 @@ if __name__ == "__main__":
         type=str2bool,
         default=False,
         help="Force rerun even if results already exist.",
+    )
+
+    parser.add_argument(
+        "--process_isolation",
+        type=str2bool,
+        default=True,
+        help="Use memory process isolation.",
     )
 
     args = parser.parse_args()

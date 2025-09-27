@@ -205,9 +205,13 @@ def find_runtimes_slice_expr(tree: ast.AST) -> str | None:
 
 # ---------- Rewriter ----------
 def transform_to_isolated_workload(src: str) -> str:
+    import ast
+    import textwrap
+
     tree = ast.parse(src)
     rep = extract_timeit_repeat(tree)
     if rep is None:
+        print(src)
         raise SystemExit(
             "Could not find 'timeit.repeat(...)' assignment to 'runtimes' in the script."
         )
@@ -219,31 +223,120 @@ def transform_to_isolated_workload(src: str) -> str:
     number = rep.number if rep.number is not None else 1
     repeat = rep.repeat if rep.repeat is not None else 5
 
-    # Detect if the original script slices the runtimes list
-    slice_expr = find_runtimes_slice_expr(tree)  # e.g., '-10000:' or 'a:b' or 'a:b:c'
+    slice_expr = find_runtimes_slice_expr(tree)  # e.g., "-10000:" or "a:b" or "a:b:c"
 
-    # Keep original top-level code except the timeit.repeat assignment and the final prints
+    # ---------- helpers ----------
+    def _is_print_mean_or_std(call: ast.Call) -> bool:
+        if not (isinstance(call.func, ast.Name) and call.func.id == "print"):
+            return False
+        for a in call.args:
+            if (
+                isinstance(a, ast.Constant)
+                and isinstance(a.value, str)
+                and ("Mean:" in a.value or "Std Dev:" in a.value)
+            ):
+                return True
+        return False
+
+    def _call_is_teardown(call: ast.Call) -> bool:
+        f = call.func
+        # os.remove(...), os.unlink(...), shutil.rmtree(...)
+        if isinstance(f, ast.Attribute) and isinstance(f.value, ast.Name):
+            if f.value.id in {"os", "shutil"} and f.attr in {
+                "remove",
+                "unlink",
+                "rmtree",
+            }:
+                return True
+        # Path(...).unlink()
+        if isinstance(f, ast.Attribute) and f.attr == "unlink":
+            return True
+        # bare remove/unlink (rare)
+        if isinstance(f, ast.Name) and f.id in {"remove", "unlink"}:
+            return True
+        return False
+
+    def _node_contains_teardown(n: ast.AST) -> bool:
+        # NEW: nested scan (handles for/with/if blocks, etc.)
+        for sub in ast.walk(n):
+            if isinstance(sub, ast.Call) and _call_is_teardown(sub):
+                return True
+        return False
+
+    def _indent_block(s: str, n: int) -> str:
+        pad = " " * n
+        return "\n".join(
+            pad + line if line.strip() != "" else "" for line in s.splitlines()
+        )
+
+    # ---------- locate key regions ----------
+    body = tree.body
+
+    # Find: runtimes = timeit.repeat(...)
+    repeat_idx = None
+    for i, n in enumerate(body):
+        if (
+            isinstance(n, ast.Assign)
+            and isinstance(n.value, ast.Call)
+            and _is_timeit_repeat_call(n.value)
+        ):
+            repeat_idx = i
+            break
+    if repeat_idx is None:
+        print(src)
+        raise SystemExit(
+            "Could not find 'timeit.repeat(...)' assignment to 'runtimes' in the script."
+        )
+
+    # First summary print after repeat
+    first_summary_print_idx = None
+    for j in range(repeat_idx + 1, len(body)):
+        n = body[j]
+        if (
+            isinstance(n, ast.Expr)
+            and isinstance(n.value, ast.Call)
+            and _is_print_mean_or_std(n.value)
+        ):
+            first_summary_print_idx = j
+            break
+
+    # Nodes to move: strictly between repeat and the first summary print (if any)
+    nodes_to_move = (
+        body[repeat_idx + 1 : first_summary_print_idx]
+        if first_summary_print_idx is not None
+        else []
+    )
+
+    # Partition moved nodes into teardown vs other work (nested-aware)
+    moved_teardown_nodes = []
+    moved_other_nodes = []
+    for n in nodes_to_move:
+        if _node_contains_teardown(n):
+            moved_teardown_nodes.append(n)
+        else:
+            moved_other_nodes.append(n)
+
+    # ---------- build preserved original body ----------
     kept_nodes = []
-    for n in tree.body:
+    for n in body:
         skip = False
+        # Drop original timeit.repeat(...)
         if (
             isinstance(n, ast.Assign)
             and isinstance(n.value, ast.Call)
             and _is_timeit_repeat_call(n.value)
         ):
             skip = True
-        if isinstance(n, ast.Expr) and isinstance(n.value, ast.Call):
-            cal = n.value
-            if isinstance(cal.func, ast.Name) and cal.func.id == "print":
-                for a in cal.args:
-                    # Drop prints like: print("Mean:", ...), print("Std Dev:", ...)
-                    if (
-                        isinstance(a, ast.Constant)
-                        and isinstance(a.value, str)
-                        and ("Mean:" in a.value or "Std Dev:" in a.value)
-                    ):
-                        skip = True
-                        break
+        # Drop summary prints
+        if (
+            isinstance(n, ast.Expr)
+            and isinstance(n.value, ast.Call)
+            and _is_print_mean_or_std(n.value)
+        ):
+            skip = True
+        # Drop moved nodes
+        if n in nodes_to_move:
+            skip = True
         if not skip:
             kept_nodes.append(n)
 
@@ -256,14 +349,56 @@ def transform_to_isolated_workload(src: str) -> str:
     )
 
     setup_expr = setup if setup else "(lambda: None)"
+    view_assignment = (
+        "runtimes_view = runtimes\n"
+        if not slice_expr
+        else f"runtimes_view = runtimes[{slice_expr}]\n"
+    )
 
-    # Build a view expression to apply the same slice to our new runtimes
-    # None -> full slice; else -> f"[{slice_expr}]"
-    view_assignment = "runtimes_view = runtimes\n"
-    if slice_expr:
-        view_assignment = f"runtimes_view = runtimes[{slice_expr}]\n"
+    moved_other_src = (
+        "\n".join(_to_source(n) for n in moved_other_nodes) if moved_other_nodes else ""
+    )
+    moved_teardown_src = (
+        "\n".join(_to_source(n) for n in moved_teardown_nodes)
+        if moved_teardown_nodes
+        else ""
+    )
 
-    # Isolation harness
+    post_summary_block = ""
+    if moved_other_src:
+        post_summary_block = f"""
+        # Moved from after original 'runtimes = ...' (pre-summary) to run after isolation:
+{_indent_block(moved_other_src, 8)}
+"""
+
+    finally_block = ""
+    if moved_teardown_src:
+        finally_block = f"""
+    finally:
+        try:
+{_indent_block(moved_teardown_src, 12)}
+        except FileNotFoundError:
+            pass
+"""
+
+    # Build the main harness; emit try/finally ONLY if we have teardown
+    main_header = f"""
+if __name__ == "__main__":
+    _number = {number}
+    _repeat = {repeat}
+"""
+    main_core = f"""        runtimes = _run_isolated(_number, _repeat, start_method="spawn")
+        {view_assignment.rstrip()}
+        print("Mean:", _statistics.mean(runtimes_view))
+        print("Std Dev:", _statistics.stdev(runtimes_view) if len(runtimes_view) > 1 else 0.0)
+{post_summary_block if post_summary_block else ""}"""
+
+    if finally_block:
+        main_block = main_header + "    try:\n" + main_core + finally_block + "\n"
+    else:
+        # No teardown -> no try/finally
+        main_block = main_header + main_core.replace("\n", "\n", 1) + "\n"
+
     harness = f"""
 # ---- AUTO-GENERATED ISOLATION HARNESS (timeit-in-child, spawn-safe) ----
 import statistics as _statistics
@@ -298,16 +433,8 @@ def _run_isolated(number: int, repeat: int, start_method: str = "spawn"):
             raise RuntimeError("Child run failed—see traceback above.")
         results.append(dur)
     return results
-
-if __name__ == "__main__":
-    _number = {number}
-    _repeat = {repeat}
-    runtimes = _run_isolated(_number, _repeat, start_method="spawn")
-    {view_assignment.rstrip()}
-    print("Mean:", _statistics.mean(runtimes_view))
-    print("Std Dev:", _statistics.stdev(runtimes_view) if len(runtimes_view) > 1 else 0.0)
+{main_block}
 """
-
     return original_body + textwrap.dedent(harness)
 
 
