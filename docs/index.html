@@ -2,8 +2,14 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>SWE-fficiency</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalabl        .banner-image {
+            width: 100%;
+            max-width: 700px;
+            height: auto;
+            margin: 15px 0;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }   <title>SWE-fficiency</title>
     
     <!-- Social Preview Tags -->
     <meta property="og:title" content="SWE-fficiency">
@@ -47,7 +53,7 @@
         .header-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 40px 20px;
+            padding: 30px 20px;
             text-align: center;
             position: relative;
         }
@@ -58,20 +64,20 @@
         }
         
         .swefficiency-banner {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         
         .swefficiency-title {
             font-size: 3.5rem;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 0px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         
         .swefficiency-subtitle {
             font-size: 1.6rem;
             font-weight: 300;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             opacity: 0.95;
         }
         
@@ -91,7 +97,7 @@
         
         /* Authors section */
         .authors-section {
-            margin: 15px 0;
+            margin: 0px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -102,7 +108,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 6px 18px;
+            gap: 0px 18px;
             max-width: 1000px;
         }
         
@@ -198,11 +204,19 @@
         
         .banner-image {
             width: 100%;
-            max-width: 700px;
+            max-width: 600px;
             height: auto;
             margin: 40px 0;
             border-radius: 12px;
             box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .banner-image:hover {
+            transform: translateY(-0px) scale(1.04);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            filter: brightness(1.05) saturate(1.08);
+            cursor: pointer;
         }
         
         .banner-image-no-shadow {
@@ -388,7 +402,9 @@
             <div class="swefficiency-banner">
                 <div class="swefficiency-text">
                     <!-- SWE-fficiency Banner Image -->
-                    <img src="assets/logos/swefficiency_banner_main.png" alt="SWE-fficiency Banner" class="banner-image">
+                    <div class="">
+                        <img src="assets/logos/swefficiency_banner_main.png" alt="SWE-fficiency Banner" class="banner-image">
+                    </div>
                     <p class="swefficiency-subtitle">Can Language Models Optimize Real-World Repositories on Real Workloads?</p>
                     <!-- <div class="swefficiency-conference">ICLR 2026</div> -->
                 </div>
