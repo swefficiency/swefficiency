@@ -1,6 +1,6 @@
 
 <div align="center">
-  <img src="docs/assets/logos/swefficiency_banner.png" alt="SWE-fficiency Logo" width="500"/>
+  <img src="docs/assets/logos/swefficiency_banner_main.png" alt="SWE-fficiency Logo" width="500"/>
 </div>
 
 
