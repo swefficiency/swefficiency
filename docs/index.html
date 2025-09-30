@@ -177,7 +177,7 @@
         
         /* Main content sections */
         .overview-section {
-            padding: 80px 20px;
+            padding: 40px 20px;
             background-color: #f8f9fa;
         }
         
@@ -229,7 +229,7 @@
         
         /* Tables section */
         .tables-section {
-            padding: 80px 20px;
+            padding: 40px 20px;
             background-color: white;
         }
         
@@ -248,10 +248,14 @@
         
         .leaderboard-table-container {
             overflow-x: auto;
-            margin: 30px 0;
+            margin: 30px auto;
             background: white;
             border-radius: 12px;
             box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 500px;
         }
         
         .leaderboard-table-container table {
@@ -280,7 +284,7 @@
         
         /* Figures section */
         .figures-section {
-            padding: 80px 20px;
+            padding: 40px 20px;
             background-color: #f8f9fa;
         }
         
@@ -368,7 +372,7 @@
         
         @media (max-width: 480px) {
             .header-section {
-                padding: 30px 15px;
+                padding: 40px 15px;
             }
             
             .swefficiency-title {
@@ -382,7 +386,7 @@
             .overview-section,
             .tables-section,
             .figures-section {
-                padding: 60px 15px;
+                padding: 40px 15px;
             }
             
             .section-heading,
@@ -455,13 +459,15 @@
                 (numpy, pandas, scipy, scikit-learn, matplotlib, xarray, sympy, dask, astropy).
             </p>
             
+            <img src="assets/figures/swefficiency_overview.png" alt="SWE-fficiency Task Workflow" class="banner-image-no-shadow" style="margin-top:10px;">
+
             <p class="overview-text">
                 Given a complete codebase and a slow workload, an agent must investigate code semantics, localize bottlenecks 
                 and relevant tests, and produce a patch that matches or exceeds expert speedup while passing the same unit tests. 
                 This challenges models to perform the investigative, pass-to-pass workflow of real performance engineering.
             </p>
 
-            <img src="assets/figures/swefficiency_overview.png" alt="SWE-fficiency Task Workflow" class="banner-image-no-shadow" style="margin-top:10px;">
+           
             <p class="overview-text">
                 Our evaluation reveals significant underperformance of current state-of-the-art agents. On average, top agents 
                 achieve <strong>less than 0.01× the expert speedup</strong>, struggling with localizing optimization opportunities, 
@@ -489,10 +495,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style="background-color: #f0f8ff; border-top: 2px solid #667eea;">
-                            <td><strong>Human Expert Performance</strong></td>
-                            <td><strong>1.000×</strong></td>
-                        </tr>
                         <tr>
                             <td>Claude 3.7 Sonnet (OpenHands)</td>
                             <td><strong>0.010×</strong></td>
@@ -525,32 +527,6 @@
             <p class="overview-text" style="margin-bottom: 0;">
                 Instead of isolated algorithm puzzles, tasks demand an <strong>investigative, pass-to-pass workflow</strong>: identify hot paths, understand call chains across modules, inspect data structures, validate hypotheses against targeted tests, and refine edits to reach or surpass expert speedups. This formulation directly evaluates: (1) <strong>repository-scale code understanding</strong>, (2) <strong>performance reasoning and prioritization</strong>, and (3) <strong>correctness-preserving implementation skill</strong>.
             </p>
-            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap:20px; margin-top:40px; text-align:left;">
-                <div style="background:#f8f9fa; padding:18px 20px; border-radius:10px; border-left:4px solid #667eea;">
-                    <h4 style="margin:0 0 8px; color:#667eea; font-size:0.95rem; letter-spacing:0.5px; text-transform:uppercase;">Inputs</h4>
-                    <ul style="margin:0; padding-left:18px; line-height:1.6; font-size:0.95rem;">
-                        <li>Full repository source code (+ Docker containers)</li>
-                        <li>Performance workload script</li>
-                        <li>Build & test commands</li>
-                    </ul>
-                </div>
-                <div style="background:#f8f9fa; padding:18px 20px; border-radius:10px; border-left:4px solid #667eea;">
-                    <h4 style="margin:0 0 8px; color:#667eea; font-size:0.95rem; letter-spacing:0.5px; text-transform:uppercase;">Agent Objective</h4>
-                    <ul style="margin:0; padding-left:18px; line-height:1.6; font-size:0.95rem;">
-                        <li>Localize runtime bottlenecks</li>
-                        <li>Apply a performance patch</li>
-                        <li>Retain functional correctness</li>
-                    </ul>
-                </div>
-                <div style="background:#f8f9fa; padding:18px 20px; border-radius:10px; border-left:4px solid #667eea;">
-                    <h4 style="margin:0 0 8px; color:#667eea; font-size:0.95rem; letter-spacing:0.5px; text-transform:uppercase;">Why It Matters</h4>
-                    <ul style="margin:0; padding-left:18px; line-height:1.6; font-size:0.95rem;">
-                        <li>Tests real-world coordination</li>
-                        <li>Bridges code + performance reasoning</li>
-                        <li>Targets human-parity optimization</li>
-                    </ul>
-                </div>
-            </div>
         </div>
     </section>
 

@@ -170,7 +170,6 @@ def main(gold_run, pred_run, num_workers, output_dir):
         len(results_df) / (1 / results_df["human_speedup_ratio"]).sum()
     )
     base_speedup = len(results_df) / (1 / results_df["pred_speedup_ratio"]).sum()
-
     # Print correctness ratios.
 
     # Print human speedup ratios with instace ids.
@@ -184,6 +183,7 @@ def main(gold_run, pred_run, num_workers, output_dir):
     # print(f"Total incorrect instances: {counter} out of {len(results_df)}")
 
     print(f"Average Human Speedup Ratio: {harmonic_mean_human_speedup}x")
+    print(f"Geometric Mean Human Speedup Ratio: {geometric_mean_human_speedup}x")
     print(f"Correctness Percentage: {results_df['correctness'].mean() * 100}%")
 
     # # Print all instances ids that did not achieve correctness in one line space delimited format.
