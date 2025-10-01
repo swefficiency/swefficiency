@@ -143,10 +143,16 @@ def get_validation_report(
     return report_map
 
 
+GIT_APPLY_CMD = "git apply -v /tmp/patch.diff --whitespace=nowarn"
+
+# "try to apply everything; only fail if the failing path is tracked by git"
+GIT_APPLY_CMD = 'bash -lc \'patch=${PATCH:-/tmp/patch.diff}; list="$(git apply --list "$patch" 2>/dev/null || sed -nE "s|^diff --git a/.* b/(.*)$|\\1|p" "$patch")"; while IFS= read -r p; do [ -z "$p" ] && continue; if git apply -3 --whitespace=nowarn --include="$p" "$patch"; then printf "applied: %s\\n" "$p"; else if git ls-files --error-unmatch -- "$p" >/dev/null 2>&1; then printf "ERROR on tracked path: %s\\n" "$p"; exit 1; else printf "skipping untracked-collision: %s\\n" "$p"; fi; fi; done <<<"$list"\''
+
+
 def try_to_apply_patch(container, instance_id, logger, base_commit=None):
     # Attempt to apply patch to container
     val = container.exec_run(
-        "git apply -v /tmp/patch.diff",
+        GIT_APPLY_CMD,
         workdir="/testbed",
         user="root",
     )

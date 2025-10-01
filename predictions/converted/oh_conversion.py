@@ -5,13 +5,13 @@ import datasets
 ds = datasets.load_dataset("swefficiency/swefficiency", split="test")
 instance_ids = set(d["instance_id"] for d in ds)
 
-OUTPUT_DIR = Path("/predictions/converted")
+OUTPUT_DIR = Path("predictions/converted")
 
 # model_name = "gemini25flash"
 # model_name = "gpt5mini"
 # model_name = "claude37sonnet"
 
-for model_name in ["gemini25flash", "gpt5mini", "claude37sonnet"]:
+for model_name in ["gemini25flash", "gpt5mini", "claude37sonnet", "kimi_k2_0905"]:
     INPUT_FILE = f"predictions/openhands/{model_name}_raw.jsonl"
     OUTPUT_FILE = OUTPUT_DIR / f"oh_{model_name}.jsonl"
 
