@@ -218,6 +218,23 @@
             filter: brightness(1.05) saturate(1.08);
             cursor: pointer;
         }
+
+        .overview-image {
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            margin: 10px 0;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .overview-image:hover {
+            transform: translateY(-0px) scale(1.04);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            filter: brightness(1.05) saturate(1.08);
+            cursor: pointer;
+        }
         
         .banner-image-no-shadow {
             width: 100%;
@@ -255,7 +272,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            max-width: 500px;
+            max-width: 800px;
         }
         
         .leaderboard-table-container table {
@@ -305,6 +322,14 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .figure-item:hover {
+            transform: translateY(-0px) scale(1.04);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            filter: brightness(1.05) saturate(1.08);
+            cursor: pointer;
         }
         
         .figure-item img {
@@ -398,6 +423,19 @@
                 font-size: 1.1rem;
             }
         }
+
+         /* Wide figure spans two columns (when at least 2 columns exist) */
+        @media (min-width: 1000px) {
+            .figure-item-wide {
+                grid-column: span 2;
+            }
+        }
+        /* Fallback to single column on narrower layouts */
+        @media (max-width: 1000px) {
+            .figure-item-wide {
+                grid-column: span 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -477,7 +515,7 @@
     </main>
 
     <section class="tables-section">
-        <div class="tables-content">
+        <div class="overview-content">
             <h2 class="tables-heading" id="leaderboard">Leaderboard</h2>
             
             <p class="overview-text">
@@ -486,34 +524,199 @@
             </p>
             
             <!-- LEADERBOARD TABLE - Update with new model results as available -->
-            <div class="leaderboard-table-container">
-                <table>
+            <div class="leaderboard-table-container" id="leaderboard-wrapper">
+                <table id="leaderboard-table">
                     <thead>
                         <tr>
-                            <th>System</th>
-                            <th>Speedup Ratio (SR)</th>
+                            <th class="sortable" data-type="text">System <span aria-hidden="true">⇅</span></th>                            
+                            <th class="sortable" data-type="number">Speedup Ratio (SR) <span aria-hidden="true">⇅</span></th>
+                            <th class="sortable" data-type="text">Org <span aria-hidden="true">⇅</span></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Claude 3.7 Sonnet (OpenHands)</td>
-                            <td><strong>0.010×</strong></td>
+                            <td data-label="System">Claude 3.7 Sonnet (OpenHands)</td>
+                            <td data-label="Speedup Ratio (SR)"><strong>0.010×</strong></td>
+                            <td data-label="Org">
+                                <div class="org-cell">
+                                    <img src="assets/logos/swefficiency_logo.png" alt="SWE-fficiency" class="org-logo" title="SWE-fficiency">
+                                </div>
+                            </td>
                         </tr>
                         <tr>
-                            <td>GPT-5 Mini (OpenHands)</td>
-                            <td><strong>0.006×</strong></td>
+                            <td data-label="System">GPT-5 Mini (OpenHands)</td>
+                            <td data-label="Speedup Ratio (SR)"><strong>0.006×</strong></td>
+                            <td data-label="Org">
+                                <div class="org-cell">
+                                    <img src="assets/logos/swefficiency_logo.png" alt="SWE-fficiency" class="org-logo" title="SWE-fficiency">
+                                </div>
+                            </td>
                         </tr>
                         <tr>
-                            <td>Gemini 2.5 Flash (OpenHands)</td>
-                            <td><strong>0.002×</strong></td>
+                            <td data-label="System">Gemini 2.5 Flash (OpenHands)</td>
+                            <td data-label="Speedup Ratio (SR)"><strong>0.002×</strong></td>
+                            <td data-label="Org">
+                                <div class="org-cell">
+                                    <img src="assets/logos/swefficiency_logo.png" alt="SWE-fficiency" class="org-logo" title="SWE-fficiency">
+                                </div>
+                            </td>
                         </tr>
                         <tr>
-                            <td>DeepSeek V3.1 (OpenHands)</td>
-                            <td><strong>0.002×</strong></td>
+                            <td data-label="System">DeepSeek V3.1 (OpenHands)</td>
+                            <td data-label="Speedup Ratio (SR)"><strong>0.002×</strong></td>
+                            <td data-label="Org">
+                                <div class="org-cell">
+                                    <img src="assets/logos/swefficiency_logo.png" alt="SWE-fficiency" class="org-logo" title="SWE-fficiency">
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+
+            <style>
+                /* Organization column styling */
+                #leaderboard-table .org-cell {
+                    display:flex;
+                    align-items:center;
+                    justify-content: center;
+                    gap:8px;
+                }
+                #leaderboard-table .org-logo {
+                    width:32px;
+                    height:32px;
+                    object-fit:contain;
+                    border-radius:6px;
+                    background:#fff;
+                    box-shadow:0 1px 3px rgba(0,0,0,0.15);
+                    transition:transform .25s ease, box-shadow .25s ease, filter .25s ease;
+                }
+                #leaderboard-table .org-logo:hover {
+                    transform:scale(1.08) translateY(-2px);
+                    box-shadow:0 4px 10px rgba(0,0,0,0.25);
+                    filter:brightness(1.07) saturate(1.12);
+                }
+                /* Center org + speedup columns */
+                #leaderboard-table th:nth-child(2),
+                #leaderboard-table td:nth-child(2),
+                #leaderboard-table th:nth-child(3),
+                #leaderboard-table td:nth-child(3){
+                    text-align:center;
+                }
+                /* Hide text name on wide screens if desired (optional) */
+                @media (min-width:700px){
+                    #leaderboard-table .org-name {
+                        font-size:0.85rem;
+                        color:#555;
+                        white-space:nowrap;
+                    }
+                }
+
+                #leaderboard-table th.sortable { cursor:pointer; user-select:none; position:relative; }
+                #leaderboard-table th.sortable:after {
+                    content:"";
+                    position:absolute;
+                    right:6px;
+                    top:50%;
+                    transform:translateY(-50%);
+                    width:0;
+                    height:0;
+                    border-left:5px solid transparent;
+                    border-right:5px solid transparent;
+                    border-top:7px solid rgba(0,0,0,0.35);
+                    transition:transform .2s;
+                }
+                #leaderboard-table th.sortable.sort-asc:after {
+                    transform:translateY(-50%) rotate(180deg);
+                }
+                #leaderboard-table th.sortable.sort-desc:after {
+                    border-top:7px solid rgba(0,0,0,0.55);
+                }
+                /* Mobile stack */
+                @media (max-width:600px){
+                    #leaderboard-table thead { display:none; }
+                    #leaderboard-table, #leaderboard-table tbody, #leaderboard-table tr, #leaderboard-table td {
+                        display:block; width:100%;
+                    }
+                    #leaderboard-table tr {
+                        margin:0 0 14px;
+                        border:1px solid #eee;
+                        border-radius:10px;
+                        padding:10px 12px;
+                        background:#fff;
+                        box-shadow:0 2px 6px rgba(0,0,0,0.06);
+                    }
+                    #leaderboard-table td {
+                        border:none; padding:6px 4px; text-align:left;
+                    }
+                    #leaderboard-table td strong { font-weight:600; }
+                    #leaderboard-table td:before {
+                        content: attr(data-label);
+                        display:block;
+                        font-size:0.75rem;
+                        text-transform:uppercase;
+                        letter-spacing:0.05em;
+                        color:#667eea;
+                        margin-bottom:2px;
+                        font-weight:600;
+                    }
+                    #leaderboard-table .org-cell {
+                        gap:10px;
+                    }
+                }
+            </style>
+
+            <script>
+                (function() {
+                    const table = document.getElementById('leaderboard-table');
+                    const headers = table.querySelectorAll('th.sortable');
+
+                    function parseCell(td, type){
+                        if(type === 'number'){
+                            let txt = td.textContent.trim().replace(/×/g,'');
+                            const num = parseFloat(txt);
+                            return isNaN(num) ? -Infinity : num;
+                        }
+                        // Prefer data-sort if provided
+                        const ds = td.getAttribute('data-sort');
+                        if(ds) return ds.toLowerCase();
+                        return td.textContent.trim().toLowerCase();
+                    }
+
+                    function clearSortClasses(except){
+                        headers.forEach(h => { if(h !== except){ h.classList.remove('sort-asc','sort-desc'); } });
+                    }
+
+                    headers.forEach((th, index) => {
+                        th.addEventListener('click', () => {
+                            const type = th.getAttribute('data-type') || 'text';
+                            const tbody = table.tBodies[0];
+                            const rows = Array.from(tbody.rows);
+                            const asc = !th.classList.contains('sort-asc');
+                            clearSortClasses(th);
+                            th.classList.toggle('sort-asc', asc);
+                            th.classList.toggle('sort-desc', !asc);
+
+                            rows.sort((a,b) => {
+                                let av, bv;
+                                if (index === 2) { // Org column: use image alt text
+                                    const imgA = a.cells[index].querySelector('img');
+                                    const imgB = b.cells[index].querySelector('img');
+                                    av = imgA ? imgA.getAttribute('alt').toLowerCase() : '';
+                                    bv = imgB ? imgB.getAttribute('alt').toLowerCase() : '';
+                                } else {
+                                    av = parseCell(a.cells[index], type);
+                                    bv = parseCell(b.cells[index], type);
+                                }
+                                if (av < bv) return asc ? -1 : 1;
+                                if (av > bv) return asc ? 1 : -1;
+                                return 0;
+                            });
+                            rows.forEach(r => tbody.appendChild(r));
+                        });
+                    });
+                })();
+            </script>
         </div>
     </section>
 
@@ -574,19 +777,26 @@
 
     <section class="tables-section">
         <div class="tables-content">
-            <h2 class="section-heading">Methodology</h2>
+            <h2 class="section-heading" style="text-align:center;">Methodology and Dataset</h2>
+
+            <div style="margin-bottom: 30px; text-align: center;">
+                <img src="assets/figures/workload_distribution.png" alt="Workload Distribution" class="overview-image" style="padding:10px; box-sizing:border-box;">
+                <p style="font-size: 0.9rem; color: #666; max-width: 700px; margin: 12px auto 0; line-height: 1.5;">
+                    <strong>Figure 1:</strong> SWE-fficiency contains a diverse distribution over performance workload runtime (left); over gold patch speedup (speedup achieved from expert PR edit); and over types of optimizations made by the expert (right).
+                </p>
+            </div>
             
             <div style="max-width: 900px; margin: 0 auto; text-align: left;">
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px;">
-                    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+                    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);" class="figure-item">
                         <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.2rem;">🔍 Data Collection</h3>
                         <p style="margin: 0; font-size: 1rem; line-height: 1.6; color: #555;">
                             Multi-stage pipeline combining keyword filtering, static analysis, coverage tooling, 
-                            and execution validation to extract realistic optimization tasks from GitHub PRs.
+                            and execution validation to extract diverse and realistic optimization tasks from GitHub PRs.
                         </p>
                     </div>
                     
-                    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+                    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);" class="figure-item">
                         <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.2rem;">⚖️ Evaluation Metric</h3>
                         <p style="margin: 0; font-size: 1rem; line-height: 1.6; color: #555;">
                             <strong>Speedup Ratio (SR) = (Model Speedup) / (Expert Speedup)</strong><br>
@@ -594,7 +804,7 @@
                         </p>
                     </div>
                     
-                    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+                    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);" class="figure-item">
                         <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.2rem;">🧪 Experimental Setup</h3>
                         <p style="margin: 0; font-size: 1rem; line-height: 1.6; color: #555;">
                             Containerized environments with CPU/memory pinning (4 vCPUs, 16GB RAM per worker). 
@@ -602,7 +812,7 @@
                         </p>
                     </div>
                     
-                    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+                    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);" class="figure-item">
                         <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.2rem;">🤖 Agent Frameworks</h3>
                         <p style="margin: 0; font-size: 1rem; line-height: 1.6; color: #555;">
                             Evaluation using OpenHands and SWE-agent scaffolds with file-editing tools 
@@ -613,36 +823,46 @@
                 
                 
             </div>
+
+            <div style="margin-bottom: 30px; text-align: center;">
+                <img src="assets/figures/data_pipeline.png" alt="Data Collection Pipeline" class="overview-image" style="padding:10px; box-sizing:border-box;">
+                <p style="font-size: 0.9rem; color: #666; max-width: 700px; margin: 12px auto 0; line-height: 1.5;">
+                    <strong>Figure 1:</strong> SWE-fficiency uses a multi-stage pipeline that filters from raw GitHub pull requests information to extract containerized, reproducible, performance-focused optimization tasks for evaluation.
+                </p>
+            </div>
         </div>
     </section>
 
     <section class="figures-section">
         <div class="figures-content">
-            <h2 class="section-heading">Key Findings</h2>
-            
-            <div class="figure-grid">
-                
-                <div class="figure-item">
-                    <img src="assets/figures/data_pipeline.png" alt="Data Collection Pipeline">
+            <h2 class="section-heading" style="text-align:center;">Key Findings</h2>
+            <div class="figure-grid" style="max-width:900px; margin:0 auto; grid-template-columns:repeat(auto-fit,minmax(420px,1fr)); gap:32px;">
+
+                <div class="figure-item figure-item-wide">
+                    <img src="assets/figures/hsr_thresholds_bins_markers_centered.png" alt="Missed Expert Speedup" style="padding:20px; box-sizing:border-box;">
                     <div class="figure-caption">
-                        <strong>Figure 1:</strong> SWE-fficiency collects tasks through a multi-stage scraping pipeline: each stage prunes 
-                        candidate tasks that introduce new behavior, are unlikely to be performance related, or unsuitable for reproducible benchmarking.
+                        <strong>Figure 1:</strong> LMs achieve strong performance on easier problems but struggle on tasks with longer workload runtime duration and larger baseline expert speedups. We bucket LM submissions by per-instance speedup ratio and compute the geometric mean per-bucket of (i) pre-edit workload runtime, (ii) the gold (expert) patch speedup, and (iii) the number of lines in the gold patch.
                     </div>
                 </div>
-                
+
                 <div class="figure-item">
-                    <img src="assets/figures/scaling_trends.png" alt="Performance vs Task Difficulty">
+                    <img src="assets/figures/median_traj_len_by_speedup_bucket.png" alt="LM Satisficing Optimizations" style="padding:20px; box-sizing:border-box;">
                     <div class="figure-caption">
-                        <strong>Figure 2:</strong> LMs achieve strong performance on easier problems but struggle on tasks with longer 
-                        workload runtime duration and larger baseline expert speedups.
+                        <strong>Figure 2:</strong> LMs find expert-level wins earlier on in action trajectories. When they underperform experts, LMs submit satisficing optimizations rather than trying on for expert parity.
                     </div>
                 </div>
-                
+
                 <div class="figure-item">
-                    <img src="assets/figures/workload_distribution.png" alt="Dataset Distribution">
+                    <img src="assets/figures/openhands_speedup_missed_stacked.png" alt="Missed Expert Speedup" style="padding:20px; box-sizing:border-box;">
                     <div class="figure-caption">
-                        <strong>Figure 3:</strong> SWE-fficiency contains a diverse distribution over performance workload runtime, 
-                        gold patch speedup, and types of optimizations made by experts across 9 major Python repositories.
+                        <strong>Figure 3:</strong> LMs leave a significant portion of expert-achievable speedup on the table due to wrong file/function selection and localization.
+                    </div>
+                </div>
+
+                <div class="figure-item figure-item-wide">
+                    <img src="assets/figures/flamegraph.png" alt="Example Flamegraph" style="padding:20px; box-sizing:border-box;">
+                    <div class="figure-caption">
+                        <strong>Figure 4:</strong> LMs prefer to edit different functions than the gold patch, missing out on major speedups. For a workload flamegraph for task <code>pandas--dev__pandas-52054</code>, Claude 3.7 Sonnet (SWE-agent) <span style="color: red;"><strong>(red)</strong></span> chooses a different function (and file) than the expert <span style="color: #F1A900;"><strong>(gold)</strong></span>: it does not achieve the expert's overall workload speedup, since the expert's speedup is at a shallower scope.
                     </div>
                 </div>
             </div>
