@@ -11,7 +11,13 @@ OUTPUT_DIR = Path("predictions/converted")
 # model_name = "gpt5mini"
 # model_name = "claude37sonnet"
 
-for model_name in ["gemini25flash", "gpt5mini", "claude37sonnet", "kimi_k2_0905"]:
+for model_name in [
+    "gemini25flash",
+    "gemini25pro",
+    "gpt5mini",
+    "claude37sonnet",
+    "kimi_k2_0905",
+]:
     INPUT_FILE = f"predictions/openhands/{model_name}_raw.jsonl"
     OUTPUT_FILE = OUTPUT_DIR / f"oh_{model_name}.jsonl"
 

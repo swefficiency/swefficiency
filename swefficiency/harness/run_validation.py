@@ -1227,6 +1227,25 @@ def get_dataset_from_preds(
         covering_tests_file = report_dir / "covering_test_status.json"
         perf_summary_file = report_dir / "perf_summary.txt"
 
+        previous_workload_file = report_dir / "workload.py"
+        instance_workload = instance.get("workload", "").strip()
+
+        if prediction[KEY_INSTANCE_ID] in ISOLATION_CHECK_EXCEPTIONS:
+            transformed_instance_workload = instance_workload
+        else:
+            transformed_instance_workload = transform_to_isolated_workload(
+                instance_workload
+            )
+
+        if previous_workload_file.exists():
+            previous_workload_text = previous_workload_file.read_text()
+        else:
+            previous_workload_text = ""
+
+        # If report dir has previous workload.py, check if its the same.
+        if previous_workload_text.strip() != transformed_instance_workload.strip():
+            continue
+
         if covering_tests_file.exists() and perf_summary_file.exists():
             completed_ids.add(instance[KEY_INSTANCE_ID])
 

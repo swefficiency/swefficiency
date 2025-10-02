@@ -1,6 +1,7 @@
 
 NUM_WORKERS=12
 MODELS=(
+    "oh_gemini25pro"
     "oh_kimi_k2_0905"
     "oh_gpt5mini"
     "oh_claude37sonnet"
