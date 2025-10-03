@@ -107,7 +107,7 @@ class TestSpec:
     def performance_script(self):
         return (
             "\n".join(
-                ["#!/bin/bash", "set -xo pipefail"] + self.performance_script_list
+                ["#!/bin/bash", "set -exo pipefail"] + self.performance_script_list
             )
             + "\n"
         )
@@ -116,7 +116,7 @@ class TestSpec:
     def performance_profiling_script(self):
         return (
             "\n".join(
-                ["#!/bin/bash", "set -xo pipefail"]
+                ["#!/bin/bash", "set -exo pipefail"]
                 + self.performance_profiling_script_list
             )
             + "\n"
@@ -124,6 +124,7 @@ class TestSpec:
 
     @property
     def correctness_script(self):
+        # TODO: Check whether we should add -e here?
         return (
             "\n".join(
                 ["#!/bin/bash", "set -xo pipefail"] + self.correctness_script_list
@@ -135,7 +136,7 @@ class TestSpec:
     def introspection_guard_script(self):
         return (
             "\n".join(
-                ["#!/bin/bash", "set -xo pipefail"]
+                ["#!/bin/bash", "set -exo pipefail"]
                 + self.introspection_guard_script_list
             )
             + "\n"
@@ -471,7 +472,6 @@ def _get_basic_eval_components(
         # This is just informational, so we have a record
         "git status",
         "git show",
-        f"git diff {base_commit}",
     ]
     if "install" in specs:
         eval_commands.append(specs["install"])

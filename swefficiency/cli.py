@@ -64,6 +64,7 @@ def eval_command(args):
 
     # Generate a run ID if not provided
     run_id = args.run_id if args.run_id else f"cli_run_{int(time.time())}"
+    force_rerun = args.force_rerun
 
     print(f"Starting evaluation with {args.num_workers} workers...")
     if predictions_path:
@@ -100,7 +101,7 @@ def eval_command(args):
             use_dockerhub_images=True,
             use_podman=False,
             workload_predictions="",
-            force_rerun=False,
+            force_rerun=force_rerun,
             process_isolation=True,
         )
         print("Evaluation completed successfully!")
@@ -213,6 +214,11 @@ def main():
         "--instances_regex",
         type=str,
         help='Regular expression pattern to filter instance IDs (e.g., "pandas.*" for Pandas instances)',
+    )
+    eval_parser.add_argument(
+        "--force_rerun",
+        action="store_true",
+        help="Force re-running the evaluation even if results already exist",
     )
 
     # Report subcommand

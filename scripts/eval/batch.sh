@@ -12,11 +12,11 @@ MODELS=(
     "sweagent_gemini25flash"
 )
 
-RUN_NAME="ground_truth_perf_isolation"
+RUN_NAME="ground_truth_perf_isolation2"
 
 # # Run gold
-# swefficiency eval --num_workers $NUM_WORKERS --run_id $RUN_NAME
-# docker rm -f $(docker ps -aq); docker system prune -a -f;
+swefficiency eval --num_workers $NUM_WORKERS --run_id $RUN_NAME
+docker rm -f $(docker ps -aq); docker system prune -a -f;
 
 for MODEL in "${MODELS[@]}"; do
     echo "Running evaluation for model: $MODEL"

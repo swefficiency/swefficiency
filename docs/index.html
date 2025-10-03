@@ -830,7 +830,7 @@
             <div style="margin-bottom: 30px; text-align: center;">
                 <img src="assets/figures/data_pipeline.png" alt="Data Collection Pipeline" class="overview-image" style="padding:10px; box-sizing:border-box;">
                 <p style="font-size: 0.9rem; color: #666; max-width: 700px; margin: 12px auto 0; line-height: 1.5;">
-                    <strong>Figure 1:</strong> SWE-fficiency uses a multi-stage pipeline that filters from raw GitHub pull requests information to extract containerized, reproducible, performance-focused optimization tasks for evaluation.
+                    <strong>Figure 2:</strong> SWE-fficiency uses a multi-stage pipeline that filters from raw GitHub pull requests information to extract containerized, reproducible, performance-focused optimization tasks for evaluation.
                 </p>
             </div>
         </div>
@@ -844,28 +844,28 @@
                 <div class="figure-item figure-item-wide">
                     <img src="assets/figures/hsr_thresholds_bins_markers_centered.png" alt="Missed Expert Speedup" style="padding:20px; box-sizing:border-box;">
                     <div class="figure-caption">
-                        <strong>Figure 1:</strong> LMs achieve strong performance on easier problems but struggle on tasks with longer workload runtime duration and larger baseline expert speedups. We bucket LM submissions by per-instance speedup ratio and compute the geometric mean per-bucket of (i) pre-edit workload runtime, (ii) the gold (expert) patch speedup, and (iii) the number of lines in the gold patch.
+                        <strong>Figure 3:</strong> LMs achieve strong performance on easier problems but struggle on tasks with longer workload runtime duration and larger baseline expert speedups. We bucket LM submissions by per-instance speedup ratio and compute the geometric mean per-bucket of (i) pre-edit workload runtime, (ii) the gold (expert) patch speedup, and (iii) the number of lines in the gold patch.
                     </div>
                 </div>
 
                 <div class="figure-item">
                     <img src="assets/figures/median_traj_len_by_speedup_bucket.png" alt="LM Satisficing Optimizations" style="padding:20px; box-sizing:border-box;">
                     <div class="figure-caption">
-                        <strong>Figure 2:</strong> LMs find expert-level wins earlier on in action trajectories. When they underperform experts, LMs submit satisficing optimizations rather than trying on for expert parity.
+                        <strong>Figure 4:</strong> LMs find expert-level wins earlier on in action trajectories. When they underperform experts, LMs submit satisficing optimizations rather than trying on for expert parity.
                     </div>
                 </div>
 
                 <div class="figure-item">
                     <img src="assets/figures/openhands_speedup_missed_stacked.png" alt="Missed Expert Speedup" style="padding:20px; box-sizing:border-box;">
                     <div class="figure-caption">
-                        <strong>Figure 3:</strong> LMs leave a significant portion of expert-achievable speedup on the table due to wrong file/function selection and localization.
+                        <strong>Figure 5:</strong> LMs leave a significant portion of expert-achievable speedup on the table due to wrong file/function selection and localization.
                     </div>
                 </div>
 
                 <div class="figure-item figure-item-wide">
                     <img src="assets/figures/flamegraph.png" alt="Example Flamegraph" style="padding:20px; box-sizing:border-box;">
                     <div class="figure-caption">
-                        <strong>Figure 4:</strong> LMs prefer to edit different functions than the gold patch, missing out on major speedups. For a workload flamegraph for task <code>pandas--dev__pandas-52054</code>, Claude 3.7 Sonnet (SWE-agent) <span style="color: red;"><strong>(red)</strong></span> chooses a different function (and file) than the expert <span style="color: #F1A900;"><strong>(gold)</strong></span>: it does not achieve the expert's overall workload speedup, since the expert's speedup is at a shallower scope.
+                        <strong>Figure 6:</strong> LMs prefer to edit different functions than the gold patch, missing out on major speedups. For a workload flamegraph for task <code>pandas--dev__pandas-52054</code>, Claude 3.7 Sonnet (SWE-agent) <span style="color: red;"><strong>(red)</strong></span> chooses a different function (and file) than the expert <span style="color: #F1A900;"><strong>(gold)</strong></span>: it does not achieve the expert's overall workload speedup, since the expert's speedup is at a shallower scope.
                     </div>
                 </div>
             </div>

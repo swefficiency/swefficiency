@@ -490,23 +490,29 @@ def run_instance(
 
         if run_perf:
             perf_summary_file = log_dir / "perf_summary.txt"
-            if not perf_summary_file.exists():
-                workload_text = test_spec.workload
-                if not workload_text:
-                    raise EvaluationError(
-                        instance_id,
-                        "Perf workload not found in prediction.",
-                        logger,
-                    )
+            workload_file = Path(log_dir / "workload.py")
 
-                # Copy over the "workload.py" and the "covering_tests.txt.
-                workload_file = Path(log_dir / "workload.py")
-                if process_isolation and instance_id not in ISOLATION_CHECK_EXCEPTIONS:
-                    raw_workload_file = Path(log_dir / "workload_raw.py")
+            old_workload_text = (
+                workload_file.read_text() if workload_file.exists() else ""
+            )
+            workload_text = test_spec.workload
+            if not workload_text:
+                raise EvaluationError(
+                    instance_id,
+                    "Perf workload not found in prediction.",
+                    logger,
+                )
 
-                    # TODO: This breaks profiling, need to fix.
-                    raw_workload_file.write_text(workload_text)
-                    workload_text = transform_to_isolated_workload(workload_text)
+            # Copy over the "workload.py" and the "covering_tests.txt.
+            if process_isolation and instance_id not in ISOLATION_CHECK_EXCEPTIONS:
+                raw_workload_file = Path(log_dir / "workload_raw.py")
+
+                # TODO: This breaks profiling, need to fix.
+                raw_workload_file.write_text(workload_text)
+                workload_text = transform_to_isolated_workload(workload_text)
+
+            equals_old_workload = workload_text.strip() == old_workload_text.strip()
+            if not perf_summary_file.exists() or not equals_old_workload:
                 workload_file.write_text(workload_text)
 
                 logger.info(

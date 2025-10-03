@@ -3169,6 +3169,8 @@ TEST_PANDAS_DISTRIBUTED = (
     + ' -m "not slow and not network and not db and not single_cpu" '
 )  # Pandas tests are just slow, generaly pytest-xdist is available in all.
 
+_PANDAS_CFLAGS = 'export CFLAGS="$CFLAGS -fwrapv -fno-strict-overflow -fno-strict-aliasing -Wno-error -Wno-array-bounds -Wno-deprecated-declarations -Wno-sign-compare -Wno-strict-prototypes -Wno-cpp -Wno-unused-function -Wno-missing-prototypes -Wno-implicit-function-declaration -Wno-return-type"'
+
 SPECS_PANDAS = {
     k: {
         "packages": "environment.yml",
@@ -3194,10 +3196,9 @@ SPECS_PANDAS = {
         "pre_install": [
             "git remote add upstream https://github.com/pandas-dev/pandas.git",
             "git fetch upstream --tags",
-            'export CFLAGS="$CFLAGS -fwrapv -fno-strict-overflow -fno-strict-aliasing -Wno-error -Wno-array-bounds -Wno-deprecated-declarations -Wno-sign-compare -Wno-strict-prototypes -Wno-cpp -Wno-unused-function -Wno-missing-prototypes -Wno-implicit-function-declaration -Wno-return-type"',
         ],
         # "install": "pip install -ve . --no-build-isolation -Ceditable-verbose=true; pip uninstall pytest-qt -y; pip install hypothesis;", pip uninstall -y pandas;
-        "install": "pip install -e . --no-build-isolation; pip uninstall pytest-qt -y;",
+        "install": f"{_PANDAS_CFLAGS}; pip install -e . --no-build-isolation; pip uninstall pytest-qt -y;",
         "test_cmd": TEST_PANDAS,
         "distributed_test_cmd": TEST_PANDAS_DISTRIBUTED,
         "pip_packages": [
@@ -3916,7 +3917,7 @@ STACKFRAME_CHECK_EXCEPTONS = {"pandas-dev__pandas-45247"}
 
 # Isolation check exceptions
 ISOLATION_CHECK_EXCEPTIONS = {
-    "scikit-learn__scikit-learn-29330" # Uses loky, so already has memory isolation.
+    "scikit-learn__scikit-learn-29330"  # Uses loky, so already has memory isolation.
 }
 
 

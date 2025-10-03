@@ -204,7 +204,7 @@ def find_runtimes_slice_expr(tree: ast.AST) -> str | None:
 
 
 # ---------- Rewriter ----------
-def transform_to_isolated_workload(src: str) -> str:
+def transform_to_isolated_workload(src: str, method="fork") -> str:
     import ast
     import textwrap
 
@@ -390,7 +390,7 @@ def transform_to_isolated_workload(src: str) -> str:
         core_lines.append(f"{workload}()")
 
     core_lines += [
-        'runtimes = _run_isolated(_number, _repeat, start_method="spawn")',
+        f'runtimes = _run_isolated(_number, _repeat, start_method="{method}")',
         f"{view_assignment}",
         'print("Mean:", _statistics.mean(runtimes_view))',
         'print("Std Dev:", _statistics.stdev(runtimes_view) if len(runtimes_view) > 1 else 0.0)',
@@ -435,7 +435,7 @@ def _child_target(q, number):
         traceback.print_exc()
         q.put(None)
 
-def _run_isolated(number: int, repeat: int, start_method: str = "spawn"):
+def _run_isolated(number: int, repeat: int, start_method: str = "{method}"):
     ctx = _mp.get_context(start_method)
     results = []
     for _ in range(repeat):
