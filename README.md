@@ -12,7 +12,7 @@
     <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Data-blue" alt="Data">
   </a>
   <a href="<TODO_PAPER_LINK>">
-    <img src="https://img.shields.io/badge/ICLR-2026-b31b1b.svg" alt="paper">
+    <img src="https://img.shields.io/badge/Preprint-2026-b31b1b.svg" alt="paper">
   </a>
 </p>
 
