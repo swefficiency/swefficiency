@@ -54,7 +54,15 @@ conda activate swefficiency
 
 # In the repo root
 pip install -e .
-````
+
+# Run evaluation using SWE-fficiency CLI.
+
+# For gold patch evaluation.
+swefficiency eval --num_workers $NUM_WORKERS --run_id $RUN_NAME
+
+# For a specific set of predictions.
+swefficiency eval --num_workers $NUM_WORKERS --run_id $RUN_NAME --prediction_path predictions/converted/$MODEL.jsonl
+```
 
 ### VM / Container Setup (recommended for reproducibility)
 
@@ -66,10 +74,7 @@ bash scripts/vm/setup_docker.sh
 bash scripts/vm/setup_vm.sh
 ```
 
-> Notes
->
-> * Prebuilt per-instance images are used for evaluation.
-> * Each worker is pinned to **4 vCPUs** and assigned **16 GB** RAM to minimize cross-run interference.
+
 
 ---
 
@@ -152,3 +157,9 @@ We include reference results in the paper across several modern LMs using OpenHa
 
 TODO: Add 📚 citation + 🤝 acknowledgments.
 TODO: Replace swefficiency-anon/swefficiency with non-anonymized HF repo name.
+
+# Disclaimer
+
+This is not an officially supported Google product. This project is not
+eligible for the [Google Open Source Software Vulnerability Rewards
+Program](https://bughunters.google.com/open-source-security).
