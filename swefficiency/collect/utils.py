@@ -1,15 +1,14 @@
 from __future__ import annotations
 
-
 import logging
 import re
-import requests
 import time
-
-from bs4 import BeautifulSoup
-from ghapi.core import GhApi
-from fastcore.net import HTTP404NotFoundError, HTTP403ForbiddenError
 from typing import Callable, Iterator, Optional
+
+import requests
+from bs4 import BeautifulSoup
+from fastcore.net import HTTP403ForbiddenError, HTTP404NotFoundError
+from ghapi.core import GhApi
 from unidiff import PatchSet
 
 logging.basicConfig(
@@ -34,7 +33,7 @@ class Repo:
         self.api = GhApi(token=token)
         self.repo = self.call_api(self.api.repos.get, owner=owner, repo=name)
 
-    def call_api(self, func: Callable, **kwargs) -> dict|None:
+    def call_api(self, func: Callable, **kwargs) -> dict | None:
         """
         API call wrapper with rate limit handling (checks every 5 minutes if rate limit is reset)
 
@@ -116,7 +115,7 @@ class Repo:
     ) -> Iterator:
         """
         Return all values from a paginated API endpoint.
-        
+
         Args:
             func (callable): API function to call
             per_page (int): number of values to return per page
@@ -356,25 +355,22 @@ def extract_patches(pull: dict, repo: Repo) -> tuple[str, str]:
         patch_change_str (str): gold patch
         patch_test_str (str): test patch
     """
-    
+
     headers = {
-        'Accept': 'application/vnd.github.v3.diff', # This is needed since diff_url is not crawlable.
-        'Authorization': f'Bearer {repo.token}',
-        'X-GitHub-Api-Version': '2022-11-28'
+        "Accept": "application/vnd.github.v3.diff",  # This is needed since diff_url is not crawlable.
+        "Authorization": f"Bearer {repo.token}",
+        "X-GitHub-Api-Version": "2022-11-28",
     }
     try:
-        patch = send_request_with_rate_limit_handling(
-            pull["url"], headers=headers
-        )
+        patch = send_request_with_rate_limit_handling(pull["url"], headers=headers)
     except Exception as e:
         return "", ""
-    
+
     patch_test = ""
-    patch_fix  = ""
+    patch_fix = ""
     for hunk in PatchSet(patch):
         if any(
-            test_word in hunk.path for test_word in
-            ['test', 'tests', 'e2e', 'testing']
+            test_word in hunk.path for test_word in ["test", "tests", "e2e", "testing"]
         ):
             patch_test += str(hunk)
         else:
@@ -443,7 +439,9 @@ def extract_problem_statement_and_hints_django(
             if "/" in timestamp:
                 timestamp = time.mktime(time.strptime(timestamp, "%m/%d/%y %H:%M:%S"))
             elif "," in timestamp:
-                timestamp = time.mktime(time.strptime(timestamp, "%b %d, %Y, %I:%M:%S %p"))
+                timestamp = time.mktime(
+                    time.strptime(timestamp, "%b %d, %Y, %I:%M:%S %p")
+                )
             else:
                 raise ValueError(f"Timestamp format not recognized: {timestamp}")
 

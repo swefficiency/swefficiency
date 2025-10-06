@@ -1,28 +1,30 @@
 import json
 import os
-from pathlib import Path
 import re
-import requests
-
 from argparse import ArgumentTypeError
-from datasets import Dataset, load_dataset
-from dotenv import load_dotenv
 from functools import cache
+from pathlib import Path
 from typing import cast
 
+import requests
+from datasets import Dataset, load_dataset
+from dotenv import load_dotenv
+
 from swefficiency.harness.constants import (
-    SWEfficiencyInstance,
+    KEY_INSTANCE_ID,
     MAP_REPO_TO_ENV_YML_PATHS,
     MAP_REPO_TO_REQS_PATHS,
     NON_TEST_EXTS,
     SWE_BENCH_URL_RAW,
-    KEY_INSTANCE_ID,
+    SWEfficiencyInstance,
 )
 
 load_dotenv()
 
 
-def load_swefficiency_dataset(name="princeton-nlp/SWE-bench", split="test", instance_ids=None, revision=None) -> list[SWEfficiencyInstance]:
+def load_swefficiency_dataset(
+    name="swefficiency/swefficiency", split="test", instance_ids=None, revision=None
+) -> list[SWEfficiencyInstance]:
     """
     Load SWE-bench dataset from Hugging Face Datasets or local .json/.jsonl file
     """
@@ -34,14 +36,18 @@ def load_swefficiency_dataset(name="princeton-nlp/SWE-bench", split="test", inst
         dataset = json.loads(Path(name).read_text())
         dataset_ids = {instance[KEY_INSTANCE_ID] for instance in dataset}
     elif name.endswith(".jsonl"):
-        dataset = [json.loads(instance) for instance in Path(name).read_text().splitlines()]
+        dataset = [
+            json.loads(instance) for instance in Path(name).read_text().splitlines()
+        ]
         dataset_ids = {instance[KEY_INSTANCE_ID] for instance in dataset}
     else:
         # Load from Hugging Face Datasets
-        if name.lower() in {"swe-bench", "swefficiency", "swe_bench"}:
-            name = "princeton-nlp/SWE-bench"
-        elif name.lower() in {"swe-bench-lite", "swefficiency-lite", "swe_bench_lite", "swe-bench_lite", "lite"}:
-            name = "princeton-nlp/SWE-bench_Lite"
+        if name.lower() in {"swefficiency"}:
+            name = "swefficiency/swefficiency"
+        elif name.lower() in {
+            "swefficiency-lite",
+        }:
+            name = "swefficiency/swefficiency-lite"
         dataset = cast(Dataset, load_dataset(name, split=split, revision=revision))
         dataset_ids = {instance[KEY_INSTANCE_ID] for instance in dataset}
     if instance_ids:
@@ -52,7 +58,11 @@ def load_swefficiency_dataset(name="princeton-nlp/SWE-bench", split="test", inst
                     f"\nMissing IDs:\n{' '.join(instance_ids - dataset_ids)}"
                 )
             )
-        dataset = [instance for instance in dataset if instance[KEY_INSTANCE_ID] in instance_ids]
+        dataset = [
+            instance
+            for instance in dataset
+            if instance[KEY_INSTANCE_ID] in instance_ids
+        ]
     return [cast(SWEfficiencyInstance, instance) for instance in dataset]
 
 
@@ -217,9 +227,8 @@ def get_environment_yml(instance: SWEfficiencyInstance, env_name: str) -> str:
     )
 
     env_yml = get_environment_yml_by_commit(instance["repo"], commit, env_name)
-            
+
     return env_yml
-    
 
 
 @cache
