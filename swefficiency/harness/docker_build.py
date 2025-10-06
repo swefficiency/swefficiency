@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import logging
 import re
-import threading
 import traceback
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path

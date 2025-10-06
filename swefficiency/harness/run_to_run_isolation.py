@@ -1,7 +1,6 @@
 # rewrite_benchmark.py
 
 import ast
-import textwrap
 
 
 # ---------- tiny codegen helper (py3.6+ support) ----------

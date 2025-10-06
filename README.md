@@ -156,7 +156,6 @@ We include reference results in the paper across several modern LMs using OpenHa
 ---
 
 TODO: Add 📚 citation + 🤝 acknowledgments.
-TODO: Replace swefficiency-anon/swefficiency with non-anonymized HF repo name.
 
 # Disclaimer
 

@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import json
-import random
 import resource
 import traceback
 from argparse import ArgumentParser
@@ -9,6 +7,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 import docker
+import jso
 from tqdm import tqdm
 
 from swefficiency.harness.constants import (
