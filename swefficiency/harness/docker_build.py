@@ -813,8 +813,11 @@ def create_container_from_image(
             # nano_cpus=nano_cpus,
             platform=test_spec.platform,
             network_mode="host" if USE_HOST_NETWORK else None,
-            mem_limit="16g",
-            oom_kill_disable=False,
+            # Memory limits.
+            mem_limit="32g",
+            mem_reservation="16g",
+            memswap_limit="32g",
+            oom_kill_disable=True,  # TODO: Revisit this.
             oom_score_adj=1000,
             **extra_args,
         )

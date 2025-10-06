@@ -3917,7 +3917,10 @@ STACKFRAME_CHECK_EXCEPTONS = {"pandas-dev__pandas-45247"}
 
 # Isolation check exceptions
 ISOLATION_CHECK_EXCEPTIONS = {
-    "scikit-learn__scikit-learn-29330"  # Uses loky, so already has memory isolation.
+    "scikit-learn__scikit-learn-29330",  # Uses loky, so already has memory isolation.
+    "pydata__xarray-9808", # High memory util, don't use isolation.
+    "scikit-learn__scikit-learn-15615", # High memory util, don't use isolation.
+    "scikit-learn__scikit-learn-24856", # High memory util, don't use isolation.
 }
 
 

@@ -148,6 +148,8 @@ GIT_APPLY_CMD = "git apply -v /tmp/patch.diff --whitespace=nowarn"
 # "try to apply everything; only fail if the failing path is tracked by git"
 GIT_APPLY_CMD = 'bash -lc \'patch=${PATCH:-/tmp/patch.diff}; list="$(git apply --list "$patch" 2>/dev/null || sed -nE "s|^diff --git a/.* b/(.*)$|\\1|p" "$patch")"; while IFS= read -r p; do [ -z "$p" ] && continue; if git apply -3 --whitespace=nowarn --include="$p" "$patch"; then printf "applied: %s\\n" "$p"; else if git ls-files --error-unmatch -- "$p" >/dev/null 2>&1; then printf "ERROR on tracked path: %s\\n" "$p"; exit 1; else printf "skipping untracked-collision: %s\\n" "$p"; fi; fi; done <<<"$list"\''
 
+GIT_APPLY_CMD = 'bash -lc \'patch=${PATCH:-/tmp/patch.diff}; list="$(git apply --list "$patch" 2>/dev/null || sed -nE "s|^diff --git a/.* b/(.*)$|\\1|p" "$patch")"; while IFS= read -r p; do [ -z "$p" ] && continue; if git apply --whitespace=nowarn --include="$p" "$patch"; then printf "applied: %s\\n" "$p"; else if git ls-files --error-unmatch -- "$p" >/dev/null 2>&1; then printf "ERROR on tracked path: %s\\n" "$p"; exit 1; else printf "skipping untracked-collision: %s\\n" "$p"; fi; fi; done <<<"$list"\''
+
 
 def try_to_apply_patch(container, instance_id, logger, base_commit=None):
     # Attempt to apply patch to container
@@ -168,7 +170,7 @@ def try_to_apply_patch(container, instance_id, logger, base_commit=None):
                 workdir="/testbed",
                 user="root",
             )
-            print("REVERT OUTPUT:", revert_val.output.decode("utf-8"))
+            # print("REVERT OUTPUT:", revert_val.output.decode("utf-8"))
             if revert_val.exit_code != 0:
                 logger.info(
                     f"Failed to revert to base commit {base_commit}:\n{revert_val.output.decode('utf-8')}"
@@ -810,7 +812,7 @@ def run_instance(
 
                 if not perf_patch_applied:
                     # Check if the patch has been applied, if not, apply it now.
-                    try_to_apply_patch(container, instance_id, logger)
+                    try_to_apply_patch(container, instance_id, logger, base_commit=test_spec.base_commit)  # type: ignore
 
                 paths = correctness_tests
                 base = test_spec.base_commit
