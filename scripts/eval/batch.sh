@@ -1,7 +1,7 @@
 
 NUM_WORKERS=12
 MODELS=(
-    "oh_claude37sonnet"
+    # "oh_claude37sonnet"
     "oh_gemini25flash"
     "oh_gpt5mini"
     "oh_deepseekv31"
@@ -14,9 +14,9 @@ MODELS=(
 
 RUN_NAME="ground_truth_perf_isolation3"
 
-# # Run gold
-swefficiency eval --num_workers $NUM_WORKERS --run_id $RUN_NAME
-docker rm -f $(docker ps -aq); docker system prune -a -f;
+# # # Run gold
+# swefficiency eval --num_workers $NUM_WORKERS --run_id $RUN_NAME
+# docker rm -f $(docker ps -aq); docker system prune -a -f;
 
 for MODEL in "${MODELS[@]}"; do
     echo "Running evaluation for model: $MODEL"

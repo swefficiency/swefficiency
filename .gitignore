@@ -181,8 +181,8 @@ logs_no_test_patch/
 *.err
 *.out
 
-predictions/**/*.json
-predictions/**/*.jsonl
+predictions/lite_openhands
+predictions/openhands
+predictions/sweagent
 
 analysis/adhoc/patch_analysis/interesting_patches
-docs/Algotune_Template
