@@ -518,6 +518,14 @@ def make_eval_script_list(
         apply_test_patch_command,  # This should be empty, but let's just keep this.
     ]
 
+    # Rebuild after checkout: `git checkout` reverts tracked source files but
+    # leaves compiled extensions (.so/.pyd in .gitignore) from the prior
+    # `pip install -e .`. On repos with C extensions (pandas, numpy,
+    # scikit-learn) this ABI mismatch causes segfaults. Rebuilding ensures
+    # the compiled extensions match the checked-out source.
+    if "install" in specs:
+        eval_commands.append(specs["install"])
+
     if "covering_tests" in instance:
         # For actual dataset, we know covering tests, so pull this from the instance.
         eval_commands += [test_command + " " + " ".join(instance["covering_tests"])]
